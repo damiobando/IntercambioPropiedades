@@ -7,12 +7,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { Button } from './Button';
 import { Link } from 'react-router-dom';
-
+import { registerRequest } from '../api/auth';
 function RegisterForm() {
   const [firstName, setFirstName] = useState('');
-  const [secondName, setSecondName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [contrasenna, setPassword] = useState('');
+  const [telefono, setTelefono] = useState('');
 
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -44,11 +44,22 @@ function RegisterForm() {
 
   window.addEventListener('resize', showButton);
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     console.log('Primer Nombre:', firstName);
-    console.log('Segundo Nombre:', secondName);
     console.log('Correo Electrónico:', email);
-    console.log('Contraseña:', password);
+    console.log("Telefono:", telefono);
+    console.log('Contraseña:', contrasenna);
+
+   
+  
+    const requestData = {
+      name: firstName,
+      phone: telefono,
+      email: email,
+      password: contrasenna
+    };
+    const res = await registerRequest(requestData)
+    console.log(res)
   };
 
   return (
@@ -78,10 +89,10 @@ function RegisterForm() {
             />
             <TextField
               required
-              id='secondName'
-              label='Apellidos'
-              value={secondName}
-              onChange={(e) => setSecondName(e.target.value)}
+              id='telefono'
+              label='Telefono'
+              value={telefono}
+              onChange={(e) => setTelefono(e.target.value)}
             />
             <TextField
               required
@@ -92,10 +103,10 @@ function RegisterForm() {
             />
             <TextField
               required
-              id='password'
+              id='contrasenna'
               label='Contraseña'
-              type='password'
-              value={password}
+              type='contrasenna'
+              value={contrasenna}
               onChange={(e) => setPassword(e.target.value)}
             />
           </Box>

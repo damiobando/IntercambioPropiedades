@@ -1,12 +1,14 @@
 ###
-POST http://localhost:9000/api/users HTTP/1.1
+
+###
+POST http://localhost:9000/api/register HTTP/1.1
 Content-Type: application/json
 
     {
       "name": "Sebastian Obando Paniagua",
     "phone": "85805240",
     "email": "sebasobando@gmail.com",
-    "address": "Heredia, Costa Rica"
+    "password": "123456"
 }
 
 ###

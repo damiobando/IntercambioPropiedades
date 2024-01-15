@@ -4,7 +4,7 @@ const userSchema = require("../models/user");
 const router = express.Router();
 
 // create user
-router.post("/users", (req, res) => {
+router.post("/register", (req, res) => {
   const user = userSchema(req.body);
   user
     .save()
