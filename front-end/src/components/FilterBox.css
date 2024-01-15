@@ -1,0 +1,25 @@
+.filter{
+    padding: 4rem;
+    background: #b9b8b8;  
+}
+
+.box-filter{
+    background: #ffffff;  
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    align-items:center ;
+    align-content: center;
+    max-width: 0 auto;
+    max-height: 0 auto;
+    margin: 0 auto;
+    padding: 80px ;
+    box-shadow: 0 6px 20px rgba(56, 125, 255, 0.17);
+}
+
+.box-filter-row{
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}

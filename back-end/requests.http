@@ -1,0 +1,108 @@
+###
+POST http://localhost:9000/api/users HTTP/1.1
+Content-Type: application/json
+
+    {
+      "name": "Sebastian Obando Paniagua",
+    "phone": "85805240",
+    "email": "sebasobando@gmail.com",
+    "address": "Heredia, Costa Rica"
+}
+
+###
+GET http://localhost:9000/api/users HTTP/1.1
+
+###
+GET http://localhost:9000/api/users/6595f95a10732b6e04903b62 HTTP/1.1
+
+###
+DELETE http://localhost:9000/api/users/6595d2a0f71152bc80ed90fa HTTP/1.1
+
+###
+PUT http://localhost:9000/api/users/6595d2a0f71152bc80ed90fa HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Damian Obando",
+  "age": 21,
+  "email": "damiobando@gmail.com"
+}
+
+###
+# Crear un nuevo reporte (POST)
+POST http://localhost:9000/api/reports HTTP/1.1
+Content-Type: application/json
+
+{
+  "reporter_id" : "0",
+  "reported_id" : "0",   
+   "type": "Toxicidad",
+    "description":"Me dijo cosas feas" 
+    }
+
+###
+
+# Obtener todos los reportes (GET)
+GET http://localhost:9000/api/reports HTTP/1.1
+
+###
+
+# Obtener un reporte específico por ID (GET)
+GET http://localhost:9000/api/reports/ID_del_Reporte HTTP/1.1
+
+###
+
+# Actualizar un reporte por ID (PUT)
+PUT http://localhost:9000/api/reports/6595f66910732b6e04903b5c HTTP/1.1
+Content-Type: application/json
+
+{
+  "reporter_id" : "0",
+  "reported_id" : "0",   
+   "type": "Estafa",
+    "description":"Sus propiedades son falsas" 
+    }
+
+###
+
+# Eliminar un reporte por ID (DELETE)
+DELETE http://localhost:9000/api/reports/ID_del_Reporte HTTP/1.1
+
+###
+
+# Crear una nueva oferta (POST)
+POST http://localhost:9000/api/offers HTTP/1.1
+Content-Type: application/json
+
+{
+    "user_id": "0",
+    "property_id": "0",
+    "offered_amount": 10000
+}
+
+###
+
+# Obtener todas las ofertas (GET)
+GET http://localhost:9000/api/offers HTTP/1.1
+
+###
+
+# Obtener una oferta específica por ID (GET)
+GET http://localhost:9000/api/offers/ID_de_la_Oferta HTTP/1.1
+
+###
+
+# Actualizar una oferta por ID (PUT)
+PUT http://localhost:9000/api/offers/ID_de_la_Oferta HTTP/1.1
+Content-Type: application/json
+
+{
+  "usuario_id": "Nuevo_ID_Usuario",
+  "propiedad_id": "Nuevo_ID_Propiedad",
+  "cantidad_ofertada": 1500
+}
+
+###
+
+# Eliminar una oferta por ID (DELETE)
+DELETE http://localhost:9000/api/offers/ID_de_la_Oferta HTTP/1.1
