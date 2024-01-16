@@ -1,59 +1,81 @@
 import React, { useState } from 'react';
 import './NewListing.css';
 import SuccessModal from './SuccessModal';
-
+import { addProperty } from '../api/property';
 function NewListing() {
-    const [selectedOption, setSelectedOption] = useState('');
-    const [financingOptions, setFinancingOptions] = useState([]);
-    const [imageFiles, setImageFiles] = useState([]);
-    const [province, setProvince] = useState('');
-    const [canton, setCanton] = useState('');
-    const [distrito, setDistrito] = useState('');
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
-  
-    const handleSelectChange = (event) => {
-      setSelectedOption(event.target.value);
-    };
-  
-    const handleCheckboxChange = (option) => {
-      // Verifica si la opción ya está seleccionada
-      if (financingOptions.includes(option)) {
-        // Si está seleccionada, quítala de las opciones
-        setFinancingOptions(financingOptions.filter((item) => item !== option));
-      } else {
-        // Si no está seleccionada, agrégala a las opciones
-        setFinancingOptions([...financingOptions, option]);
-      }
-    };
-  
-    const handleImageChange = (event) => {
-      const files = event.target.files;
-      setImageFiles([...imageFiles, ...files]);
-    };
-  
-    const handleAddProperty = (event) => {
-        event.preventDefault();
-    
-        // Realizar la lógica para agregar la propiedad aquí
-    
-        // Limpiar los campos después de agregar la propiedad
-        setProvince('');
-        setCanton('');
-        setDistrito('');
-        setSelectedOption('');
-        setFinancingOptions([]);
-        setImageFiles('');
-    
-        // Mostrar el modal de éxito
-        setShowSuccessModal(true);
-    
-        // Ocultar el modal después de unos segundos
-        setTimeout(() => {
-          setShowSuccessModal(false);
-        }, 3000);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [selectedOption, setSelectedOption] = useState('');
+  const [financingOptions, setFinancingOptions] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]);
+  const [province, setProvince] = useState('');
+  const [canton, setCanton] = useState('');
+  const [distrito, setDistrito] = useState('');
+  const [direccion, setDireccion] = useState('');
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  const handleSelectChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
+  const handleCheckboxChange = (option) => {
+    // Verifica si la opción ya está seleccionada
+    if (financingOptions.includes(option)) {
+      // Si está seleccionada, quítala de las opciones
+      setFinancingOptions(financingOptions.filter((item) => item !== option));
+    } else {
+      // Si no está seleccionada, agrégala a las opciones
+      setFinancingOptions([...financingOptions, option]);
+    }
+  };
+
+  const handleImageChange = (event) => {
+    const files = event.target.files;
+    setImageFiles([...imageFiles, ...files]);
+  };
+
+  const handleAddProperty = async (event) => {
+    event.preventDefault();
+
+    try {
+      const propertyData = {
+        title: title,
+        description: description,
+        price: price,
+        paymentMethod: selectedOption,
+        financingOptions: financingOptions,
+        province: province,
+        canton: canton,
+        distrito: distrito,
+        direccion: direccion,
+
       };
-  
-  
+      const res = await addProperty(propertyData)
+      console.log(res)
+
+      setTitle('');
+      setDescription('');
+      setPrice('');
+      setSelectedOption('');
+      setFinancingOptions([]);
+      setImageFiles([]);
+      setProvince('');
+      setCanton('');
+      setDistrito('');
+      setDireccion('');
+
+      // Mostrar el modal de éxito
+      setShowSuccessModal(true);
+
+      setTimeout(() => {
+        setShowSuccessModal(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Error al agregar la propiedad:', error);
+      
+    }
+  };
 
   return (
     <div className='main-container'>
@@ -63,18 +85,26 @@ function NewListing() {
 
           <div className='form-group'>
             <label>Titulo de la propiedad</label>
-            <input type='text' required/>
+            <input type='text' 
+            value = {title} onChange = {(e) => setTitle(e.target.value)}
+            required/>
           </div>
 
           <div className='form-group'>
-            <label>Descripción adicional</label>
-            <textarea rows='4'></textarea>
-          </div>
+          <label>Descripción adicional</label>
+          <textarea
+            rows='4'
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          ></textarea>
+        </div>
 
           <div className='form-group'>
             <p>Precio de la propiedad</p>
             <label>Precio</label>
-            <input type='text' required />
+            <input type='text' 
+            value={price} onChange = {(e) => setPrice(e.target.value)}
+            required />
           </div>
 
           <div className='form-group'>
@@ -152,11 +182,13 @@ function NewListing() {
             <input type='text' value={distrito} onChange={(e) => setDistrito(e.target.value)} required />
         </div>
         <div className='form-group'>
-            <label>Direccion extra opcional</label>
-            <textarea rows='4'></textarea>
-          </div>
-
-
+        <label>Dirección extra opcional</label>
+        <textarea
+          rows='4'
+          value={direccion}
+          onChange={(e) => setDireccion(e.target.value)}
+        ></textarea>
+      </div>
         </div>
         <div className='form-group'>
             <button type='submit'>

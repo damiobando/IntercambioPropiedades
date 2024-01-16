@@ -6,6 +6,8 @@ const app = express();
 const userRoutes = require("./routes/user");
 const reportsRoutes = require("./routes/report");
 const offersRoutes = require("./routes/offer");
+const propertiesRoutes = require("./routes/property");
+const preferenceRoutes = require("./routes/preference");
 const port = process.env.PORT || 9000;
 //middleware
 app.use(express.json());
@@ -13,6 +15,8 @@ app.use(cors());
 app.use("/api",userRoutes);
 app.use("/api",reportsRoutes);
 app.use("/api",offersRoutes);
+app.use("/api",propertiesRoutes);
+app.use("/api",preferenceRoutes);
 //routes
 
 app.get("/",(req,res)=>{
