@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './NewListing.css';
 import SuccessModal from './SuccessModal';
 import { addProperty } from '../api/property';
+
 function NewListing() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -37,8 +38,10 @@ function NewListing() {
 
   const handleAddProperty = async (event) => {
     event.preventDefault();
-    //necesitamos obtener el token de las cookies 
+    //necesitamos obtener el token de las cookies
     try {
+      const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
+      console.log(token);
       const propertyData = {
         title: title,
         description: description,
@@ -49,7 +52,7 @@ function NewListing() {
         canton: canton,
         distrito: distrito,
         direccion: direccion,
-
+        ownerID: token
       };
       const res = await addProperty(propertyData)
       console.log(res)

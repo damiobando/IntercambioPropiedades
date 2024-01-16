@@ -1,11 +1,15 @@
 const express = require("express");
 const Property = require("../models/property"); // Importa el modelo Property
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
 // Crear una nueva propiedad
 router.post("/properties", (req, res) => {
     const propertyData = req.body;
+    const decodedToken = jwt.decode(propertyData.ownerID);
+    console.log(decodedToken);
+    propertyData.ownerID = decodedToken.id;
     Property.create(propertyData)
         .then((data) => res.json(data))
         .catch((error) => res.status(400).json({ message: error.message }));

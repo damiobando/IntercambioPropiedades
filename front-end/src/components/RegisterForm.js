@@ -45,15 +45,13 @@ function RegisterForm() {
     showButton();
   }, []);
 
-  window.addEventListener('resize', showButton);
   const showAlert = (message) => {
     setAlert(message);
-
-    // Ocultar la alerta después de 3 segundos
     setTimeout(() => {
       setAlert(null);
     }, 3000);
   };
+  window.addEventListener('resize', showButton);
   const handleButtonClick = async () => {
     try {
       const requestData = {
@@ -129,6 +127,7 @@ function RegisterForm() {
             />
           </Box>
         </div>
+        {alert && <Alert message={alert} onClose={() => setAlert(null)} />}
         <div className='logoBtn'>
           <img
             src='./images/LogoIntercambio.png'
@@ -141,7 +140,7 @@ function RegisterForm() {
             Crear cuenta
           </Button>
         </div>
-        {alert && <Alert message={alert} onClose={() => setAlert(null)} />}
+        
       </div>
     </>
   );

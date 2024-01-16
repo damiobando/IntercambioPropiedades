@@ -10,5 +10,6 @@ const propertySchema = new mongoose.Schema({
     canton: String,
     distrito: String,
     direccion: String,
+    ownerID: String,
 });
 module.exports = mongoose.model("Property",propertySchema);
