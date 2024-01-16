@@ -13,6 +13,8 @@ router.post("/properties", (req, res) => {
 
 // Obtener todas las propiedades
 router.get("/properties", (req, res) => {
+    const token = req.cookies.token;
+    console.log(token);
     Property.find()
         .then((data) => res.json(data))
         .catch((error) => res.status(400).json({ message: error.message }));

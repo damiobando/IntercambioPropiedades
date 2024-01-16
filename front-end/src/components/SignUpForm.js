@@ -12,15 +12,8 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Button } from './Button';
 import IconButton from '@mui/material/IconButton';
 import './SignUpForm.css';
-import { getUsers } from '../api/auth';
-import bcrypt from 'bcryptjs';
 import Alert from './Alert'; // Importa el nuevo componente
-
-async function hashPassword(password) {
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-  return hashedPassword;
-}
+import { loginRequest } from '../api/auth';
 
 function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -53,24 +46,22 @@ function SignUpForm() {
 
   const handleSignIn = async () => {
     try {
-      const data = await getUsers();
-      const users = data.data;
-
-      const user = users.find((u) => u.email === email);
-
-      if (user) {
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-
-        if (isPasswordValid) {
-          console.log('Login exitoso');
-        } else {
-          showAlert('Contraseña incorrecta');
-        }
+      const res = await loginRequest({ email, password });
+      
+      if (res.status === 200) {
+        // Login exitoso
+        const token = res.data.token;
+        document.cookie = `token=${token}`;
+        console.log('Login successful');
+        showAlert('Login successful');
       } else {
-        showAlert('Usuario no encontrado');
+        // Error en el login
+        console.error('Error en el login:', res.data.message);
+        showAlert(`Error: ${res.data.message}`);
       }
     } catch (error) {
-      console.error('Error al obtener usuarios:', error);
+      console.error('Error en el login:', error);
+      showAlert('Datos incorrectos');
     }
   };
 

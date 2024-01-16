@@ -8,18 +8,14 @@ import Checkbox from '@mui/material/Checkbox';
 import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import { registerRequest } from '../api/auth';
-import bcrypt from 'bcryptjs';
+import Alert from './Alert'; 
 
-async function hashPassword(password) {
-  const saltRounds = 10; // Número de rondas de salto (más rondas hacen el proceso más lento)
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-  return hashedPassword;
-}
 function RegisterForm() {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [contrasenna, setPassword] = useState('');
   const [telefono, setTelefono] = useState('');
+  const [alert, setAlert] = useState(null);
 
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -50,19 +46,40 @@ function RegisterForm() {
   }, []);
 
   window.addEventListener('resize', showButton);
+  const showAlert = (message) => {
+    setAlert(message);
 
-  const handleButtonClick = async () => {
-    const hashedPassword = await hashPassword(contrasenna);
-    const requestData = {
-      name: firstName,
-      phone: telefono,
-      email: email,
-      password: hashedPassword
-    };
-    const res = await registerRequest(requestData)
-    console.log(res)
+    // Ocultar la alerta después de 3 segundos
+    setTimeout(() => {
+      setAlert(null);
+    }, 3000);
   };
+  const handleButtonClick = async () => {
+    try {
+      const requestData = {
+        name: firstName,
+        phone: telefono,
+        email: email,
+        password: contrasenna
+      };
 
+      const res = await registerRequest(requestData)
+      if (res.status === 200) {
+        // Registro exitoso
+        const token = res.data.token;
+        document.cookie = `token=${token}`;
+        console.log('Successful registration');
+        showAlert('Registro Exitoso');
+      } else {
+        // Error en el registro
+        console.error('Error on registration', res.data.message);
+        showAlert(`Error en el registro: ${res.data.message}`);
+      }
+    } catch (error) {
+      console.error('Error en el registro:', error);
+      showAlert('Error en el registro, revisa los datos y vuelve a intentarlo');
+    }
+  };
   return (
     <>
       <div className='signUp_container'>
@@ -124,6 +141,7 @@ function RegisterForm() {
             Crear cuenta
           </Button>
         </div>
+        {alert && <Alert message={alert} onClose={() => setAlert(null)} />}
       </div>
     </>
   );

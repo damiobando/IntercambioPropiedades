@@ -37,7 +37,7 @@ function NewListing() {
 
   const handleAddProperty = async (event) => {
     event.preventDefault();
-
+    //necesitamos obtener el token de las cookies 
     try {
       const propertyData = {
         title: title,
