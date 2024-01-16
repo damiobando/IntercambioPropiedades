@@ -2,3 +2,4 @@
 *.js.development
 *.js.development.js
 *.js.development.map
+front-end/node_modules/.cache/.eslintcache
