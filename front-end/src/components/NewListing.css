@@ -1,0 +1,129 @@
+/* NewListing.css */
+
+.main-container {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: 100%;
+    /* overflow: auto; */
+  }
+  
+  .form-container {
+    width: 80%;
+    max-width: 600px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .design-container,
+  .media-container,
+  .location-container,
+  .detail-container,
+  .amenities-container p {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .design-container h1,
+  .media-container h1,
+  .location-container h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .design-container label,
+  .media-container label,
+  .location-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  input,
+  textarea,
+  select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  select {
+    appearance: none;
+  }
+  
+  .image-preview-container img {
+    width: 10%; /* Ancho máximo del contenedor */
+    height: 10%; /* Altura automática para mantener la proporción */
+    margin-bottom: 10px; /* Agrega un espacio entre las imágenes */
+  }
+  
+  .location-container .form-group {
+    margin-bottom: 10px; /* Espacio entre los campos */
+  }
+  
+  .location-container input {
+    width: 100%; /* O ajusta el ancho según tus necesidades */
+    padding: 8px; /* Espaciado interno */
+    box-sizing: border-box; /* Incluye el relleno en el ancho total */
+  }
+  
+
+.form-group button {
+    background-color: #4caf50; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    padding: 10px 15px; /* Espaciado interno del botón */
+    font-size: 16px; /* Tamaño de fuente del botón */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar el cursor al pasar sobre el botón */
+    transition: background-color 0.3s; /* Agregar transición al color de fondo */
+  }
+  
+  .form-group button:hover {
+    background-color: #45a049; /* Cambiar el color de fondo al pasar el mouse */
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    text-align: center;
+  }
+  
+  .modal-content button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  

@@ -54,13 +54,8 @@ function NavbarUser() {
           </div>
           <ul className={click ? 'nav-menu active' : 'nav-menu'}>
             <li className='nav-item'>
-              <Link to='/' className='nav-links' onClick={closeMobileMenu}>
-                Inicio
-              </Link>
-            </li>
-            <li className='nav-item'>
               <Link
-                to='/listings'
+                to='/addlisting'
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
@@ -106,7 +101,7 @@ function NavbarUser() {
             </li>
 
           </ul>
-          {button && <Button buttonStyle='btn--outline'>AGREGAR PROPIEDAD</Button>}
+          {button && <button className='btn--outline' to='/addlisting' >AGREGAR PROPIEDAD</button>}
         </div>
       </nav>
     </>
