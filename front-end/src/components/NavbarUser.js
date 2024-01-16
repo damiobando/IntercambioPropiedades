@@ -54,11 +54,6 @@ function NavbarUser() {
           </div>
           <ul className={click ? 'nav-menu active' : 'nav-menu'}>
             <li className='nav-item'>
-              <Link to='/' className='nav-links' onClick={closeMobileMenu}>
-                Inicio
-              </Link>
-            </li>
-            <li className='nav-item'>
               <Link
                 to='/listings'
                 className='nav-links'
