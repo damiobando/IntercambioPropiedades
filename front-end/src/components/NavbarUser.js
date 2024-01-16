@@ -77,11 +77,11 @@ function NavbarUser() {
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
-                Mi Cuenta
+                Notificaciones
               </Link>
-            </li>    
+            </li>  
             <Dropdown>
-            <MenuButton>My account</MenuButton>
+            <MenuButton>Mi Cuenta</MenuButton>
             <Menu slots={{ listbox: Listbox }}>
                 <MenuItem onClick={createHandleMenuClick('Profile')}>Profile</MenuItem>
                 <MenuItem onClick={createHandleMenuClick('Language settings')}>
