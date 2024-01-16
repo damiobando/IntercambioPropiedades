@@ -85,7 +85,7 @@ function NavbarUser() {
             <Menu slots={{ listbox: Listbox }}>
                 <MenuItem onClick={createHandleMenuClick('Profile')}>Profile</MenuItem>
                 <MenuItem onClick={createHandleMenuClick('Language settings')}>
-                Language settings
+                Preferences
                 </MenuItem>
                 <MenuItem onClick={createHandleMenuClick('Log out')}>Log out</MenuItem>
             </Menu>
