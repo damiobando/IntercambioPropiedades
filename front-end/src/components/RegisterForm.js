@@ -8,6 +8,13 @@ import Checkbox from '@mui/material/Checkbox';
 import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import { registerRequest } from '../api/auth';
+import bcrypt from 'bcryptjs';
+
+async function hashPassword(password) {
+  const saltRounds = 10; // Número de rondas de salto (más rondas hacen el proceso más lento)
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  return hashedPassword;
+}
 function RegisterForm() {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
@@ -45,18 +52,12 @@ function RegisterForm() {
   window.addEventListener('resize', showButton);
 
   const handleButtonClick = async () => {
-    console.log('Primer Nombre:', firstName);
-    console.log('Correo Electrónico:', email);
-    console.log("Telefono:", telefono);
-    console.log('Contraseña:', contrasenna);
-
-   
-  
+    const hashedPassword = await hashPassword(contrasenna);
     const requestData = {
       name: firstName,
       phone: telefono,
       email: email,
-      password: contrasenna
+      password: hashedPassword
     };
     const res = await registerRequest(requestData)
     console.log(res)
