@@ -1,0 +1,110 @@
+
+
+/* Estilos generales */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Estilos para el contenedor principal */
+  .main-background {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    width: 100%;
+    align-items: center;
+    margin: 0 auto;
+    padding: 20px; /* Ajusta el espaciado según sea necesario */
+  }
+  
+  /* Estilos para la barra lateral izquierda */
+  .left-bar {
+    margin-bottom: auto;
+    width: 25%;
+    height: auto;
+    margin-right: 20px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Estilos para los botones en la barra lateral */
+  .left-bar button {
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  /* Estilos para el botón activo */
+  .left-bar button.active {
+    background-color: #4285f4; /* Cambia el color según tus preferencias */
+    color: #fff;
+  }
+  
+  /* Estilos para el contenedor de información */
+  .info-container {
+    width: 70%;
+    height: auto;
+    margin-bottom: auto;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+
+  /* Agrega estos estilos a tu archivo CSS */
+
+  .info-container form {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .info-container h2 {
+    text-align: center;
+  }
+  
+  .info-container div {
+    margin-bottom: 15px;
+  }
+  
+  .info-container label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .info-container input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .info-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .info-container button:hover {
+    background-color: #45a049;
+  }
+  
