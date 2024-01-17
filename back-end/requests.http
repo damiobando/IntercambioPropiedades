@@ -167,3 +167,10 @@ GET http://localhost:9000/api/properties HTTP/1.1
 
 # Obtener todas las ofertas (GET)
 DELETE  http://localhost:9000/api/searchhistory/65a6bbbcb7328d9bb64de6ac HTTP/1.1
+
+
+
+###
+
+# Obtener todas las ofertas (GET)
+GET http://localhost:9000/api/messages HTTP/1.1

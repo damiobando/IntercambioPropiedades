@@ -2,19 +2,35 @@
 
 import React, { useState } from 'react';
 import './PropertyInfo.css'
+import { findUserByToken } from '../api/users';
+import {addReport} from '../api/report';
 
-const ReportPublication = () => {
+
+const ReportPublication = ({ownerID}) => {
   const [reportReason, setReportReason] = useState('');
 
   const handleReportReasonChange = (event) => {
     setReportReason(event.target.value);
   };
-
-  const handleReportPublication = () => {
-    // Aquí puedes implementar la lógica para reportar la publicación
-    console.log('Reporte enviado con motivo:', reportReason);
-    // Puedes limpiar el campo de motivo después de enviarlo
-    setReportReason('');
+  const currentDate = new Date();
+  const handleReportPublication = async () => {
+    try{
+      const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
+      const user = await findUserByToken(token);
+      const reportData = {
+        reporter_id: user.data._id,
+        reported_id: ownerID,
+        content: reportReason,
+        date: currentDate.toISOString().slice(0, 10),
+      };
+      console.log(reportData);//
+      const res = await addReport(reportData);
+      console.log(res);    
+      setReportReason('');
+     }
+     catch(res){
+        console.error("Error al enviar mensaje", res);
+     }
   };
 
   return (
