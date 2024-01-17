@@ -22,6 +22,9 @@ front-end/node_modules/.cache/default-development/index.pack.old
 # production
 /build
 
+*.cache
+src/data/cache/
+
 # misc
 .DS_Store
 .env.local
