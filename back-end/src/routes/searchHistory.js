@@ -43,17 +43,21 @@ router.put("/searchhistory/:id", (req, res) => {
 });
 
 // Eliminar un historial de búsqueda por ID
-router.delete("/searchhistory/:id", (req, res) => {
-    const { id } = req.params;
-    SearchHistory.deleteOne({ _id: id })
-        .then((data) => {
-            if (data.deletedCount === 1) {
-                res.json({ message: "Search history deleted successfully" });
-            } else {
-                res.status(404).json({ message: "Search history not found" });
-            }
-        })
-        .catch((error) => res.status(500).json({ message: error.message }));
+router.delete("/history/:id", async (req, res) => {
+  try {
+      const { id } = req.params;
+
+      // Cambia el campo 'userId' por el campo correcto que estás utilizando en tu modelo
+      const result = await SearchHistory.deleteMany({ user_id: id });
+
+      if (result.deletedCount > 0) {
+          res.json({ message: "Search history deleted successfully" });
+      } else {
+          res.status(404).json({ message: "Search history not found" });
+      }
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
 });
 
 module.exports = router;

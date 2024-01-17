@@ -69,7 +69,7 @@ function NewListing() {
         province: province,
         canton: canton,
         distrito: distrito,
-        images: imageUrls, // Usamos las URLs de las imágenes
+        images: imageUrls, 
         direccion: direccion,
         ownerID: token,
       };

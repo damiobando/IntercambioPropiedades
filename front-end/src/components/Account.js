@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Account.css';
 import { findUserById } from '../api/users';
-import { getSearchHistory } from '../api/history';
-import { getFavorites } from '../api/favorites';
+import { getSearchHistory, deleteHistory } from '../api/history';
+import { getFavorites,deleteFavorite } from '../api/favorites';
+
 function Account() {
   const [activeButton, setActiveButton] = useState('miInformacion');
   const [currentPassword, setCurrentPassword] = useState('');
@@ -17,7 +18,7 @@ function Account() {
         const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
         const user = await findUserById(token);
         setUserInfo(user.data);
-        const historyResponse = await getSearchHistory(user.data._id); 
+        const historyResponse = await getSearchHistory(user.data._id);
         setSearchHistory(historyResponse.data);
         const favoritesResponse = await getFavorites(user.data._id);
         setFavorites(favoritesResponse.data);
@@ -28,7 +29,7 @@ function Account() {
     }
 
     fetchData();
-  }, []);  
+  }, []);
   const [isEditMode, setIsEditMode] = useState(false); // Ejemplo de lista de favoritos
 
   const handleButtonClick = (buttonName) => {
@@ -45,21 +46,29 @@ function Account() {
     setIsEditMode(false);
   };
 
-  const handleDeleteItem = (index, type) => {
-    if (type === 'history') {
-      const updatedHistory = [...searchHistory];
-      updatedHistory.splice(index, 1);
-      setSearchHistory(updatedHistory);
-    } else if (type === 'favorites') {
-      const updatedFavorites = [...favorites];
-      updatedFavorites.splice(index, 1);
+  const handleDeleteItem = async (id, type) => {
+    try {
+      console.log('Deleted item with ID:', id._id);
+      await deleteFavorite(id._id);
+      const updatedFavorites = favorites.filter((fav) => fav._id !== id._id);
+      console.log('Updated Favorites:', updatedFavorites);
       setFavorites(updatedFavorites);
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  const handleDeleteAll = (type) => {
+  const handleDeleteAll = async (type) => {
     if (type === 'history') {
-      setSearchHistory([]);
+      try {
+        const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
+        const user = await findUserById(token);
+        await deleteHistory(user.data._id);
+        const historyResponse = await getSearchHistory(user.data._id);
+        setSearchHistory(historyResponse.data);
+      } catch (error) {
+        console.error(error);
+      }
     } else if (type === 'favorites') {
       setFavorites([]);
     }
@@ -73,6 +82,7 @@ function Account() {
     setNewPassword('');
     setConfirmPassword('');
   };
+
   return (
     <div className="main-background">
       <div className="left-bar">
@@ -102,22 +112,26 @@ function Account() {
             {/*  más información */}
           </div>
         )}
-       {activeButton === 'historialBusqueda' && (
+        {activeButton === 'historialBusqueda' && (
           <div style={{ padding: '20px ' }}>
             <h2>Historial de Búsqueda</h2>
-            <ul>
-              {searchHistory.map(item => (
-                <li key={item._id} style={{ marginBottom: '20px' }}>
-                  <p><strong>Titulo:</strong> {item.title}</p>
-                  <p><strong>Descripción:</strong> {item.description}</p>
-                  <p><strong>Precio:</strong> {item.price}</p>
-                  <p><strong>Provincia:</strong> {item.province}</p>
-                  <p><strong>Cantón:</strong> {item.canton}</p>
-                  <p><strong>Distrito:</strong> {item.distrito}</p>
-                  <hr />
-                </li>
-              ))}
-            </ul>
+            {searchHistory.length > 0 ? (
+              <ul>
+                {searchHistory.map((item) => (
+                  <li key={item._id} style={{ marginBottom: '20px' }}>
+                    <p><strong>Titulo:</strong> {item.title}</p>
+                    <p><strong>Descripción:</strong> {item.description}</p>
+                    <p><strong>Precio:</strong> {item.price}</p>
+                    <p><strong>Provincia:</strong> {item.province}</p>
+                    <p><strong>Cantón:</strong> {item.canton}</p>
+                    <p><strong>Distrito:</strong> {item.distrito}</p>
+                    <hr />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No hay elementos en el historial de búsqueda.</p>
+            )}
             {searchHistory.length > 0 && (
               <button type="button" onClick={() => handleDeleteAll('history')}>
                 Borrar Todo
@@ -126,30 +140,31 @@ function Account() {
           </div>
         )}
         {activeButton === 'favoritos' && (
-          <div >
+          <div>
             <h2>Favoritos</h2>
-            {/* lista de elementos favoritos */}
-            <ul>
-            {favorites.map(item => (
-                <li key={item._id} style={{ marginBottom: '20px' }}>
-                  <p><strong>Titulo:</strong> {item.title}</p>
-                  <p><strong>Descripción:</strong> {item.description}</p>
-                  <p><strong>Precio:</strong> {item.price}</p>
-                  <p><strong>Provincia:</strong> {item.province}</p>
-                  <p><strong>Cantón:</strong> {item.canton}</p>
-                  <p><strong>Distrito:</strong> {item.distrito}</p>
-                  <hr />
-                  <button type="button" onClick={() => handleDeleteItem(item, 'history')} className="small-delete">
-                  Borrar
-                </button>
-
-                </li>
-              ))}
-            </ul>
-            {favorites.length > 0 && (
-              <button type="button" onClick={() => handleDeleteAll('favorites')}>
-                Borrar Todo
-              </button>
+            {favorites.length > 0 ? (
+              <ul>
+                {favorites.map((item) => (
+                  <li key={item._id} style={{ marginBottom: '20px ' }}>
+                    <p><strong>Titulo:</strong> {item.title}</p>
+                    <p><strong>Descripción:</strong> {item.description}</p>
+                    <p><strong>Precio:</strong> {item.price}</p>
+                    <p><strong>Provincia:</strong> {item.province}</p>
+                    <p><strong>Cantón:</strong> {item.canton}</p>
+                    <p><strong>Distrito:</strong> {item.distrito}</p>
+                    <hr />
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteItem(item, 'history')}
+                      className="small-delete"
+                    >
+                      Borrar
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No hay elementos en la lista de favoritos.</p>
             )}
           </div>
         )}

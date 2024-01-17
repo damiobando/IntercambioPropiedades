@@ -1,7 +1,8 @@
-// PropertyCard.js
 import React, { useState, useEffect } from 'react';
-import './PropertyCard.css'; // Archivo de estilos específico para PropertyCard
+import './PropertyCard.css';
 import { Link } from 'react-router-dom';
+import { addFavorite } from '../api/favorites';
+import PopupMessage from './PopupMessage';
 
 const ImageSlider = ({ images }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -31,29 +32,77 @@ const ImageSlider = ({ images }) => {
 
 const PropertyCard = ({ property, userId }) => {
   const [isFavorite, setIsFavorite] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
 
-  const handleFavoriteClick = () => {
-    // Implementa la lógica para agregar/quitar la propiedad de favoritos en tu aplicación
-    setIsFavorite(!isFavorite);
+  const getTokenFromCookie = () => {
+    const cookies = document.cookie.split('; ').reduce((acc, cookie) => {
+      const [name, value] = cookie.split('=');
+      acc[name] = value;
+      return acc;
+    }, {});
+
+    return cookies.token || null;
+  };
+
+  const handleFavoriteClick = async () => {
+    try {
+      const token = getTokenFromCookie();
+      if (!token) {
+        console.error('No se pudo encontrar el token en las cookies.');
+        return;
+      }
+
+      if (!property || !property._id) {
+        console.error('La propiedad o el ID de la propiedad son indefinidos.');
+        return;
+      }
+
+      const favoriteData = { user_id: token, property_id: property._id };
+      await addFavorite(favoriteData);
+
+      // La propiedad se agregó exitosamente
+      setIsFavorite(true);
+      setPopupMessage('Esta propiedad se ha agregado a favoritos');
+      setShowPopup(true);
+    } catch (error) {
+      if (error.response && error.response.status === 409) {
+        setPopupMessage('Esta propiedad ya se encuentra en favoritos');
+      } else {
+        console.error('Error al manejar favoritos:', error);
+        setPopupMessage('Hubo un error al procesar la solicitud');
+      }
+
+      setShowPopup(true);
+    }
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
+    // Si la propiedad ya está en favoritos, puedes ajustar el estado según sea necesario
+    if (!isFavorite && popupMessage === 'Esta propiedad se ha agregado a favoritos') {
+      setIsFavorite(true);
+    }
   };
 
   return (
     <div className="property-card-container" style={{ backgroundColor: 'white', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', padding: '20px', borderRadius: '8px' }}>
-      
-
       <h2>{property.title}</h2>
       <p>{property.description}</p>
       <p>Precio: {property.price}</p>
       <ImageSlider images={property.images} />
-      {/* Botón para ir a la página de detalles */}
+
       <Link to={`/property-details/${property._id}/${userId}`}>
         <button className="details-button">Ver Detalles</button>
       </Link>
 
-      {/* Botón para agregar/quitar de favoritos */}
       <button className={`favorite-button ${isFavorite ? 'active' : ''}`} onClick={handleFavoriteClick}>
-        {isFavorite ? 'Quitar de Favoritos' : 'Agregar a Favoritos'}
+        Agregar a Favoritos
       </button>
+
+      {showPopup && (
+        <PopupMessage message={popupMessage} onClose={closePopup} />
+      )}
     </div>
   );
 };
