@@ -1,30 +1,59 @@
-/* PropertyCard.css */
 .property-card-container {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-    padding: 20px;
-    margin: 20px;
-    position: relative;
-  }
-  
-  .property-card-container:hover {
-    transform: scale(1.05);
-  }
-  
-  .details-button,
-  .favorite-button {
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    margin-top: 10px;
-    cursor: pointer;
-  }
-  
-  .favorite-button.active {
-    background-color: #f00; /* Cambia el color al estar activo (favorito) */
-  }
-  
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.image-slider {
+  width: 100%;
+  height: 200px; /* Ajusta la altura según sea necesario */
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.image-slider img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease-in-out;
+}
+
+.property-info {
+  text-align: left;
+}
+
+.property-info h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.property-info p {
+  margin-bottom: 10px;
+}
+
+.details-button,
+.favorite-button {
+  background-color: #f67130;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.favorite-button.active {
+  background-color: #45a049;
+}
+
+.details-button:hover,
+.favorite-button:hover {
+  background-color: #fff;
+  color: #f67130;
+  border: 1px solid #f67130;
+}

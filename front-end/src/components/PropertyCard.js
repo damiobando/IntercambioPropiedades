@@ -15,18 +15,13 @@ const ImageSlider = ({ images }) => {
     return () => clearInterval(interval);
   }, [images]);
 
-  const sliderStyle = {
-    width: '100%',
-    height: 'auto',
-    objectFit: 'cover',
-  };
-
   return (
-    <img
-      src={images[currentImageIndex]}
-      alt={`Image ${currentImageIndex + 1}`}
-      style={sliderStyle}
-    />
+    <div className="image-slider">
+      <img
+        src={images[currentImageIndex]}
+        alt={`Image ${currentImageIndex + 1}`}
+      />
+    </div>
   );
 };
 
@@ -86,19 +81,23 @@ const PropertyCard = ({ property, userId }) => {
   };
 
   return (
-    <div className="property-card-container" style={{ backgroundColor: 'white', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', padding: '20px', borderRadius: '8px' }}>
-      <h2>{property.title}</h2>
-      <p>{property.description}</p>
-      <p>Precio: {property.price}</p>
+    <div className="property-card-container">
       <ImageSlider images={property.images} />
 
-      <Link to={`/property-details/${property._id}/${userId}`}>
-        <button className="details-button">Ver Detalles</button>
-      </Link>
-
-      <button className={`favorite-button ${isFavorite ? 'active' : ''}`} onClick={handleFavoriteClick}>
-        Agregar a Favoritos
-      </button>
+      <div className="property-info">
+        <h2>{property.title}</h2>
+        <p>{property.description}</p>
+        <p>Precio: {property.price}</p>
+        <Link to={`/property-details/${property._id}/${userId}`}>
+          <button className="details-button">Ver Detalles</button>
+        </Link>
+        <button
+          className={`favorite-button ${isFavorite ? 'active' : ''}`}
+          onClick={handleFavoriteClick}
+        >
+          Agregar a Favoritos
+        </button>
+      </div>
 
       {showPopup && (
         <PopupMessage message={popupMessage} onClose={closePopup} />
