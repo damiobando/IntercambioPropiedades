@@ -27,22 +27,23 @@ const PropertyList = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div>
-      {/* Search Bar (puedes implementar un componente separado si es necesario) */}
+    <div className='main'>
       <input type="text" placeholder="Buscar propiedades" />
 
-      {/* Lista de propiedades */}
-      {currentProperties.map((property) => (
-        <PropertyCard key={property.id} property={property} />
-      ))}
+        <div className="property-list">
+        {currentProperties.map((property) => (
+            <PropertyCard key={property.id} property={property} />
+        ))}
+        </div>
 
-      {/* Paginación */}
-      <Pagination
-        propertiesPerPage={propertiesPerPage}
-        totalProperties={properties.length}
-        currentPage={currentPage}
-        paginate={paginate}
-      />
+        <div className="pagination">
+        <Pagination
+            propertiesPerPage={propertiesPerPage}
+            totalProperties={properties.length}
+            currentPage={currentPage}
+            paginate={paginate}
+        />
+        </div>
     </div>
   );
 };
