@@ -15,6 +15,7 @@ import NewOffer from './components/pages/NewOffer';
 import UserFeedback from './components/pages/UserFeedback';
 import Listings from './components/pages/Listings';
 import Offer from './components/pages/Offer';
+import ListingInfo from './components/pages/ListingInfo';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path= '/feedback' element={<UserFeedback/>}/>
         <Route path='/listings' element={<Listings/>} />
         <Route path='/newOffer' element={<Offer/>} />
+        <Route path='/propertyInfo' element={<ListingInfo/>} />
       </Routes>
       <Footer />
       </Router>
