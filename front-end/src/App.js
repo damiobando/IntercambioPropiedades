@@ -12,6 +12,7 @@ import Preference from './components/pages/Preference';
 import MyAccount from './components/pages/MyAccount';
 import Listings from './components/pages/Listings';
 import Offer from './components/pages/Offer';
+import ListingInfo from './components/pages/ListingInfo';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path='/myaccount' element={<MyAccount/>} />
         <Route path='/listings' element={<Listings/>} />
         <Route path='/newOffer' element={<Offer/>} />
+        <Route path='/propertyInfo' element={<ListingInfo/>} />
       </Routes>
       <Footer />
       </Router>
