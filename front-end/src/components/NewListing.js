@@ -3,7 +3,7 @@ import axios from 'axios';
 import './NewListing.css';
 import SuccessModal from './SuccessModal';
 import { addProperty } from '../api/property';
-
+import { Navigate } from 'react-router-dom';
 function NewListing() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -16,6 +16,7 @@ function NewListing() {
   const [distrito, setDistrito] = useState('');
   const [direccion, setDireccion] = useState('');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [redirectTo, setRedirectTo] = useState(null);
 
   const handleSelectChange = (event) => {
     setSelectedOption(event.target.value);
@@ -92,12 +93,15 @@ function NewListing() {
 
       setTimeout(() => {
         setShowSuccessModal(false);
+        setRedirectTo('/listings');
       }, 3000);
     } catch (error) {
       console.error('Error al agregar la propiedad:', error);
     }
-  };
-
+  };;
+  if (redirectTo) {
+    return <Navigate to={redirectTo} />;
+  }
   return (
     <div className='main-container'>
       <form className='form-container' onSubmit={handleAddProperty}>
