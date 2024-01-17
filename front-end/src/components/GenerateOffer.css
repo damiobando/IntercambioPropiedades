@@ -1,0 +1,53 @@
+/* GenerateOffer.css */
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+  }
+  
+  .container-seller,
+  .container-buyer {
+    width: 45%; /* Ajusta el ancho según sea necesario */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .container-seller {
+    background-color: #f3f3f3; /* Color de fondo del contenedor del vendedor */
+  }
+  
+  .container-buyer {
+    background-color: #fff; /* Color de fondo del contenedor del comprador */
+  }
+  
+  .container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .container label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .container input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+  }
+  
+  .container button {
+    background-color: #f67130;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .container button:hover {
+    background-color: #e25d1e;
+  }

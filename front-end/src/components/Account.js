@@ -1,14 +1,53 @@
 import React, { useState } from 'react';
 import './Account.css';
 
+const userData = {
+  name: 'John Doe',
+  email: 'john.doe@example.com',
+  // Agrega más información según sea necesario
+};
+
 function Account() {
   const [activeButton, setActiveButton] = useState('miInformacion');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [searchHistory, setSearchHistory] = useState(['Elemento 1', 'Elemento 2']); // Ejemplo de historial de búsqueda
+  const [favorites, setFavorites] = useState(['Favorito 1', 'Favorito 2']); // Ejemplo de lista de favoritos
 
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
+  };
+
+  const handleEditClick = () => {
+    setIsEditMode(true);
+  };
+
+  const handleSaveChangesClick = () => {
+    // Aquí puedes realizar alguna acción con la información actualizada,
+    // como enviarla al servidor. En este ejemplo, simplemente cambiamos al modo de visualización.
+    setIsEditMode(false);
+  };
+
+  const handleDeleteItem = (index, type) => {
+    if (type === 'history') {
+      const updatedHistory = [...searchHistory];
+      updatedHistory.splice(index, 1);
+      setSearchHistory(updatedHistory);
+    } else if (type === 'favorites') {
+      const updatedFavorites = [...favorites];
+      updatedFavorites.splice(index, 1);
+      setFavorites(updatedFavorites);
+    }
+  };
+
+  const handleDeleteAll = (type) => {
+    if (type === 'history') {
+      setSearchHistory([]);
+    } else if (type === 'favorites') {
+      setFavorites([]);
+    }
   };
 
   const handleSubmit = (event) => {
@@ -42,31 +81,84 @@ function Account() {
         {activeButton === 'miInformacion' && (
           <div>
             <h2>Mi Información</h2>
-            {/* información del usuario */}
-            <p>Nombre: John Doe</p>
-            <p>Correo Electrónico: john.doe@example.com</p>
-            {/*  más información */}
+            {isEditMode ? (
+              <form>
+                <div>
+                  <label htmlFor="name">Nombre:</label>
+                  <input type="text" id="name" value={userData.name} disabled={!isEditMode} />
+                </div>
+                <div>
+                  <label htmlFor="email">Correo Electrónico:</label>
+                  <input type="text" id="email" value={userData.email} disabled={!isEditMode} />
+                </div>
+                {/* Agrega más campos según sea necesario */}
+                {!isEditMode ? (
+                  <button type="button" onClick={handleEditClick}>
+                    Editar
+                  </button>
+                ) : (
+                  <>
+                    <button type="button" onClick={handleSaveChangesClick}>
+                      Guardar Cambios
+                    </button>
+                    <button type="button" onClick={() => setIsEditMode(false)}>
+                      Cancelar
+                    </button>
+                  </>
+                )}
+              </form>
+            ) : (
+              <div>
+                <p>Nombre: {userData.name}</p>
+                <p>Correo Electrónico: {userData.email}</p>
+                {/* Mostrar más información según sea necesario */}
+                <button type="button" onClick={handleEditClick}>
+                  Editar
+                </button>
+              </div>
+            )}
           </div>
         )}
         {activeButton === 'historialBusqueda' && (
-          <div>
+          <div >
             <h2>Historial de Búsqueda</h2>
             {/* historial de búsqueda */}
             <ul>
-              <li>Elemento 1</li>
-              <li>Elemento 2</li>
-              {/*  más elementos según sea necesario */}
+              {searchHistory.map((item, index) => (
+                <li key={index}>
+                  {item}
+                  <button type="button" onClick={() => handleDeleteItem(index, 'history')} className="small-delete">
+                  Borrar
+                </button>
+                </li>
+              ))}
             </ul>
+            {searchHistory.length > 0 && (
+              <button type="button" onClick={() => handleDeleteAll('history')}>
+                Borrar Todo
+              </button>
+            )}
           </div>
         )}
         {activeButton === 'favoritos' && (
-          <div>
+          <div >
             <h2>Favoritos</h2>
             {/* lista de elementos favoritos */}
             <ul>
-              <li>Favorito 1</li>
-              <li>Favorito 2</li>
+              {favorites.map((item, index) => (
+                <li key={index}>
+                  {item}
+                  <button type="button" onClick={() => handleDeleteItem(index, 'history')} className="small-delete">
+                  Borrar
+                </button>
+                </li>
+              ))}
             </ul>
+            {favorites.length > 0 && (
+              <button type="button" onClick={() => handleDeleteAll('favorites')}>
+                Borrar Todo
+              </button>
+            )}
           </div>
         )}
         {activeButton === 'cambiarContrasena' && (
