@@ -8,7 +8,6 @@ const router = express.Router();
 router.post("/properties", (req, res) => {
     const propertyData = req.body;
     const decodedToken = jwt.decode(propertyData.ownerID);
-    console.log(decodedToken);
     propertyData.ownerID = decodedToken.id;
     Property.create(propertyData)
         .then((data) => res.json(data))

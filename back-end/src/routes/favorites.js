@@ -1,6 +1,6 @@
 const express = require("express");
 const  Favorites  = require("../models/favorite"); // Importa el modelo Favorites
-
+const Property = require("../models/property") // Importa el modelo Property
 const router = express.Router();
 
 // Crear un nuevo favorito
@@ -12,11 +12,24 @@ router.post("/favorites", (req, res) => {
 });
 
 // Obtener todos los favoritos
-router.get("/favorites", (req, res) => {
-    Favorites.find()
-        .then((data) => res.json(data))
-        .catch((error) => res.status(400).json({ message: error.message }));
-});
+router.get("/favorites/:user_id", async (req, res) => {
+    const user_id = req.params.user_id;
+  
+    try {
+      const favorites = await Favorites.find({ user_id });
+      // Array para almacenar los detalles de las propiedades
+      const propertyDetailsArray = [];
+      // Recorre el historial y busca detalles de cada propiedad
+      for (const favoriteItem of favorites) {
+        const propertyDetails = await Property.findById(favoriteItem.property_id);
+        propertyDetailsArray.push(propertyDetails);
+      }
+  
+      res.json(propertyDetailsArray);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  });
 
 // Obtener un favorito específico por ID
 router.get("/favorites/:id", (req, res) => {

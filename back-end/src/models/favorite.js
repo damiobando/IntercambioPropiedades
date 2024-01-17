@@ -2,13 +2,7 @@ const mongoose = require("mongoose");
 
 // Schema for Favorites class
 const favoriteSchema = new mongoose.Schema({
-    user_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
-    },
-    property_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
-    }
+    user_id: String,
+    property_id: String,
 });
 module.exports = mongoose.model("Favorite",favoriteSchema);

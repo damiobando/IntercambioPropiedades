@@ -2,6 +2,7 @@ const bycript = require("bcryptjs");
 const express = require("express");
 const userSchema = require("../models/user");
 const { createAccessToken } = require("../libs/jwt");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 // create user
@@ -70,8 +71,9 @@ router.get("/users", (req, res) => {
 // get a user
 router.get("/users/:id", (req, res) => {
   const { id } = req.params;
+  const decodedID = jwt.decode(id);
   userSchema
-    .findById(id)
+    .findById(decodedID.id)
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });

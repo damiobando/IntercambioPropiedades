@@ -1,10 +1,10 @@
 const express = require("express");
-const SearchHistory = require("../models/searchHistory"); // Importa el modelo SearchHistory
-
+const SearchHistory = require("../models/searchHistory");
+const Property = require("../models/property") // Importa el modelo SearchHistory
 const router = express.Router();
 
 // Crear un nuevo historial de búsqueda
-router.post("/searchhistory", (req, res) => {
+router.post("/history", (req, res) => {
     const searchHistoryData = req.body;
     SearchHistory.create(searchHistoryData)
         .then((data) => res.json(data))
@@ -12,19 +12,26 @@ router.post("/searchhistory", (req, res) => {
 });
 
 // Obtener todo el historial de búsqueda
-router.get("/searchhistory", (req, res) => {
-    SearchHistory.find()
-        .then((data) => res.json(data))
-        .catch((error) => res.status(400).json({ message: error.message }));
-});
 
 // Obtener un historial de búsqueda específico por ID
-router.get("/searchhistory/:id", (req, res) => {
-    const { id } = req.params;
-    SearchHistory.findById(id)
-        .then((data) => res.json(data))
-        .catch((error) => res.status(400).json({ message: error.message }));
-});
+router.get("/history/:user_id", async (req, res) => {
+    const user_id = req.params.user_id;
+  
+    try {
+      const searchHistory = await SearchHistory.find({ user_id });
+      // Array para almacenar los detalles de las propiedades
+      const propertyDetailsArray = [];
+      // Recorre el historial y busca detalles de cada propiedad
+      for (const historyItem of searchHistory) {
+        const propertyDetails = await Property.findById(historyItem.property_id);
+        propertyDetailsArray.push(propertyDetails);
+      }
+  
+      res.json(propertyDetailsArray);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  });
 
 // Actualizar un historial de búsqueda por ID
 router.put("/searchhistory/:id", (req, res) => {

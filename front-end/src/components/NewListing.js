@@ -41,7 +41,6 @@ function NewListing() {
     //necesitamos obtener el token de las cookies
     try {
       const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
-      console.log(token);
       const propertyData = {
         title: title,
         description: description,

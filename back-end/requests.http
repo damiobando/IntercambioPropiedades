@@ -38,7 +38,7 @@ Content-Type: application/json
 
       }
 ###
-GET http://localhost:9000/api/users/65a6bbbcb7328d9bb64de6ac HTTP/1.1
+GET http://localhost:9000/api/users/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTZiYmJjYjczMjhkOWJiNjRkZTZhYyIsImlhdCI6MTcwNTQ0NTIzNiwiZXhwIjoxNzA1NTMxNjM2fQ.bM4E0G9iPbix7WCzqM2HtLzFdwrGEelWr_vH3UHv0jg
 
 ###
 DELETE http://localhost:9000/api/users/6595d2a0f71152bc80ed90fa HTTP/1.1
@@ -131,3 +131,28 @@ Content-Type: application/json
 
 # Eliminar una oferta por ID (DELETE)
 DELETE http://localhost:9000/api/offers/ID_de_la_Oferta HTTP/1.1
+
+###
+POST http://localhost:9000/api/history HTTP/1.1
+Content-Type: application/json
+
+{
+    "user_id": "65a6bbbcb7328d9bb64de6ac",
+    "property_id": "65a691df0a0645f48951c410",
+    "date": "2021-10-10"
+}
+
+###
+GET http://localhost:9000/api/history/65a6bbbcb7328d9bb64de6ac HTTP/1.1
+
+###
+POST http://localhost:9000/api/favorites HTTP/1.1
+Content-Type: application/json
+
+{
+    "user_id": "65a6bbbcb7328d9bb64de6ac",
+    "property_id": "65a691df0a0645f48951c410"
+}
+
+###
+GET http://localhost:9000/api/favorites/65a6bbbcb7328d9bb64de6ac HTTP/1.1

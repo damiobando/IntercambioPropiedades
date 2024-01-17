@@ -1,11 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Account.css';
-
+import { findUserById } from '../api/users';
+import { getSearchHistory } from '../api/history';
+import { getFavorites } from '../api/favorites';
 function Account() {
   const [activeButton, setActiveButton] = useState('miInformacion');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [userInfo, setUserInfo] = useState({});
+  const [searchHistory, setSearchHistory] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
+        const user = await findUserById(token);
+        setUserInfo(user.data);
+        const historyResponse = await getSearchHistory(user.data._id); 
+        setSearchHistory(historyResponse.data);
+        const favoritesResponse = await getFavorites(user.data._id);
+        setFavorites(favoritesResponse.data);
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []);  
 
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
@@ -19,7 +42,6 @@ function Account() {
     setNewPassword('');
     setConfirmPassword('');
   };
-
   return (
     <div className="main-background">
       <div className="left-bar">
@@ -43,19 +65,27 @@ function Account() {
           <div>
             <h2>Mi Información</h2>
             {/* información del usuario */}
-            <p>Nombre: John Doe</p>
-            <p>Correo Electrónico: john.doe@example.com</p>
+            <p>Nombre: {userInfo.name}</p>
+            <p>Correo Electrónico: {userInfo.email}</p>
+            <p>Teléfono: {userInfo.phone}</p>
             {/*  más información */}
           </div>
         )}
-        {activeButton === 'historialBusqueda' && (
-          <div>
+       {activeButton === 'historialBusqueda' && (
+          <div style={{ padding: '20px ' }}>
             <h2>Historial de Búsqueda</h2>
-            {/* historial de búsqueda */}
             <ul>
-              <li>Elemento 1</li>
-              <li>Elemento 2</li>
-              {/*  más elementos según sea necesario */}
+              {searchHistory.map(item => (
+                <li key={item._id} style={{ marginBottom: '20px' }}>
+                  <p><strong>Titulo:</strong> {item.title}</p>
+                  <p><strong>Descripción:</strong> {item.description}</p>
+                  <p><strong>Precio:</strong> {item.price}</p>
+                  <p><strong>Provincia:</strong> {item.province}</p>
+                  <p><strong>Cantón:</strong> {item.canton}</p>
+                  <p><strong>Distrito:</strong> {item.distrito}</p>
+                  <hr />
+                </li>
+              ))}
             </ul>
           </div>
         )}
@@ -64,8 +94,17 @@ function Account() {
             <h2>Favoritos</h2>
             {/* lista de elementos favoritos */}
             <ul>
-              <li>Favorito 1</li>
-              <li>Favorito 2</li>
+            {favorites.map(item => (
+                <li key={item._id} style={{ marginBottom: '20px' }}>
+                  <p><strong>Titulo:</strong> {item.title}</p>
+                  <p><strong>Descripción:</strong> {item.description}</p>
+                  <p><strong>Precio:</strong> {item.price}</p>
+                  <p><strong>Provincia:</strong> {item.province}</p>
+                  <p><strong>Cantón:</strong> {item.canton}</p>
+                  <p><strong>Distrito:</strong> {item.distrito}</p>
+                  <hr />
+                </li>
+              ))}
             </ul>
           </div>
         )}

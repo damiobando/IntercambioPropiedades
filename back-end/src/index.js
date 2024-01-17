@@ -8,6 +8,8 @@ const reportsRoutes = require("./routes/report");
 const offersRoutes = require("./routes/offer");
 const propertiesRoutes = require("./routes/property");
 const preferenceRoutes = require("./routes/preference");
+const historyRoutes = require("./routes/searchHistory");
+const favoritesRoutes = require("./routes/favorites");
 const port = process.env.PORT || 9000;
 //middleware
 app.use(express.json());
@@ -17,6 +19,8 @@ app.use("/api",reportsRoutes);
 app.use("/api",offersRoutes);
 app.use("/api",propertiesRoutes);
 app.use("/api",preferenceRoutes);
+app.use("/api",historyRoutes);
+app.use("/api",favoritesRoutes);
 //routes
 
 app.get("/",(req,res)=>{
