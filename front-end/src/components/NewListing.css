@@ -1,13 +1,12 @@
 /* NewListing.css */
 
 .main-container {
-    background-color: white;
+    background-color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
     height: auto;
     width: 100%;
-    /* overflow: auto; */
   }
   
   .form-container {

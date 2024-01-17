@@ -10,6 +10,7 @@ import Register from './components/pages/Register';
 import AddListing from './components/pages/AddListing';
 import Preference from './components/pages/Preference';
 import MyAccount from './components/pages/MyAccount';
+import Listings from './components/pages/Listings';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path='/addlisting' element={<AddListing/>} />
         <Route path='/preference' element={<Preference/>} />
         <Route path='/myaccount' element={<MyAccount/>} />
+        <Route path='/listings' element={<Listings/>} />
       </Routes>
       <Footer />
       </Router>

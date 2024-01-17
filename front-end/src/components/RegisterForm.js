@@ -136,9 +136,11 @@ function RegisterForm() {
           <FormGroup>
             <FormControlLabel required control={<Checkbox />} label='Acepta los Términos y Condiciones' />
           </FormGroup>
-          <Button buttonStyle='btn--outline' onClick={handleButtonClick}>
+          <Link to="/">
+          <button className='btn--outline' onClick={handleButtonClick}>
             Crear cuenta
-          </Button>
+          </button>
+          </Link>
         </div>
         
       </div>

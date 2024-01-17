@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 
@@ -55,7 +54,7 @@ function NavbarUser() {
           <ul className={click ? 'nav-menu active' : 'nav-menu'}>
             <li className='nav-item'>
               <Link
-                to='/addlisting'
+                to='/listings'
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
@@ -73,7 +72,7 @@ function NavbarUser() {
             </li> 
             <li className='nav-item'>
               <Link
-                to='/contact-us'
+                to='/myaccount'
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
@@ -83,11 +82,17 @@ function NavbarUser() {
             <Dropdown>
             <MenuButton>My account</MenuButton>
             <Menu slots={{ listbox: Listbox }}>
+                <Link to="/myaccount">
                 <MenuItem onClick={createHandleMenuClick('Profile')}>Profile</MenuItem>
-                <MenuItem onClick={createHandleMenuClick('Language settings')}>
+                </Link>
+                <Link to="/preference">
+                  <MenuItem onClick={createHandleMenuClick('Language settings')}>
                 Preferences
                 </MenuItem>
+                </Link>
+                <Link to="/sign-up"> 
                 <MenuItem onClick={createHandleMenuClick('Log out')}>Log out</MenuItem>
+                </Link>
             </Menu>
             </Dropdown>
             <li>
@@ -101,7 +106,9 @@ function NavbarUser() {
             </li>
 
           </ul>
-          {button && <button className='btn--outline' to='/addlisting' >AGREGAR PROPIEDAD</button>}
+          <Link to="/addlisting">
+            <button className='btn--outline'>AGREGAR PROPIEDAD</button>
+          </Link>
         </div>
       </nav>
     </>
