@@ -8,7 +8,6 @@ import { getProperties } from '../api/property';
 const PropertyList = () => {
   const [properties, setProperties] = useState([]);
 
-
   useEffect(() => {
     async function fetchData() {
       try {
@@ -24,7 +23,6 @@ const PropertyList = () => {
 
   const handleButtonClick = (propertyId) => {
     // Redirige a la página de detalles con el ID de la propiedad
-
   };
 
   return (
