@@ -1,10 +1,7 @@
 const mongoose = require("mongoose");
 // Schema for Feedback class
 const feedbackSchema = new mongoose.Schema({
-    user_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
-    },
+    user_id: String,
     comment: String,
     rating: Number
 });

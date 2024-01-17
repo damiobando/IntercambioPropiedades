@@ -10,7 +10,9 @@ import Register from './components/pages/Register';
 import AddListing from './components/pages/AddListing';
 import Preference from './components/pages/Preference';
 import MyAccount from './components/pages/MyAccount';
-
+import UserReport from './components/pages/UserReport';
+import NewOffer from './components/pages/NewOffer';
+import UserFeedback from './components/pages/UserFeedback';
 function App() {
   return (
     <>
@@ -24,6 +26,9 @@ function App() {
         <Route path='/addlisting' element={<AddListing/>} />
         <Route path='/preference' element={<Preference/>} />
         <Route path='/myaccount' element={<MyAccount/>} />
+        <Route path= '/report' element={<UserReport/>}/>
+        <Route path= '/offer' element={<NewOffer/>}/>
+        <Route path= '/feedback' element={<UserFeedback/>}/>
       </Routes>
       <Footer />
       </Router>
