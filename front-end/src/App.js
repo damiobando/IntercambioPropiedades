@@ -14,6 +14,7 @@ import UserReport from './components/pages/UserReport';
 import NewOffer from './components/pages/NewOffer';
 import UserFeedback from './components/pages/UserFeedback';
 import Listings from './components/pages/Listings';
+import Offer from './components/pages/Offer';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path= '/offer' element={<NewOffer/>}/>
         <Route path= '/feedback' element={<UserFeedback/>}/>
         <Route path='/listings' element={<Listings/>} />
+        <Route path='/newOffer' element={<Offer/>} />
       </Routes>
       <Footer />
       </Router>

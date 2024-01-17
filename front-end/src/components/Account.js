@@ -29,9 +29,40 @@ function Account() {
 
     fetchData();
   }, []);  
+  const [isEditMode, setIsEditMode] = useState(false); // Ejemplo de lista de favoritos
 
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
+  };
+
+  const handleEditClick = () => {
+    setIsEditMode(true);
+  };
+
+  const handleSaveChangesClick = () => {
+    // Aquí puedes realizar alguna acción con la información actualizada,
+    // como enviarla al servidor. En este ejemplo, simplemente cambiamos al modo de visualización.
+    setIsEditMode(false);
+  };
+
+  const handleDeleteItem = (index, type) => {
+    if (type === 'history') {
+      const updatedHistory = [...searchHistory];
+      updatedHistory.splice(index, 1);
+      setSearchHistory(updatedHistory);
+    } else if (type === 'favorites') {
+      const updatedFavorites = [...favorites];
+      updatedFavorites.splice(index, 1);
+      setFavorites(updatedFavorites);
+    }
+  };
+
+  const handleDeleteAll = (type) => {
+    if (type === 'history') {
+      setSearchHistory([]);
+    } else if (type === 'favorites') {
+      setFavorites([]);
+    }
   };
 
   const handleSubmit = (event) => {
@@ -87,10 +118,15 @@ function Account() {
                 </li>
               ))}
             </ul>
+            {searchHistory.length > 0 && (
+              <button type="button" onClick={() => handleDeleteAll('history')}>
+                Borrar Todo
+              </button>
+            )}
           </div>
         )}
         {activeButton === 'favoritos' && (
-          <div>
+          <div >
             <h2>Favoritos</h2>
             {/* lista de elementos favoritos */}
             <ul>
@@ -103,9 +139,18 @@ function Account() {
                   <p><strong>Cantón:</strong> {item.canton}</p>
                   <p><strong>Distrito:</strong> {item.distrito}</p>
                   <hr />
+                  <button type="button" onClick={() => handleDeleteItem(item, 'history')} className="small-delete">
+                  Borrar
+                </button>
+
                 </li>
               ))}
             </ul>
+            {favorites.length > 0 && (
+              <button type="button" onClick={() => handleDeleteAll('favorites')}>
+                Borrar Todo
+              </button>
+            )}
           </div>
         )}
         {activeButton === 'cambiarContrasena' && (
