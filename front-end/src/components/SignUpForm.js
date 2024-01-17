@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Button } from './Button';
+import { Link } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import './SignUpForm.css';
 import Alert from './Alert'; // Importa el nuevo componente
@@ -103,9 +103,11 @@ function SignUpForm() {
             </FormControl>
           </Box>
           <div className='btn_register'>
-            <Button buttonStyle='btn--outline' onClick={handleSignIn}>
+          <Link to="/"> 
+            <button className='btn--outline' onClick={handleSignIn}>
               SIGN IN
-            </Button>
+            </button>
+          </Link>
           </div>
           {alert && <Alert message={alert} onClose={() => setAlert(null)} />}
         </div>
@@ -113,9 +115,11 @@ function SignUpForm() {
           <h1> No tienes cuenta todavía?</h1>
           <p>Crea una ahorita mismo</p>
           <div className='btn_register'>
-            <Button buttonStyle='btn-outline' to='/register'>
+            <Link to="/register">
+            <button className='btn-outline' to='/register'>
               Registrarse
-            </Button>
+            </button>
+            </Link>
           </div>
         </div>
       </div>

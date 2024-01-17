@@ -13,6 +13,8 @@ import MyAccount from './components/pages/MyAccount';
 import UserReport from './components/pages/UserReport';
 import NewOffer from './components/pages/NewOffer';
 import UserFeedback from './components/pages/UserFeedback';
+import Listings from './components/pages/Listings';
+
 function App() {
   return (
     <>
@@ -29,6 +31,7 @@ function App() {
         <Route path= '/report' element={<UserReport/>}/>
         <Route path= '/offer' element={<NewOffer/>}/>
         <Route path= '/feedback' element={<UserFeedback/>}/>
+        <Route path='/listings' element={<Listings/>} />
       </Routes>
       <Footer />
       </Router>
