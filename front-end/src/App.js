@@ -16,7 +16,7 @@ import UserFeedback from './components/pages/UserFeedback';
 import Listings from './components/pages/Listings';
 import Offer from './components/pages/Offer';
 import ListingInfo from './components/pages/ListingInfo';
-
+import Notifications from './components/pages/Notifications';
 function App() {
   return (
     <>
@@ -36,6 +36,8 @@ function App() {
         <Route path='/listings' element={<Listings/>} />
         <Route path='/newOffer' element={<Offer/>} />
         <Route path='/propertyInfo' element={<ListingInfo/>} />
+        <Route path='/notifications' element={<Notifications/>} />
+
       </Routes>
       <Footer />
       </Router>

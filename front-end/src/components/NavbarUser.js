@@ -72,7 +72,7 @@ function NavbarUser() {
             </li> 
             <li className='nav-item'>
               <Link
-                to='/myaccount'
+                to='/notifications'
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
