@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Account.css';
-import { findUserById } from '../api/users';
+import { findUserByToken } from '../api/users';
 import { getSearchHistory, deleteHistory } from '../api/history';
 import { getFavorites,deleteFavorite } from '../api/favorites';
 
@@ -16,7 +16,7 @@ function Account() {
     async function fetchData() {
       try {
         const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
-        const user = await findUserById(token);
+        const user = await findUserByToken(token);
         setUserInfo(user.data);
         const historyResponse = await getSearchHistory(user.data._id);
         setSearchHistory(historyResponse.data);
@@ -62,7 +62,7 @@ function Account() {
     if (type === 'history') {
       try {
         const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
-        const user = await findUserById(token);
+        const user = await findUserByToken(token);
         await deleteHistory(user.data._id);
         const historyResponse = await getSearchHistory(user.data._id);
         setSearchHistory(historyResponse.data);

@@ -5,11 +5,25 @@
     justify-content: space-between;
     margin: 20px;
   }
-  
+  .property-title {
+    font-family: 'Helvetica Now', sans-serif;
+    font-size: 40px;
+    margin-bottom: 30px;
+    color: #013c7a; /* Color azul, puedes ajustar según tu preferencia */
+  }
+  .property-details {
+    margin-top: 80px; /* Aumenta el margen superior */
+    margin-bottom: 60px; /* Aumenta el margen inferior */
+  }
+
   .property-info {
     width: 60%;
+    text-align: center;
   }
-  
+  .property-info-item {
+  margin-bottom: 10px;
+  margin-bottom: 10px;
+}
   .side-container {
     width: 35%;
   }

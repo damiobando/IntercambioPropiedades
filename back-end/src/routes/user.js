@@ -69,11 +69,19 @@ router.get("/users", (req, res) => {
 });
 
 // get a user
-router.get("/users/:id", (req, res) => {
-  const { id } = req.params;
-  const decodedID = jwt.decode(id);
+router.get("/users/byToken/:token", (req, res) => {
+  const { token } = req.params;
+  const decodedID = jwt.decode(token);
   userSchema
     .findById(decodedID.id)
+    .then((data) => res.json(data))
+    .catch((error) => res.json({ message: error }));
+});
+
+router.get("/users/byId/:id", (req, res) => {
+  const { id } = req.params;
+  userSchema
+    .findById(id)
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });

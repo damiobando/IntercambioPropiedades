@@ -1,9 +1,8 @@
 // MessageToSeller.js
-
 import React, { useState } from 'react';
-import './PropertyInfo.css'
+import './PropertyInfo.css';
 
-const MessageToSeller = () => {
+const MessageToSeller = ({ sellerId }) => {
   const [message, setMessage] = useState('');
 
   const handleMessageChange = (event) => {
@@ -12,7 +11,8 @@ const MessageToSeller = () => {
 
   const handleSendMessage = () => {
     // Aquí puedes implementar la lógica para enviar el mensaje al vendedor
-    console.log('Mensaje enviado:', message);
+    console.log('Mensaje enviado al vendedor ID:', sellerId);
+    console.log('Mensaje:', message);
     // Puedes limpiar el campo de mensaje después de enviarlo
     setMessage('');
   };

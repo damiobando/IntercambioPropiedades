@@ -1,44 +1,99 @@
-// PropertyInfo.js
-
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import './PropertyInfo.css';
 import MessageToSeller from './MessageToSeller';
 import ReportPublication from './ReportPublication';
+import { getProperty } from '../api/property';
+import { findUserById } from '../api/users';
+import { addHistory } from '../api/history';
 
 const PropertyInfo = () => {
   const [propertyData, setPropertyData] = useState({});
   const [sellerData, setSellerData] = useState({});
+  const propertyId = useParams();
 
   useEffect(() => {
-    fetch('/api/property-info') // Reemplaza con la ruta correcta
-      .then((response) => response.json())
-      .then((data) => {
-        setPropertyData(data.property);
-        setSellerData(data.seller);
-      })
-      .catch((error) => console.error('Error fetching data:', error));
+    async function fetchData() {
+      try {
+        const realID = propertyId.property_id;
+        const resData = await getProperty(realID);
+        setPropertyData(resData.data);
+        const tempSellerData = await findUserById(resData.data.ownerID);
+        setSellerData(tempSellerData.data);
+  
+        // Obtener la fecha actual
+        const currentDate = new Date();
+        
+        // Crear un objeto de datos para el historial
+        const historyData = {
+          user_id: tempSellerData.data._id,
+          property_id: realID,
+          date: currentDate.toISOString().slice(0, 10), // Recortar para obtener solo la fecha
+        };
+  
+        // Agregar al historial
+        const resHistory = await addHistory(historyData);
+        console.log(resHistory.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  
+    fetchData();
   }, []);
+  
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
+  const imageStyle = {
+    maxWidth: '100%',  // Establece un ancho máximo del 100%
+    maxHeight: '400px',  // Ajusta la altura máxima según tus necesidades
+    margin: '0 auto',  // Centra la imagen horizontalmente
+  };
 
   return (
     <div className="property-info-page">
       <div className="property-info">
-        <h1>{propertyData.title}</h1>
-        {/* Agrega más información de la propiedad según tu modelo de datos */}
-        <div>
-          <p>Fotos: {propertyData.photos}</p>
-          <p>Ubicación: {propertyData.location}</p>
-          <p>Precio: {propertyData.price}</p>
+        <h1 className="property-title">{propertyData.title}</h1>
+        <Slider {...settings}>
+          {propertyData.images &&
+            propertyData.images.map((photo, index) => (
+              <div key={index}>
+                <img src={photo} alt={`Property Photo ${index + 1}`} style={imageStyle} />
+              </div>
+            ))}
+        </Slider>
+        <div className="property-details">
+          <p className="property-info-item">
+            <strong>Ubicación:</strong> {propertyData.provincia}, {propertyData.canton}, {propertyData.distrito}
+          </p>
+          <p className="property-info-item">
+            <strong>Precio:</strong> {propertyData.price}
+          </p>
           {/* Agrega más campos según sea necesario */}
         </div>
       </div>
       <div className="side-container">
         <div className="seller-info-container">
           <h2>Información del Vendedor</h2>
-          <p>Nombre: {sellerData.name}</p>
-          <p>Contacto: {sellerData.contact}</p>
+          <p className="seller-info-item">
+            <strong>Nombre:</strong> {sellerData.name}
+          </p>
+          <p className="seller-info-item">
+            <strong>Contacto:</strong> {sellerData.email}
+          </p>
           {/* Agrega más información del vendedor según tu modelo de datos */}
         </div>
-        <MessageToSeller />
+        <MessageToSeller sellerId={sellerData._id} />
         <ReportPublication />
       </div>
     </div>

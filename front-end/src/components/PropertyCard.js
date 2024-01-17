@@ -29,6 +29,7 @@ const PropertyCard = ({ property, userId }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
+  const propertyId = property._id;
 
   const getTokenFromCookie = () => {
     const cookies = document.cookie.split('; ').reduce((acc, cookie) => {
@@ -88,9 +89,12 @@ const PropertyCard = ({ property, userId }) => {
         <h2>{property.title}</h2>
         <p>{property.description}</p>
         <p>Precio: {property.price}</p>
-        <Link to={`/property-details/${property._id}/${userId}`}>
-          <button className="details-button">Ver Detalles</button>
-        </Link>
+        
+        <Link
+            to={`/propertyInfo/${propertyId}`}
+          >
+            <button className="details-button">Ver Detalles</button>
+          </Link>
         <button
           className={`favorite-button ${isFavorite ? 'active' : ''}`}
           onClick={handleFavoriteClick}
