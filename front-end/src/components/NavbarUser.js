@@ -76,7 +76,7 @@ function NavbarUser() {
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
-                Mi Cuenta
+                Notificaciones
               </Link>
             </li>    
             <Dropdown>
