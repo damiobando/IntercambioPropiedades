@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './NewListing.css';
 import SuccessModal from './SuccessModal';
 import { addProperty } from '../api/property';
@@ -19,14 +20,20 @@ function NewListing() {
   const handleSelectChange = (event) => {
     setSelectedOption(event.target.value);
   };
+  const getTokenFromCookie = () => {
+    const cookies = document.cookie.split('; ').reduce((acc, cookie) => {
+      const [name, value] = cookie.split('=');
+      acc[name] = value;
+      return acc;
+    }, {});
+  
+    return cookies.token || null;
+  };
 
   const handleCheckboxChange = (option) => {
-    // Verifica si la opción ya está seleccionada
     if (financingOptions.includes(option)) {
-      // Si está seleccionada, quítala de las opciones
       setFinancingOptions(financingOptions.filter((item) => item !== option));
     } else {
-      // Si no está seleccionada, agrégala a las opciones
       setFinancingOptions([...financingOptions, option]);
     }
   };
@@ -38,9 +45,21 @@ function NewListing() {
 
   const handleAddProperty = async (event) => {
     event.preventDefault();
-    //necesitamos obtener el token de las cookies
+
     try {
-      const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
+      const formData = new FormData();
+      imageFiles.forEach((file) => {
+        formData.append('images', file);
+      });
+
+      const response = await axios.post('http://localhost:9000/upload', formData);
+      const imageUrls = response.data;// Ajustamos para obtener las URLs
+
+      const token = getTokenFromCookie();
+      if (!token) {
+        console.error('No se pudo encontrar el token en las cookies.');
+        return;
+      }
       const propertyData = {
         title: title,
         description: description,
@@ -50,11 +69,13 @@ function NewListing() {
         province: province,
         canton: canton,
         distrito: distrito,
+        images: imageUrls, // Usamos las URLs de las imágenes
         direccion: direccion,
-        ownerID: token
+        ownerID: token,
       };
-      const res = await addProperty(propertyData)
-      console.log(res)
+
+      const res = await addProperty(propertyData);
+      console.log(res);
 
       setTitle('');
       setDescription('');
@@ -67,7 +88,6 @@ function NewListing() {
       setDistrito('');
       setDireccion('');
 
-      // Mostrar el modal de éxito
       setShowSuccessModal(true);
 
       setTimeout(() => {
@@ -75,7 +95,6 @@ function NewListing() {
       }, 3000);
     } catch (error) {
       console.error('Error al agregar la propiedad:', error);
-      
     }
   };
 

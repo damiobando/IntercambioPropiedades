@@ -1,49 +1,52 @@
+// PropertyList.js
 import React, { useState, useEffect } from 'react';
-import PropertyCard from './PropertyCard'; 
-import Pagination from './Pagination'; 
-import './PropertyList.css'
+import { useHistory } from 'react-router-dom';
+import PropertyCard from './PropertyCard';
+import './PropertyList.css';
+import { getProperties } from '../api/property';
 
 const PropertyList = () => {
-  // Estado para manejar la lista de propiedades
   const [properties, setProperties] = useState([]);
-  // Estado para manejar la página actual
-  const [currentPage, setCurrentPage] = useState(1);
-  // Estado para manejar el número de propiedades por página
-  const [propertiesPerPage] = useState(10); // Puedes ajustar este número según tus necesidades
 
-  // Lógica para obtener las propiedades, por ejemplo, usando una API
+
   useEffect(() => {
-    // Lógica para obtener las propiedades (puedes usar fetch o axios)
-    // y actualizar el estado de las propiedades
-    // Ejemplo: fetchProperties().then(data => setProperties(data));
-  }, []); // Se ejecuta solo al montar el componente
+    async function fetchData() {
+      try {
+        const response = await getProperties();
+        setProperties(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
-  // Lógica para la paginación
-  const indexOfLastProperty = currentPage * propertiesPerPage;
-  const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
-  const currentProperties = properties.slice(indexOfFirstProperty, indexOfLastProperty);
+    fetchData();
+  }, []);
 
-  // Cambiar de página
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const handleButtonClick = (propertyId) => {
+    // Redirige a la página de detalles con el ID de la propiedad
+
+  };
 
   return (
-    <div className='main'>
-      <input type="text" placeholder="Buscar propiedades" />
+    <div className='property-list-container'>
+      <div className='search-bar'>
+        <input type="text" placeholder="Buscar propiedades" />
+      </div>
 
-        <div className="property-list">
-        {currentProperties.map((property) => (
-            <PropertyCard key={property.id} property={property} />
-        ))}
-        </div>
-
-        <div className="pagination">
-        <Pagination
-            propertiesPerPage={propertiesPerPage}
-            totalProperties={properties.length}
-            currentPage={currentPage}
-            paginate={paginate}
-        />
-        </div>
+      <div className="property-list">
+        {properties.length > 0 ? (
+          properties.map((property) => (
+            <div key={property._id} className="property-box">
+              <div className="property-background">
+                {/* Pasa el ID de la propiedad directamente */}
+                <PropertyCard property={property} onClickButton={(propertyId) => handleButtonClick(propertyId)} />
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>No se encontraron propiedades.</p>
+        )}
+      </div>
     </div>
   );
 };

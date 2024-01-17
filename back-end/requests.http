@@ -156,3 +156,9 @@ Content-Type: application/json
 
 ###
 GET http://localhost:9000/api/favorites/65a6bbbcb7328d9bb64de6ac HTTP/1.1
+
+
+###
+
+# Obtener todas las ofertas (GET)
+GET http://localhost:9000/api/properties HTTP/1.1

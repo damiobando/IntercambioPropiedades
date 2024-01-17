@@ -9,6 +9,7 @@ const propertySchema = new mongoose.Schema({
     province: String,
     canton: String,
     distrito: String,
+    images: Array,
     direccion: String,
     ownerID: String,
 });
