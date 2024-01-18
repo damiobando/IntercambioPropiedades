@@ -18,6 +18,9 @@ function Account() {
   const [favorites, setFavorites] = useState([]);
   const [offers, setOffers] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [messages, setMessages] = useState([]); // Agregado: estado para mensajes
+  const [properties, setProperties] = useState([]); // Agregado: estado para propiedades
 
   useEffect(() => {
     async function fetchData() {
@@ -70,17 +73,42 @@ function Account() {
 
   };
 
-  const handleDeleteItem = async (id, type) => {
+  const handleDeleteItem = async (item, type) => {
     try {
-      console.log('Deleted item with ID:', id._id);
-      await deleteFavorite(id._id);
-      const updatedFavorites = favorites.filter((fav) => fav._id !== id._id);
-      console.log('Updated Favorites:', updatedFavorites);
-      setFavorites(updatedFavorites);
-      alert('Favorito eliminado exitosamente');
+      console.log(`Deleted item with ID: ${item._id}`);
+      if (type === 'history') {
+        await deleteHistory(item._id);
+        const updatedHistory = searchHistory.filter((historyItem) => historyItem._id !== item._id);
+        setSearchHistory(updatedHistory);
+        alert('Elemento eliminado exitosamente');
+      } else if (type === 'favorites') {
+        await deleteFavorite(item._id);
+        const updatedFavorites = favorites.filter((fav) => fav._id !== item._id);
+        setFavorites(updatedFavorites);
+        alert('Favorito eliminado exitosamente');
+      } else if (type === 'property') {
+        // Agregado: Lógica para eliminar propiedades
+        // Asegúrate de tener una función en tu API que elimine propiedades por ID
+        // y actualiza la lógica según sea necesario
+        // await deleteProperty(item._id);
+        // const updatedProperties = properties.filter((property) => property._id !== item._id);
+        // setProperties(updatedProperties);
+        setConfirmDelete(true);
+      }
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleConfirmDelete = async () => {
+    // Agregado: Lógica para confirmar la eliminación de propiedades
+    // Asegúrate de tener una función en tu API que elimine propiedades por ID
+    // y actualiza la lógica según sea necesario
+    // await deleteProperty(item._id);
+    // const updatedProperties = properties.filter((property) => property._id !== item._id);
+    // setProperties(updatedProperties);
+    setConfirmDelete(false);
+    alert('Propiedad eliminada exitosamente');
   };
 
   const handleDeleteAll = async (type) => {
@@ -148,6 +176,7 @@ function Account() {
   };
 
 
+
   return (
     <div className="main-background">
       <div className="left-bar">
@@ -165,6 +194,12 @@ function Account() {
         </button>
         <button onClick={() => handleButtonClick('misOfertas')} className={activeButton === 'misOfertas' ? 'active' : ''}>
           Mis Ofertas
+        </button>
+        <button onClick={() => handleButtonClick('misMensajes')} className={activeButton === 'misMensajes' ? 'active' : ''}>
+          Mis Mensajes
+        </button>
+        <button onClick={() => handleButtonClick('misPropiedades')} className={activeButton === 'misPropiedades' ? 'active' : ''}>
+          Mis Propiedades
         </button>
         {/* Agrega más botones según sea necesario */}
       </div>
@@ -359,6 +394,65 @@ function Account() {
               )}
             </div>
           )}
+          {activeButton === 'misMensajes' && (
+          <div>
+            <h2>Mis Mensajes</h2>
+            {messages.length > 0 ? (
+              <ul>
+                {messages.map((message) => (
+                  <li key={message._id} style={{ marginBottom: '20px' }}>
+                    <p><strong>Usuario:</strong> {message.user}</p>
+                    <p><strong>Detalle del Mensaje:</strong> {message.messageDetail}</p>
+                    <hr />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No hay mensajes disponibles.</p>
+            )}
+          </div>
+        )}
+        {activeButton === 'misPropiedades' && (
+          <div>
+            <h2>Mis Propiedades</h2>
+            {properties.length > 0 ? (
+              <ul>
+                {properties.map((property) => (
+                  <div className='favoritos-container' key={property._id}>
+                    <li style={{ marginBottom: '20px' }}>
+                      <p><strong>Titulo:</strong> {property.title}</p>
+                      <p><strong>Descripción:</strong> {property.description}</p>
+                      <p><strong>Precio:</strong> {property.price}</p>
+                      <p><strong>Provincia:</strong> {property.province}</p>
+                      <p><strong>Cantón:</strong> {property.canton}</p>
+                      <p><strong>Distrito:</strong> {property.distrito}</p>
+                      <hr />
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteItem(property, 'property')}
+                        className="small-delete"
+                      >
+                        Eliminar Publicación
+                      </button>
+                    </li>
+                  </div>
+                ))}
+              </ul>
+            ) : (
+              <p>No hay propiedades disponibles.</p>
+            )}
+          </div>
+        )}
+
+        {confirmDelete && (
+          <div className="delete-confirmation">
+            <p>¿Estás seguro de que deseas eliminar esta publicación?</p>
+            <button onClick={handleConfirmDelete}>Sí</button>
+            <button onClick={() => setConfirmDelete(false)}>No</button>
+          </div>
+        )}
+          
+          
         {/* Agrega más contenido según sea necesario */}
       </div>
     </div>
