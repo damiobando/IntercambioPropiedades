@@ -20,7 +20,7 @@ const ReportPublication = ({ownerID}) => {
       const reportData = {
         reporter_id: user.data._id,
         reported_id: ownerID,
-        content: reportReason,
+        description: reportReason,
         date: currentDate.toISOString().slice(0, 10),
       };
       console.log(reportData);//
