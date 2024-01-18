@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import './PreferencesPage.css';
 import { addPreference } from '../api/preference';
 import PopupMessage from './PopupMessage';
+import { useNavigate } from 'react-router-dom';
 
 const PreferencesPage = () => {
   const [propertyType, setPropertyType] = useState('');
   const [financingType, setFinancingType] = useState('');
   const [popupMessage, setPopupMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
+  const navigate = useNavigate();
 
   const handlePropertyTypeChange = (event) => {
     setPropertyType(event.target.value);
@@ -40,6 +42,8 @@ const PreferencesPage = () => {
     console.log(res);
   };
 
+  
+
   const handleSavePreferencesClick = async () => {
     try {
       const token = getTokenFromCookie();
@@ -47,7 +51,7 @@ const PreferencesPage = () => {
         console.error('No se pudo encontrar el token en las cookies.');
         return;
       }
-  
+
       // Verificar que se hayan seleccionado ambas opciones
       if (!propertyType || !financingType) {
         console.error('Por favor, selecciona ambos tipos de preferencias.');
@@ -55,12 +59,17 @@ const PreferencesPage = () => {
         setShowPopup(true);
         return;
       }
-  
+
       // Lógica para guardar preferencias aquí...
-  
+
       // Éxito al guardar preferencias
       setPopupMessage('Preferencias guardadas exitosamente');
       setShowPopup(true);
+
+      // Redirigir a la página principal después de un breve retraso (por ejemplo, 2 segundos)
+      setTimeout(() => {
+        navigate('/');
+      }, 1000); // Ajusta el tiempo según tus necesidades
     } catch (error) {
       console.error('Error al manejar la acción de guardar preferencias:', error);
       setPopupMessage('Hubo un error al procesar la solicitud');

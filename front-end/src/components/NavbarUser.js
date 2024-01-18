@@ -62,48 +62,65 @@ function NavbarUser() {
               <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
             </div>
             <ul className={click ? 'nav-menu active' : 'nav-menu'}>
-              <li className='nav-item'>
-                <Link to='/listings' className='nav-links' onClick={closeMobileMenu}>
-                  Propiedades
+            <li className='nav-item'>
+              <Link
+                to='/listings'
+                className='nav-links'
+                onClick={closeMobileMenu}
+              >
+                Propiedades
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                to='/contact-us'
+                className='nav-links'
+                onClick={closeMobileMenu}
+              >
+                Contáctenos
+              </Link>
+            </li> 
+            <li className='nav-item'>
+              <Link
+                to='/notifications'
+                className='nav-links'
+                onClick={closeMobileMenu}
+              >
+                Notificaciones
+              </Link>
+            </li>    
+            <Dropdown>
+            <MenuButton>Mi Cuenta</MenuButton>
+            <Menu slots={{ listbox: Listbox }}>
+                <Link to="/myaccount">
+                <MenuItem onClick={createHandleMenuClick('Profile')}>Profile</MenuItem>
                 </Link>
-              </li>
-              <li className='nav-item'>
-                <Link to='/contact-us' className='nav-links' onClick={closeMobileMenu}>
-                  Contáctenos
+                <Link to="/preference">
+                  <MenuItem onClick={createHandleMenuClick('Language settings')}>
+                Preferences
+                </MenuItem>
                 </Link>
-              </li>
-              <li className='nav-item'>
-                <Link to='/myaccount' className='nav-links' onClick={closeMobileMenu}>
-                  Mi Cuenta
+                <Link to="/sign-up"> 
+                <MenuItem onClick={createHandleMenuClick('Log out')}>Log out</MenuItem>
                 </Link>
-              </li>
-              <Dropdown>
-                <MenuButton>My account</MenuButton>
-                <Menu slots={{ listbox: Listbox }}>
-                  <Link to="/myaccount">
-                    <MenuItem onClick={() => console.log('Clicked on Profile')}>Profile</MenuItem>
-                  </Link>
-                  <Link to="/preference">
-                    <MenuItem onClick={() => console.log('Clicked on Language settings')}>
-                      Preferences
-                    </MenuItem>
-                  </Link>
-                  <Link to="/sign-up">
-                    <MenuItem onClick={handleLogout}>Log out</MenuItem>
-                  </Link>
-                </Menu>
-              </Dropdown>
-              <li>
-                <Link to='/sign-up' className='nav-links-mobile' onClick={closeMobileMenu}>
-                  Logout
-                </Link>
-              </li>
-            </ul>
-            <Link to="/addlisting">
-              <button className='btn--outline'>AGREGAR PROPIEDAD</button>
-            </Link>
-          </div>
-        </nav>
+            </Menu>
+            </Dropdown>
+            <li>
+              <Link
+                to='/sign-up'
+                className='nav-links-mobile'
+                onClick={closeMobileMenu}
+              >
+                Logout
+              </Link>
+            </li>
+
+          </ul>
+          <Link to="/addlisting">
+            <button className='btn--outline'>AGREGAR PROPIEDAD</button>
+          </Link>
+        </div>
+      </nav>
       )}
     </>
   );
@@ -114,6 +131,7 @@ const Listbox = styled('ul')(
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 0.875rem;
     box-sizing: border-box;
+    box-shadow: 0 6px 20px rgba(56, 125, 255, 0.17);
     padding: 6px;
     margin: 12px 0;
     min-width: 200px;
