@@ -7,7 +7,7 @@ import { Menu } from '@mui/base/Menu';
 import { MenuButton as BaseMenuButton } from '@mui/base/MenuButton';
 import { MenuItem as BaseMenuItem, menuItemClasses } from '@mui/base/MenuItem';
 import { styled } from '@mui/system';
-import jsc from 'js-cookie';
+
 
 function NavbarUser() {
   const navigate = useNavigate();
@@ -16,11 +16,22 @@ function NavbarUser() {
   const [button, setButton] = useState(true);
 
   const closeMobileMenu = () => setClick(false);
-
   const shouldRenderNavbar = () => {
     const excludedRoutes = ['/sign-up'];
     return !excludedRoutes.includes(location.pathname);
   };
+
+
+  const createHandleMenuClick = (menuItem) => {
+    return () => {
+      console.log(`Clicked on ${menuItem}`);
+    };
+  };
+
+const handleClick = (event) => {
+  setClick(!click);
+};
+
   const handleLogout = () => {
     // Eliminar la cookie
     document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
