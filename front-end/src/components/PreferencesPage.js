@@ -3,7 +3,7 @@ import './PreferencesPage.css';
 import { addPreference } from '../api/preference';
 import PopupMessage from './PopupMessage';
 import { useNavigate } from 'react-router-dom';
-
+import { findUserByToken } from '../api/users';
 const PreferencesPage = () => {
   const [propertyType, setPropertyType] = useState('');
   const [financingType, setFinancingType] = useState('');
@@ -35,9 +35,12 @@ const PreferencesPage = () => {
   };
 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const preferenceData = { propertyType:propertyType, financingType:financingType };
+    const token = getTokenFromCookie();
+    const user = await findUserByToken(token);
+    console.log(user);
+    const preferenceData = { user_id: user.data._id, propertyType:propertyType, financingType:financingType };
     const res = addPreference(preferenceData);
     console.log(res);
   };
@@ -68,8 +71,8 @@ const PreferencesPage = () => {
 
       // Redirigir a la página principal después de un breve retraso (por ejemplo, 2 segundos)
       setTimeout(() => {
-        navigate('/');
-      }, 1000); // Ajusta el tiempo según tus necesidades
+        navigate('/listings');
+      }, 2000); // Ajusta el tiempo según tus necesidades
     } catch (error) {
       console.error('Error al manejar la acción de guardar preferencias:', error);
       setPopupMessage('Hubo un error al procesar la solicitud');
