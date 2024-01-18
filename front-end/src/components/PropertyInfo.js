@@ -74,7 +74,7 @@ const PropertyInfo = () => {
         </Slider>
         <div className="property-details">
           <p className="property-info-item">
-            <strong>Ubicación:</strong> {propertyData.provincia}, {propertyData.canton}, {propertyData.distrito}
+            <strong>Ubicación:</strong> {propertyData.province}, {propertyData.canton}, {propertyData.distrito}
           </p>
           <p className="property-info-item">
             <strong>Precio:</strong> {propertyData.price}

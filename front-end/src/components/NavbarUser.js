@@ -16,8 +16,9 @@ function NavbarUser() {
   const [button, setButton] = useState(true);
 
   const closeMobileMenu = () => setClick(false);
+
   const shouldRenderNavbar = () => {
-    const excludedRoutes = ['/sign-up'];
+    const excludedRoutes = ['/sign-up', '/'];
     return !excludedRoutes.includes(location.pathname);
   };
 
@@ -32,13 +33,15 @@ const handleClick = (event) => {
   setClick(!click);
 };
 
-  const handleLogout = () => {
-    // Eliminar la cookie
-    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+const handleLogout = () => {
+  // Eliminar la cookie
+  document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 
-    // Redirigir a la página de inicio de sesión u otra página deseada
-    navigate('/sing-up'); // Cambia '/login' con la ruta a la que quieras redirigir
-  };
+  // Corregir la ruta de redirección
+  const redirectPath = '/sign-up';
+  console.log('Redirigiendo a:', redirectPath);
+  navigate(redirectPath);
+};
 
   const showButton = () => {
     if (window.innerWidth <= 960) {
@@ -104,28 +107,23 @@ const handleClick = (event) => {
             <MenuButton>Mi Cuenta</MenuButton>
             <Menu slots={{ listbox: Listbox }}>
                 <Link to="/myaccount">
-                <MenuItem onClick={createHandleMenuClick('Profile')}>Profile</MenuItem>
+                <MenuItem onClick={createHandleMenuClick('Profile')}>Perfil</MenuItem>
                 </Link>
                 <Link to="/preference">
                   <MenuItem onClick={createHandleMenuClick('Language settings')}>
-                Preferences
+                Preferencias
                 </MenuItem>
                 </Link>
-                <Link to="/sign-up"> 
-                <MenuItem onClick={createHandleMenuClick('Log out')}>Log out</MenuItem>
-                </Link>
+                <Link to="/sign-up">
+                <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
+              </Link>
             </Menu>
             </Dropdown>
             <li>
-              <Link
-                to='/sign-up'
-                className='nav-links-mobile'
-                onClick={closeMobileMenu}
-              >
-                Logout
-              </Link>
-            </li>
-
+            <span className='nav-links-mobile' onClick={handleLogout}>
+              Logout
+            </span>
+          </li>
           </ul>
           <Link to="/addlisting">
             <button className='btn--outline'>AGREGAR PROPIEDAD</button>

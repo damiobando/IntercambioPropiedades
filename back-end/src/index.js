@@ -13,6 +13,7 @@ const preferenceRoutes = require("./routes/preference");
 const historyRoutes = require("./routes/searchHistory");
 const favoritesRoutes = require("./routes/favorites");
 const MessageRoutes = require("./routes/message");
+const notificationRoutes = require("./routes/notification");
 const port = process.env.PORT || 9000;
 const path = require('path');
 const fs = require('fs').promises;
@@ -37,6 +38,7 @@ app.use("/api",preferenceRoutes);
 app.use("/api",historyRoutes);
 app.use("/api",favoritesRoutes);
 app.use("/api",MessageRoutes);
+app.use("/api",notificationRoutes);
 //routes
 
 

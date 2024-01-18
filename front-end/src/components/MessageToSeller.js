@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import './PropertyInfo.css';
 import { sendMessage } from '../api/message';
 import { findUserByToken } from '../api/users';
+import { addNotification } from '../api/notification';
 const MessageToSeller = ({ sellerId }) => {
   const [message, setMessage] = useState('');
 
@@ -22,7 +23,13 @@ const MessageToSeller = ({ sellerId }) => {
     };
     console.log(messageData);
     const res = await sendMessage(messageData);
-    console.log(res);    
+    const notificationData = {
+      user_id: sellerId,
+      content: "Ha recibido un mensaje de un comprador con el contenido: " + messageData.content + "",
+      date: currentDate.toISOString().slice(0, 10),
+      read: false,
+    };
+    const resNoti = await addNotification(notificationData);    
     setMessage('');
    }
    catch(res){

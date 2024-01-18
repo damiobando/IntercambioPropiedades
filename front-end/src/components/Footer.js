@@ -49,7 +49,7 @@ function Footer() {
             </Link>
             <Link
               class='social-icon-link twitter'
-              to='/'
+              to='/contact-us'
               target='_blank'
               aria-label='LinkedIn'
             >

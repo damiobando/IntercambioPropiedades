@@ -1,20 +1,20 @@
-/* Alert.css */
-.alert-container {
-    position: fixed;
-    top: 20px;
-    left: 20px; /* Ajusta la posición al lado izquierdo */
-    z-index: 1000;
-  }
-  
-  .alert {
-    background-color: #f44336;
-    color: white;
-    padding: 20px; /* Ajusta el tamaño de la alerta */
-    border-radius: 8px; /* Ajusta la esquina redondeada */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 350px; /* Ajusta el ancho de la alerta */
-  }
-  
+.alert {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f44336;
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.alert.show {
+  opacity: 1;
+}
+
+.alert.hide {
+  display: none;
+}

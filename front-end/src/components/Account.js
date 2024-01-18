@@ -5,6 +5,8 @@ import { getSearchHistory, deleteHistory } from '../api/history';
 import { getFavorites,deleteFavorite } from '../api/favorites';
 import { changePassword } from '../api/users';
 import { getOffers } from '../api/offers';
+import { rejectOffer } from '../api/offers';
+import { updateUser } from '../api/users';
 
 function Account() {
   const [activeButton, setActiveButton] = useState('miInformacion');
@@ -28,9 +30,7 @@ function Account() {
         const favoritesResponse = await getFavorites(user.data._id);
         setFavorites(favoritesResponse.data);
         const offersResponse = await getOffers(user.data._id); // Llama al API para obtener las ofertas
-        console.log('Offers:', offersResponse.data);
-        setOffers(offersResponse.data);
-
+        setOffers(offersResponse.data.offers);
       } catch (error) {
         console.error(error);
       }
@@ -56,11 +56,18 @@ function Account() {
     setIsEditing(false);
   };
 
-  const handleAcceptClick = () => {
-    // Puedes realizar acciones de actualización aquí, por ejemplo, enviar al servidor
-    // ...
-    // Después de realizar la actualización, desactiva la edición
-    setIsEditing(false);
+  const handleAcceptClick = async () => {
+    try {
+      console.log('Updated user info:', userInfo);
+      const updatedUser = await updateUser(userInfo._id, userInfo);
+      alert('Información actualizada exitosamente'); 
+      setIsEditing(false);
+    } catch (error) {
+      alert('Error al actualizar la información del usuario');
+      console.error('Error al actualizar la información del usuario:', error);
+      // Puedes manejar el error de manera adecuada, como mostrar un mensaje al usuario
+    }
+
   };
 
   const handleDeleteItem = async (id, type) => {
@@ -70,6 +77,7 @@ function Account() {
       const updatedFavorites = favorites.filter((fav) => fav._id !== id._id);
       console.log('Updated Favorites:', updatedFavorites);
       setFavorites(updatedFavorites);
+      alert('Favorito eliminado exitosamente');
     } catch (error) {
       console.error(error);
     }
@@ -126,18 +134,17 @@ function Account() {
     setConfirmPassword('');
   };
 
-  const handleAcceptOffer = (offer) => {
-    // Lógica para aceptar la oferta
-    console.log('Oferta aceptada:', offer);
-    // Puedes realizar una llamada al backend para actualizar el estado de la oferta, por ejemplo:
-    // updateOfferStatus(offer._id, 'accepted');
-  };
-
-  const handleRejectOffer = (offer) => {
-    // Lógica para rechazar la oferta
-    console.log('Oferta rechazada:', offer);
-    // Puedes realizar una llamada al backend para actualizar el estado de la oferta, por ejemplo:
-    // updateOfferStatus(offer._id, 'rejected');
+  const handleRejectOffer = async (offer) => {
+    try {
+      console.log('Rejected offer with ID:', offer.offerId);
+      await rejectOffer(offer.offerId); // Reemplaza 'rejectOffer' con la función que elimina la oferta en tu API
+      const updatedOffers = offers.filter((o) => o.offerId !== offer.offerId);
+      console.log('Updated Offers:', updatedOffers);
+      setOffers(updatedOffers);
+      alert('Oferta rechazada exitosamente');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
 
@@ -323,39 +330,35 @@ function Account() {
             </form>
           </div>
         )}
-        {activeButton === 'misOfertas' && (
-          <div>
-            <h2>Mis Ofertas</h2>
-            {offers.length > 0 ? (
-              <ul>
-                {offers.map((offer) => (
-                  <li key={offer._id} style={{ marginBottom: '20px ' }}>
-                    {/* Muestra la información de la oferta */}
-                    <p><strong>Fecha de la Oferta:</strong> {offer.date}</p>
-                    {/* Agrega más detalles de la oferta según sea necesario */}
-                    <hr />
-                    <button
-                      type="button"
-                      onClick={() => handleAcceptOffer(offer)}
-                      className="small-delete"
-                    >
-                      Aceptar Oferta
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleRejectOffer(offer)}
-                      className="small-delete"
-                    >
-                      Rechazar Oferta
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No hay ofertas disponibles.</p>
-            )}
-          </div>
-        )}
+          {activeButton === 'misOfertas' && (
+            <div>
+              <h2>Mis Ofertas</h2>
+              {offers.length > 0 ? (
+                <ul>
+                  {offers.map((offer, index) => (
+                    <li key={index} style={{ marginBottom: '20px' }}>
+                      {/* Muestra la información de la oferta */}
+                      <p><strong>Ofertante:</strong> {offer.offerorName}</p>
+                      <p><strong>Correo Electrónico:</strong> {offer.offerorEmail}</p>
+                      <p><strong>Título de la Propiedad:</strong> {offer.propertyTitle}</p>
+                      <p><strong>Monto Ofrecido:</strong> {offer.offeredAmount}</p>
+                      {/* Agrega más detalles de la oferta según sea necesario */}
+                      <hr />
+                      <button
+                        type="button"
+                        onClick={() => handleRejectOffer(offer)}
+                        className="small-delete"
+                      >
+                        Rechazar Oferta
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No hay ofertas disponibles.</p>
+              )}
+            </div>
+          )}
         {/* Agrega más contenido según sea necesario */}
       </div>
     </div>

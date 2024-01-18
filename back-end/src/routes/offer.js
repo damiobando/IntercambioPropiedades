@@ -24,7 +24,7 @@ router.get("/offers/:id", async (req, res) => {
     try {
         const id = req.params.id;
         // Obtener todas las ofertas del usuario
-        const userOffers = await Offer.find({ user_id: id });
+        const userOffers = await Offer.find({ owner_id: id });
 
         // Crear un nuevo array con la información deseada
         const formattedOffers = await Promise.all(userOffers.map(async (offer) => {
@@ -38,7 +38,8 @@ router.get("/offers/:id", async (req, res) => {
                 offerorName: userOfferor.name,
                 offerorEmail: userOfferor.email,
                 propertyTitle: propertyInfo.title,
-                offeredAmount: offer.offered_amount
+                offeredAmount: offer.offered_amount,
+                offerId: offer._id,
             };
         }));
         res.json({ offers: formattedOffers });

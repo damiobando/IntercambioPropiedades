@@ -1,33 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import './Alert.css'; // Asegúrate de tener un archivo CSS para estilizar tu alerta
 
-const Alert = ({ message, isSuccess, closeAlert }) => {
-  const alertStyle = {
-    padding: '10px',
-    margin: '10px 0',
-    borderRadius: '5px',
-    color: 'white',
-    fontWeight: 'bold',
-    width: '300px',
-  };
+const Alert = ({ message, onClose }) => {
+  const [visible, setVisible] = useState(true);
 
-  const successStyle = {
-    ...alertStyle,
-    backgroundColor: 'green',
-  };
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setVisible(false);
+      onClose();
+    }, 3000); // Ocultar la alerta después de 3 segundos
 
-  const errorStyle = {
-    ...alertStyle,
-    backgroundColor: 'red',
-  };
-
-  // Llamar a la función closeAlert cuando se hace clic en la alerta
-  const handleClick = () => {
-    closeAlert();
-  };
+    return () => clearTimeout(timeout);
+  }, [onClose]);
 
   return (
-    <div style={isSuccess ? successStyle : errorStyle} onClick={handleClick}>
-      {message}
+    <div className={`alert ${visible ? 'show' : 'hide'}`}>
+      <span>{message}</span>
     </div>
   );
 };
