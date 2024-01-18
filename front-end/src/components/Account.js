@@ -4,6 +4,7 @@ import { findUserByToken } from '../api/users';
 import { getSearchHistory, deleteHistory } from '../api/history';
 import { getFavorites,deleteFavorite } from '../api/favorites';
 import { changePassword } from '../api/users';
+import { getOffers } from '../api/offers';
 
 function Account() {
   const [activeButton, setActiveButton] = useState('miInformacion');
@@ -26,6 +27,9 @@ function Account() {
         setSearchHistory(historyResponse.data);
         const favoritesResponse = await getFavorites(user.data._id);
         setFavorites(favoritesResponse.data);
+        const offersResponse = await getOffers(user.data._id); // Llama al API para obtener las ofertas
+        console.log('Offers:', offersResponse.data);
+        setOffers(offersResponse.data);
 
       } catch (error) {
         console.error(error);

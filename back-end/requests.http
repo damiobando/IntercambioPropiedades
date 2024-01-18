@@ -113,18 +113,19 @@ GET http://localhost:9000/api/offers HTTP/1.1
 ###
 
 # Obtener una oferta específica por ID (GET)
-GET http://localhost:9000/api/offers/ID_de_la_Oferta HTTP/1.1
+GET http://localhost:9000/api/offers/65a8629776a64920b3470945 HTTP/1.1
 
 ###
 
 # Actualizar una oferta por ID (PUT)
-PUT http://localhost:9000/api/offers/ID_de_la_Oferta HTTP/1.1
+POST  http://localhost:9000/api/offers HTTP/1.1
 Content-Type: application/json
 
 {
-  "usuario_id": "Nuevo_ID_Usuario",
-  "propiedad_id": "Nuevo_ID_Propiedad",
-  "cantidad_ofertada": 1500
+  "user_id": "65a861f176a64920b3470914",
+  "owner_id": "65a85d2f76a64920b34708ff",
+  "property_id": "65a8613c76a64920b3470911",
+  "offered_amount": 50000
 }
 
 ###

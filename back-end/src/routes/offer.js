@@ -1,6 +1,7 @@
 const express = require("express");
 const Offer = require("../models/offer"); // Importa el modelo Offer
-
+const User = require("../models/user");
+const Property = require("../models/property");
 const router = express.Router();
 
 // Crear una nueva oferta
@@ -19,12 +20,35 @@ router.get("/offers", (req, res) => {
 });
 
 // Obtener una oferta específica por ID
-router.get("/offers/:id", (req, res) => {
-    const { id } = req.params;
-    Offer.findById(id)
-        .then((data) => res.json(data))
-        .catch((error) => res.status(400).json({ message: error.message }));
+router.get("/offers/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        // Obtener todas las ofertas del usuario
+        const userOffers = await Offer.find({ user_id: id });
+
+        // Crear un nuevo array con la información deseada
+        const formattedOffers = await Promise.all(userOffers.map(async (offer) => {
+            // Obtener información del usuario ofertador
+            const userOfferor = await User.findById(offer.user_id);
+
+            // Obtener información de la propiedad
+            const propertyInfo = await Property.findById(offer.property_id);
+
+            return {
+                offerorName: userOfferor.name,
+                offerorEmail: userOfferor.email,
+                propertyTitle: propertyInfo.title,
+                offeredAmount: offer.offered_amount
+            };
+        }));
+        res.json({ offers: formattedOffers });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener las ofertas del usuario' });
+    }
 });
+
+
 
 // Actualizar una oferta por ID
 router.put("/offers/:id", (req, res) => {
