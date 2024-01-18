@@ -1,4 +1,5 @@
 import React from 'react';
+import './PropertyCard.css'
 
 const SuccessModal = ({ onClose }) => (
   <div className='modal'>

@@ -104,11 +104,22 @@ body {
 
 /* Estilos para los botones "Borrar" pequeños */
 .info-container button.small-delete {
-  width: 5%;
+  margin-top: 10px;
+  width: 10%;
   font-size: 12px;
 
 }
 
 .info-container button:hover {
   background-color: #f67130;
+}
+
+
+.favoritos-container li {
+  width: auto;
+  padding: 20px;
+  background-color: #f2e2da;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
 }

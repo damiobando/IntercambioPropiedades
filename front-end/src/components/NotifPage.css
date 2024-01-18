@@ -1,38 +1,64 @@
 .main {
-    padding: 20px;
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  .notification-container {
-    margin: 0 auto;
-    display: flex;
-    width: 80%;
-    align-items: center;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-  }
-  
-  .user-icon {
-    width: 50px;
-    height: 50px;
-    background-color: #3498db; /* Puedes personalizar el color de fondo */
-    border-radius: 50%;
-    margin-right: 15px;
-  }
-  
-  .notification-content {
-    flex-grow: 1;
-  }
-  
-  .sender-name {
-    font-weight: bold;
-  }
-  
-  .message {
-    margin-top: 5px;
-  }
-  
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.notification-container {
+  margin: 0 auto;
+  display: flex;
+  width: 80%;
+  align-items: center;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  position: relative;
+}
+
+.user-icon {
+  width: 50px;
+  height: 50px;
+  background-color: #3498db; /* Puedes personalizar el color de fondo */
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.notification-content {
+  flex-grow: 1;
+}
+
+.sender-name {
+  font-weight: bold;
+}
+
+.message {
+  margin-top: 5px;
+}
+
+.mark-as-read-button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.notification-container.read {
+  background-color: #e0e0e0; /* Puedes personalizar el color de fondo para notificaciones leídas */
+}
+
+.action-button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  margin-right: 5px;
+  border-radius: 4px;
+}
+
+.action-button.delete {
+  background-color: #e74c3c; /* Puedes personalizar el color de fondo para el botón de borrar */
+}
