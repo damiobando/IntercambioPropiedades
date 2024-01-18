@@ -13,6 +13,8 @@ function Account() {
   const [searchHistory, setSearchHistory] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [offers, setOffers] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -37,14 +39,23 @@ function Account() {
     setActiveButton(buttonName);
   };
 
-  const handleEditClick = () => {
-    setIsEditMode(true);
+ const handleUpdateClick = () => {
+    setIsEditing(true);
   };
 
-  const handleSaveChangesClick = () => {
-    // Aquí puedes realizar alguna acción con la información actualizada,
-    // como enviarla al servidor. En este ejemplo, simplemente cambiamos al modo de visualización.
-    setIsEditMode(false);
+  const handleCancelClick = () => {
+    // Al cancelar, restaura los valores originales y desactiva la edición
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+    setIsEditing(false);
+  };
+
+  const handleAcceptClick = () => {
+    // Puedes realizar acciones de actualización aquí, por ejemplo, enviar al servidor
+    // ...
+    // Después de realizar la actualización, desactiva la edición
+    setIsEditing(false);
   };
 
   const handleDeleteItem = async (id, type) => {
@@ -121,14 +132,65 @@ function Account() {
       </div>
 
       <div className="info-container">
-        {activeButton === 'miInformacion' && (
+      {activeButton === 'miInformacion' && (
           <div>
             <h2>Mi Información</h2>
-            {/* información del usuario */}
-            <p>Nombre: {userInfo.name}</p>
-            <p>Correo Electrónico: {userInfo.email}</p>
-            <p>Teléfono: {userInfo.phone}</p>
-            {/*  más información */}
+            {/* Mostrar campos en modo de edición */}
+            {isEditing ? (
+              <form onSubmit={handleAcceptClick}>
+                <div>
+                  <label htmlFor="name">Nombre:</label>
+                  <input
+                    type="text"
+                    id="name"
+                    value={userInfo.name}
+                    onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
+                    disabled={!isEditing}
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email">Correo Electrónico:</label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={userInfo.email}
+                    onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
+                    disabled={!isEditing}
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="phone">Teléfono:</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    value={userInfo.phone}
+                    onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
+                    disabled={!isEditing}
+                    required
+                  />
+                </div>
+                {/* Agrega más campos según sea necesario */}
+                <div>
+                  <button type="button" onClick={handleCancelClick}>
+                    Cancelar
+                  </button>
+                  <button type="submit">Aceptar</button>
+                </div>
+              </form>
+            ) : (
+              // Mostrar campos en modo de visualización
+              <div>
+                <p>Nombre: {userInfo.name}</p>
+                <p>Correo Electrónico: {userInfo.email}</p>
+                <p>Teléfono: {userInfo.phone}</p>
+                {/* Agrega más campos según sea necesario */}
+                <button type="button" onClick={handleUpdateClick}>
+                  Actualizar
+                </button>
+              </div>
+            )}
           </div>
         )}
         {activeButton === 'historialBusqueda' && (
@@ -164,6 +226,7 @@ function Account() {
             {favorites.length > 0 ? (
               <ul>
                 {favorites.map((item) => (
+                  <div className='favoritos-container'> 
                   <li key={item._id} style={{ marginBottom: '20px ' }}>
                     <p><strong>Titulo:</strong> {item.title}</p>
                     <p><strong>Descripción:</strong> {item.description}</p>
@@ -180,6 +243,7 @@ function Account() {
                       Borrar
                     </button>
                   </li>
+                  </div>
                 ))}
               </ul>
             ) : (
