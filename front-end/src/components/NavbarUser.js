@@ -21,7 +21,6 @@ function NavbarUser() {
     const excludedRoutes = ['/sign-up'];
     return !excludedRoutes.includes(location.pathname);
   };
-//TEST
   const handleLogout = () => {
     // Eliminar la cookie
     document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';

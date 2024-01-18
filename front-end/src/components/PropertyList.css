@@ -2,8 +2,26 @@
 
 .property-list-container {
   margin: 20px auto;
-  max-width: 800px;
+  max-width: 1000px;
+  
 }
+
+.property-list-container button {
+  margin-bottom: 10px;
+  background-color: #f67130;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.property-list-container button:hover {
+  background-color: #fffcfb;
+}
+
+
+
 
 .search-bar {
   margin-bottom: 20px;
@@ -21,6 +39,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 16px; /* Espacio entre las propiedades */
+justify-content: center;
 }
 
 .property-box {
@@ -33,7 +52,10 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-  padding: 20px;
+  padding: 10px;
+  min-width: 300px;
+  min-height: 500px;
+
 }
 
 /* Estilos para el texto dentro del cuadro */

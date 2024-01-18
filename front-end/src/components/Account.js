@@ -12,6 +12,7 @@ function Account() {
   const [userInfo, setUserInfo] = useState({});
   const [searchHistory, setSearchHistory] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [offers, setOffers] = useState([]);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -83,6 +84,21 @@ function Account() {
     setConfirmPassword('');
   };
 
+  const handleAcceptOffer = (offer) => {
+    // Lógica para aceptar la oferta
+    console.log('Oferta aceptada:', offer);
+    // Puedes realizar una llamada al backend para actualizar el estado de la oferta, por ejemplo:
+    // updateOfferStatus(offer._id, 'accepted');
+  };
+
+  const handleRejectOffer = (offer) => {
+    // Lógica para rechazar la oferta
+    console.log('Oferta rechazada:', offer);
+    // Puedes realizar una llamada al backend para actualizar el estado de la oferta, por ejemplo:
+    // updateOfferStatus(offer._id, 'rejected');
+  };
+
+
   return (
     <div className="main-background">
       <div className="left-bar">
@@ -97,6 +113,9 @@ function Account() {
         </button>
         <button onClick={() => handleButtonClick('cambiarContrasena')} className={activeButton === 'cambiarContrasena' ? 'active' : ''}>
           Cambiar Contraseña
+        </button>
+        <button onClick={() => handleButtonClick('misOfertas')} className={activeButton === 'misOfertas' ? 'active' : ''}>
+          Mis Ofertas
         </button>
         {/* Agrega más botones según sea necesario */}
       </div>
@@ -204,6 +223,39 @@ function Account() {
               </div>
               <button type="submit">Cambiar Contraseña</button>
             </form>
+          </div>
+        )}
+        {activeButton === 'misOfertas' && (
+          <div>
+            <h2>Mis Ofertas</h2>
+            {offers.length > 0 ? (
+              <ul>
+                {offers.map((offer) => (
+                  <li key={offer._id} style={{ marginBottom: '20px ' }}>
+                    {/* Muestra la información de la oferta */}
+                    <p><strong>Fecha de la Oferta:</strong> {offer.date}</p>
+                    {/* Agrega más detalles de la oferta según sea necesario */}
+                    <hr />
+                    <button
+                      type="button"
+                      onClick={() => handleAcceptOffer(offer)}
+                      className="small-delete"
+                    >
+                      Aceptar Oferta
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleRejectOffer(offer)}
+                      className="small-delete"
+                    >
+                      Rechazar Oferta
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No hay ofertas disponibles.</p>
+            )}
           </div>
         )}
         {/* Agrega más contenido según sea necesario */}
