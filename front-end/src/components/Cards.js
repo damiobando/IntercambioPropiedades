@@ -6,8 +6,6 @@ import CardItem from './CardItem';
 import { getProperties } from '../api/property';
 
 function Cards() {
-
-  const [properties, setProperties] = useState([]);
   const [propertiesCountAlajuela, setPropertiesCountAlajuela] = useState(0);
   const [propertiesCountHeredia, setPropertiesCountHeredia] = useState(0);
   const [propertiesCountSanJose, setPropertiesCountSanJose] = useState(0);

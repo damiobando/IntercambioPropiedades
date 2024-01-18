@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Navbar.css';
-import { useNavigate } from 'react-router-dom';
 import { Dropdown } from '@mui/base/Dropdown';
 import { Menu } from '@mui/base/Menu';
 import { MenuButton as BaseMenuButton } from '@mui/base/MenuButton';
@@ -29,9 +28,6 @@ function NavbarUser() {
     };
   };
 
-const handleClick = (event) => {
-  setClick(!click);
-};
 
 const handleLogout = () => {
   // Eliminar la cookie

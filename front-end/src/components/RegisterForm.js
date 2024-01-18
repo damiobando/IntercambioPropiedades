@@ -5,8 +5,6 @@ import './RegisterForm.css';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { Button } from './Button';
-import { Link } from 'react-router-dom';
 import { registerRequest } from '../api/auth';
 
 function RegisterForm() {
