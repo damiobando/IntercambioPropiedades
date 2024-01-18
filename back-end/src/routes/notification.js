@@ -20,19 +20,32 @@ router.get("/notifications", (req, res) => {
 
 // Obtener una notificación específica por ID
 router.get("/notifications/:id", (req, res) => {
+    console.log("Paso aqui");
     const { id } = req.params;
-    Notification.findById(id)
+    Notification.find({ user_id: id })
         .then((data) => res.json(data))
         .catch((error) => res.status(400).json({ message: error.message }));
 });
 
 // Actualizar una notificación por ID
-router.put("/notifications/:id", (req, res) => {
+router.put("/notifications/:id", async (req, res) => {
     const { id } = req.params;
-    const notificationData = req.body;
-    Notification.findByIdAndUpdate(id, notificationData, { new: true })
-        .then((data) => res.json(data))
-        .catch((error) => res.status(400).json({ message: error.message }));
+
+    try {
+        const updatedNotification = await Notification.findByIdAndUpdate(
+            id,
+            { $set: { read: true } }, // Utiliza $set para actualizar solo la propiedad 'read'
+            { new: true }
+        );
+
+        if (!updatedNotification) {
+            return res.status(404).json({ message: "Notificación no encontrada" });
+        }
+
+        res.json(updatedNotification);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
 });
 
 // Eliminar una notificación por ID

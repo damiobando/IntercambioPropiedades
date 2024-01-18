@@ -1,0 +1,67 @@
+/* PropertyList.css */
+
+.property-list-container {
+  margin: 20px auto;
+  max-width: 1000px;
+  
+}
+
+.property-list-container button {
+  margin-bottom: 10px;
+  background-color: #f67130;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.property-list-container button:hover {
+  background-color: #fffcfb;
+}
+
+
+
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* PropertyList.css */
+.property-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* Espacio entre las propiedades */
+justify-content: center;
+}
+
+.property-box {
+  flex: 1; /* Ocupa todo el espacio disponible */
+  max-width: 300px; /* Establece un ancho máximo para evitar que crezcan demasiado */
+}
+
+.property-background {
+  background-color: #ffffff; /* Color oscuro de fondo para resaltar */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  min-width: 300px;
+  min-height: 500px;
+
+}
+
+/* Estilos para el texto dentro del cuadro */
+.property-background h2,
+.property-background p {
+  color: #030b0e; /* Color del texto, ajusta según tus preferencias */
+}
+
+/* Puedes ajustar estos estilos según tus preferencias */

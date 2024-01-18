@@ -1,60 +1,107 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './NewListing.css';
 import SuccessModal from './SuccessModal';
-
+import { addProperty } from '../api/property';
+import { Navigate } from 'react-router-dom';
 function NewListing() {
-    const [selectedOption, setSelectedOption] = useState('');
-    const [financingOptions, setFinancingOptions] = useState([]);
-    const [imageFiles, setImageFiles] = useState([]);
-    const [province, setProvince] = useState('');
-    const [canton, setCanton] = useState('');
-    const [distrito, setDistrito] = useState('');
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
-  
-    const handleSelectChange = (event) => {
-      setSelectedOption(event.target.value);
-    };
-  
-    const handleCheckboxChange = (option) => {
-      // Verifica si la opción ya está seleccionada
-      if (financingOptions.includes(option)) {
-        // Si está seleccionada, quítala de las opciones
-        setFinancingOptions(financingOptions.filter((item) => item !== option));
-      } else {
-        // Si no está seleccionada, agrégala a las opciones
-        setFinancingOptions([...financingOptions, option]);
-      }
-    };
-  
-    const handleImageChange = (event) => {
-      const files = event.target.files;
-      setImageFiles([...imageFiles, ...files]);
-    };
-  
-    const handleAddProperty = (event) => {
-        event.preventDefault();
-    
-        // Realizar la lógica para agregar la propiedad aquí
-    
-        // Limpiar los campos después de agregar la propiedad
-        setProvince('');
-        setCanton('');
-        setDistrito('');
-        setSelectedOption('');
-        setFinancingOptions([]);
-        setImageFiles('');
-    
-        // Mostrar el modal de éxito
-        setShowSuccessModal(true);
-    
-        // Ocultar el modal después de unos segundos
-        setTimeout(() => {
-          setShowSuccessModal(false);
-        }, 3000);
-      };
-  
-  
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [selectedOption, setSelectedOption] = useState('');
+  const [financingOptions, setFinancingOptions] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]);
+  const [province, setProvince] = useState('');
+  const [canton, setCanton] = useState('');
+  const [distrito, setDistrito] = useState('');
+  const [direccion, setDireccion] = useState('');
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [redirectTo, setRedirectTo] = useState(null);
 
+  const handleSelectChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+  const getTokenFromCookie = () => {
+    const cookies = document.cookie.split('; ').reduce((acc, cookie) => {
+      const [name, value] = cookie.split('=');
+      acc[name] = value;
+      return acc;
+    }, {});
+  
+    return cookies.token || null;
+  };
+
+  const handleCheckboxChange = (option) => {
+    if (financingOptions.includes(option)) {
+      setFinancingOptions(financingOptions.filter((item) => item !== option));
+    } else {
+      setFinancingOptions([...financingOptions, option]);
+    }
+  };
+
+  const handleImageChange = (event) => {
+    const files = event.target.files;
+    setImageFiles([...imageFiles, ...files]);
+  };
+
+  const handleAddProperty = async (event) => {
+    event.preventDefault();
+
+    try {
+      const formData = new FormData();
+      imageFiles.forEach((file) => {
+        formData.append('images', file);
+      });
+
+      const response = await axios.post('http://localhost:9000/upload', formData);
+      const imageUrls = response.data;// Ajustamos para obtener las URLs
+
+      const token = getTokenFromCookie();
+      if (!token) {
+        console.error('No se pudo encontrar el token en las cookies.');
+        return;
+      }
+      const propertyData = {
+        title: title,
+        description: description,
+        price: price,
+        paymentMethod: selectedOption,
+        financingOptions: financingOptions,
+        province: province,
+        canton: canton,
+        distrito: distrito,
+        images: imageUrls, 
+        direccion: direccion,
+        ownerID: token,
+      };
+
+      const res = await addProperty(propertyData);
+      console.log(res);
+
+      setTitle('');
+      setDescription('');
+      setPrice('');
+      setSelectedOption('');
+      setFinancingOptions([]);
+      setImageFiles([]);
+      setProvince('');
+      setCanton('');
+      setDistrito('');
+      setDireccion('');
+
+      setShowSuccessModal(true);
+
+      setTimeout(() => {
+        setShowSuccessModal(false);
+        setRedirectTo('/listings');
+      }, 3000);
+    } catch (error) {
+      console.error('Error al agregar la propiedad:', error);
+    }
+  };;
+  if (redirectTo) {
+    return <Navigate to={redirectTo} />;
+  }
   return (
     <div className='main-container'>
       <form className='form-container' onSubmit={handleAddProperty}>
@@ -63,18 +110,26 @@ function NewListing() {
 
           <div className='form-group'>
             <label>Titulo de la propiedad</label>
-            <input type='text' required/>
+            <input type='text' 
+            value = {title} onChange = {(e) => setTitle(e.target.value)}
+            required/>
           </div>
 
           <div className='form-group'>
-            <label>Descripción adicional</label>
-            <textarea rows='4'></textarea>
-          </div>
+          <label>Descripción adicional</label>
+          <textarea
+            rows='4'
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          ></textarea>
+        </div>
 
           <div className='form-group'>
             <p>Precio de la propiedad</p>
             <label>Precio</label>
-            <input type='text' required />
+            <input type='text' 
+            value={price} onChange = {(e) => setPrice(e.target.value)}
+            required />
           </div>
 
           <div className='form-group'>
@@ -152,11 +207,13 @@ function NewListing() {
             <input type='text' value={distrito} onChange={(e) => setDistrito(e.target.value)} required />
         </div>
         <div className='form-group'>
-            <label>Direccion extra opcional</label>
-            <textarea rows='4'></textarea>
-          </div>
-
-
+        <label>Dirección extra opcional</label>
+        <textarea
+          rows='4'
+          value={direccion}
+          onChange={(e) => setDireccion(e.target.value)}
+        ></textarea>
+      </div>
         </div>
         <div className='form-group'>
             <button type='submit'>

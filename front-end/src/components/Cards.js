@@ -1,8 +1,54 @@
 import React from 'react';
+import {useEffect} from 'react';
+import { useState } from 'react';
 import './Cards.css';
 import CardItem from './CardItem';
+import { getProperties } from '../api/property';
 
 function Cards() {
+
+  const [properties, setProperties] = useState([]);
+  const [propertiesCountAlajuela, setPropertiesCountAlajuela] = useState(0);
+  const [propertiesCountHeredia, setPropertiesCountHeredia] = useState(0);
+  const [propertiesCountSanJose, setPropertiesCountSanJose] = useState(0);
+  const [propertiesCountCartago, setPropertiesCountCartago] = useState(0);
+  const [propertiesCountGuanacaste, setPropertiesCountGuanacaste] = useState(0);
+  const [propertiesCountPuntarenas, setPropertiesCountPuntarenas] = useState(0);
+  const [propertiesCountLimon, setPropertiesCountLimon] = useState(0);
+
+
+  useEffect(() => {
+    // Lógica para obtener las propiedades y contarlas por provincia
+    const fetchData = async () => {
+      try {
+        const properties = await getProperties();
+        const propertiesData = properties.data;
+        console.log('properties:', propertiesData);
+        const countAlajuela = propertiesData.filter(property => property.province === 'Alajuela').length;
+        const countHeredia = propertiesData.filter(property => property.province === 'Heredia').length;
+        const countSanJose = propertiesData.filter(property => property.province === 'San José').length;
+        const countCartago = propertiesData.filter(property => property.province === 'Cartago').length;
+        const countGuanacaste = propertiesData.filter(property => property.province === 'Guanacaste').length;
+        const countPuntarenas = propertiesData.filter(property => property.province === 'Puntarenas').length;
+        const countLimon = propertiesData.filter(property => property.province === 'Limón').length;
+
+        // Actualizar los estados con las cantidades por provincia
+        setPropertiesCountAlajuela(countAlajuela);
+        setPropertiesCountHeredia(countHeredia);
+        setPropertiesCountSanJose(countSanJose);
+        setPropertiesCountCartago(countCartago);
+        setPropertiesCountGuanacaste(countGuanacaste);
+        setPropertiesCountPuntarenas(countPuntarenas);
+        setPropertiesCountLimon(countLimon);
+
+      } catch (error) {
+        console.error('Error fetching properties:', error);
+      }
+    };
+
+    fetchData();
+  }, [])
+
   return (
     <div className='cards'>
       <div>
@@ -12,20 +58,20 @@ function Cards() {
             <CardItem
               src='images/puntarenas.png'
               text='Puntarenas'
-              label='121 propiedades'
+              label={propertiesCountPuntarenas}
               path='/sign-up'
             />
             <CardItem
               src='images/Guanacaste.jpg'
               text='Guanacaste'
-              label='238 propiedades'
+              label={propertiesCountGuanacaste}
               path='/sign-up'
             />
             <CardItem
               src='images/SanJose.jpg'
-              text='San Jose'
-              label='60 propiedades'
-              path='/services'
+              text="San José"
+              label={propertiesCountSanJose}
+              path='/sign-up'
             />
            
           </ul>
@@ -33,25 +79,25 @@ function Cards() {
           <CardItem
               src='images/Heredia.jpg'
               text='Heredia'
-              label='83 propiedades'
+              label={propertiesCountHeredia}
               path='/sign-up'
             />
             <CardItem
               src='images/Limon.jpg'
               text='Limón'
-              label='43 propiedades'
+              label={propertiesCountLimon}
               path='/sign-up'
             />
             <CardItem
               src='images/Alajuela.jpg'
               text='Alajuela'
-              label='34 propiedades'
-              path='/products'
+              label={propertiesCountAlajuela}
+              path='/sign-up'
             />  
             <CardItem
               src='images/Cartago.jpeg'
               text='Cartago'
-              label='56 propiedades'
+              label={propertiesCountCartago}
               path='/sign-up'
             />
           </ul>

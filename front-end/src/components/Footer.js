@@ -1,59 +1,11 @@
 import React from 'react';
 import './Footer.css';
-import { Button } from './Button';
 import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
     <div className='footer-container'>
-      <section className='footer-subscription'>
-        <p className='footer-subscription-heading'>
-          Subscribe to our weekly newsletter to receive our best property deals
-        </p>
-        <p className='footer-subscription-text'>
-          You can unsubscribe at any time.
-        </p>
-        <div className='input-areas'>
-          <form>
-            <input
-              className='footer-input'
-              name='email'
-              type='email'
-              placeholder='Your Email'
-            />
-            <Button buttonStyle='btn--outline'>Subscribe</Button>
-          </form>
-        </div>
-      </section>
-      <div class='footer-links'>
-        <div className='footer-link-wrapper'>
-          <div class='footer-link-items'>
-            <h2>Company</h2>
-            <Link to='/sign-up'>About</Link>
-            <Link to='/'>FAQ</Link>
-            <Link to='/'>All listings</Link>
-            <Link to='/'>Investors</Link>
-            <Link to='/'>Contact Us</Link>
-          </div>
-          <div class='footer-link-items'>
-            <h2>Services</h2>
-            <Link to='/'>Wish List</Link>
-            <Link to='/'>Login</Link>
-            <Link to='/'>Terms & Conditions</Link>
-            <Link to='/'>Sponsorships</Link>
-          </div>
-        </div>
-        <div className='footer-link-wrapper'>
-        
-          <div class='footer-link-items'>
-            <h2>Social Media</h2>
-            <Link to='/'>Instagram</Link>
-            <Link to='/'>Facebook</Link>
-            <Link to='/'>Youtube</Link>
-            <Link to='/'>Twitter</Link>
-          </div>
-        </div>
-      </div>
+
       <section class='social-media'>
         <div class='social-media-wrap'>
           <div class='footer-logo'>
@@ -97,7 +49,7 @@ function Footer() {
             </Link>
             <Link
               class='social-icon-link twitter'
-              to='/'
+              to='/contact-us'
               target='_blank'
               aria-label='LinkedIn'
             >

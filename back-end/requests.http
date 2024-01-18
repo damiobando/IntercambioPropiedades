@@ -1,19 +1,44 @@
 ###
-POST http://localhost:9000/api/users HTTP/1.1
+POST http://localhost:9000/api/logout HTTP/1.1
+
+###
+POST http://localhost:9000/api/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "test1@gmail.com", 
+    "password": "test1"
+}
+###
+POST http://localhost:9000/api/register HTTP/1.1
 Content-Type: application/json
 
     {
       "name": "Sebastian Obando Paniagua",
     "phone": "85805240",
     "email": "sebasobando@gmail.com",
-    "address": "Heredia, Costa Rica"
+    "password": "123456"
 }
 
 ###
 GET http://localhost:9000/api/users HTTP/1.1
-
 ###
-GET http://localhost:9000/api/users/6595f95a10732b6e04903b62 HTTP/1.1
+GET  http://localhost:9000/api/properties HTTP/1.1
+
+Content-Type: application/json
+{
+        "title": "Linda casa en San Jose",
+        "description": "Casa de 2 pisos con 3 habitaciones y 2 baños",
+        "price": "100000",
+        "paymentMethod":  "Contado",
+        "financingOptions": ["contado", "credito"],
+        "province": "San Jose",
+        "canton": "San Jose",
+        "distrito": "San Francisco",
+
+      }
+###
+GET http://localhost:9000/api/users/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTZiYmJjYjczMjhkOWJiNjRkZTZhYyIsImlhdCI6MTcwNTQ0NTIzNiwiZXhwIjoxNzA1NTMxNjM2fQ.bM4E0G9iPbix7WCzqM2HtLzFdwrGEelWr_vH3UHv0jg
 
 ###
 DELETE http://localhost:9000/api/users/6595d2a0f71152bc80ed90fa HTTP/1.1
@@ -88,21 +113,65 @@ GET http://localhost:9000/api/offers HTTP/1.1
 ###
 
 # Obtener una oferta específica por ID (GET)
-GET http://localhost:9000/api/offers/ID_de_la_Oferta HTTP/1.1
+GET http://localhost:9000/api/offers/65a8629776a64920b3470945 HTTP/1.1
 
 ###
 
 # Actualizar una oferta por ID (PUT)
-PUT http://localhost:9000/api/offers/ID_de_la_Oferta HTTP/1.1
+POST  http://localhost:9000/api/offers HTTP/1.1
 Content-Type: application/json
 
 {
-  "usuario_id": "Nuevo_ID_Usuario",
-  "propiedad_id": "Nuevo_ID_Propiedad",
-  "cantidad_ofertada": 1500
+  "user_id": "65a861f176a64920b3470914",
+  "owner_id": "65a85d2f76a64920b34708ff",
+  "property_id": "65a8613c76a64920b3470911",
+  "offered_amount": 50000
 }
 
 ###
 
 # Eliminar una oferta por ID (DELETE)
 DELETE http://localhost:9000/api/offers/ID_de_la_Oferta HTTP/1.1
+
+###
+POST http://localhost:9000/api/history HTTP/1.1
+Content-Type: application/json
+
+{
+    "user_id": "65a6bbbcb7328d9bb64de6ac",
+    "property_id": "65a691df0a0645f48951c410",
+    "date": "2021-10-10"
+}
+
+###
+GET http://localhost:9000/api/history/65a6bbbcb7328d9bb64de6ac HTTP/1.1
+
+###
+POST http://localhost:9000/api/favorites HTTP/1.1
+Content-Type: application/json
+
+{
+    "user_id": "65a6bbbcb7328d9bb64de6ac",
+    "property_id": "65a691df0a0645f48951c410"
+}
+
+###
+GET http://localhost:9000/api/favorites/65a6bbbcb7328d9bb64de6ac HTTP/1.1
+
+
+###
+
+# Obtener todas las ofertas (GET)
+GET http://localhost:9000/api/properties HTTP/1.1
+
+###
+
+# Obtener todas las ofertas (GET)
+DELETE  http://localhost:9000/api/searchhistory/65a6bbbcb7328d9bb64de6ac HTTP/1.1
+
+
+
+###
+
+# Obtener todas las ofertas (GET)
+GET http://localhost:9000/api/messages HTTP/1.1

@@ -1,72 +1,79 @@
 /* PreferencesPage.css */
 
-/* Estilos generales de la página */
-  
-  /* Estilos del contenedor principal */
-  .main-container {
-    text-align: center;
-    padding: 20cap;
-  }
-  
-  /* Estilos del contenedor de preferencias */
-  .preference-container {
-    width: 100%;
-    max-width: 600px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin-bottom: 200px;
+}
 
-  .preference-container h1{
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 15px;
-  }
-  
-  /* Estilos de los formularios */
-  .preference-container form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  /* Estilos de etiquetas y selectores */
-  .preference-container label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
-  }
-  
-  .preference-container select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  /* Estilos del botón */
-  .preference-container button {
-    margin-top: 40px;
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .preference-container input {
-    width: 100%; /* O ajusta el ancho según tus necesidades */
-    padding: 8px; /* Espaciado interno */
-    box-sizing: border-box; /* Incluye el relleno en el ancho total */
-  }
+.page-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
 
+.preference-container {
+  width: 100%;
+  max-width: 600px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
 
-  .preference-container button:hover {
-    background-color: #0056b3;
-  }
-  
+.preference-container h1 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.submit-button {
+  margin-top: 40px;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}

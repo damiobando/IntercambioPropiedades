@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState,useEffect  } from 'react';
 import NavbarUser from './components/NavbarUser';
 import Navbar from './components/Navbar';
 import './App.css';
@@ -10,13 +11,20 @@ import Register from './components/pages/Register';
 import AddListing from './components/pages/AddListing';
 import Preference from './components/pages/Preference';
 import MyAccount from './components/pages/MyAccount';
-
+import UserReport from './components/pages/UserReport';
+import NewOffer from './components/pages/NewOffer';
+import UserFeedback from './components/pages/UserFeedback';
+import Listings from './components/pages/Listings';
+import Offer from './components/pages/Offer';
+import ListingInfo from './components/pages/ListingInfo'
+import Notifications from './components/pages/Notifications';
 function App() {
+
+
   return (
     <>
        <Router>
-      {/* <Navbar /> */}
-      <NavbarUser />
+       <NavbarUser />
       <Routes>
         <Route exact path='/' element={<Home/>} />
         <Route path='/sign-up' element={<SignUp/>} />
@@ -24,6 +32,14 @@ function App() {
         <Route path='/addlisting' element={<AddListing/>} />
         <Route path='/preference' element={<Preference/>} />
         <Route path='/myaccount' element={<MyAccount/>} />
+        <Route path= '/report' element={<UserReport/>}/>
+        <Route path= '/offer' element={<NewOffer/>}/>
+        <Route path= '/feedback' element={<UserFeedback/>}/>
+        <Route path='/listings' element={<Listings/>} />
+        <Route path='/newOffer' element={<Offer/>} />
+        <Route path='/propertyInfo/:property_id' element={<ListingInfo/>} />
+        <Route path='/notifications' element={<Notifications/>} />
+
       </Routes>
       <Footer />
       </Router>

@@ -1,0 +1,74 @@
+.property-card-container {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.image-slider {
+  width: 100%;
+  height: 200px; /* Ajusta la altura según sea necesario */
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.image-slider img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease-in-out;
+}
+
+.property-info {
+  text-align: left;
+}
+
+.property-info h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.property-info p {
+  margin-bottom: 10px;
+}
+
+.details-button,
+.favorite-button {
+  background-color: #f67130;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.favorite-button.active {
+  background-color: #45a049;
+}
+
+.details-button:hover,
+.favorite-button:hover {
+  background-color: #fff;
+  color: #f67130;
+  border: 1px solid #f67130;
+}
+
+
+
+.modal-content button {
+  margin-bottom: 10px;
+  background-color: #f67130;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.modal-content button:hover {
+  background-color: #5e3b2f;
+}

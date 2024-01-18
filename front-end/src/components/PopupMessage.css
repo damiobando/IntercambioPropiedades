@@ -1,0 +1,32 @@
+.popup-container {
+    position: fixed;
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(240, 246, 240, 0.9);
+    color: black;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+  }
+  
+  .popup-content {
+    text-align: center;
+  }
+  
+  .popup-content p {
+    margin-bottom: 10px;
+  }
+  
+  .popup-content button {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+
+  

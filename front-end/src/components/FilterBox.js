@@ -7,6 +7,7 @@ import Slider from '@mui/material/Slider';
 import { Button } from './Button';
 import InputAdornment from '@mui/material/InputAdornment';
 import Typography from '@mui/material/Typography'; // Importa Typography
+import { Link } from 'react-router-dom';
 
 
 const propertyTypes = [
@@ -259,7 +260,9 @@ function FilterBox() {
                 />
                 </Box>
                 </div>
-                <Button buttonStyle='btn--outline'>Buscar</Button>
+                <Link to="/listings"> 
+                <button className='btn--outline'>Buscar</button>
+                </Link>
             </div>
         </div>
     </div>

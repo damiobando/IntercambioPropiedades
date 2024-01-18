@@ -1,13 +1,16 @@
 const mongoose = require("mongoose");
 // Schema for Property class
 const propertySchema = new mongoose.Schema({
-    name: String,
-    location: String,
-    extension: String,
-    price: Number,
-    owner_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
-    }
+    title: String,
+    description: String,
+    price: String,
+    paymentMethod: String,
+    financingOptions: Array,
+    province: String,
+    canton: String,
+    distrito: String,
+    images: Array,
+    direccion: String,
+    ownerID: String,
 });
 module.exports = mongoose.model("Property",propertySchema);

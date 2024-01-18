@@ -22,7 +22,47 @@ flex-direction: column;
 align-self: center;
 align-items:center;
 
+
 }
+
+.btn--outline {
+    display: inline-block;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: 2px solid #f67130;
+    border-radius: 5px;
+    background-color: #f67130;
+    color:white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  
+    &:hover {
+      background-color: #fff;
+      color: #f67130;
+      border-color: #f67130;
+    }
+  }
+
+
+  .btn-outline {
+    display: inline-block;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: 2px solid #f67130;
+    border-radius: 5px;
+    background-color: transparent;
+    color: #f67130;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  
+    &:hover {
+      background-color: #f67130;
+      color: #fff;
+      border-color: #f67130;
+    }
+  }
 
 .register_container {
 display: flex;

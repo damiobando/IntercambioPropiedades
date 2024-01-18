@@ -10,8 +10,6 @@ function Home() {
     <>
     <HeroSection/>
     <Card/>
-    <FilterBox/>
-    <Cards2/>
 
     </>
   );

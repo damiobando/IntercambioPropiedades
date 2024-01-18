@@ -1,0 +1,81 @@
+/* PropertyInfoPage.css */
+
+.property-info-page {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+  }
+  .property-title {
+    font-family: 'Helvetica Now', sans-serif;
+    font-size: 40px;
+    margin-bottom: 30px;
+    color: #013c7a; /* Color azul, puedes ajustar según tu preferencia */
+  }
+  .property-details {
+    margin-top: 80px; /* Aumenta el margen superior */
+    margin-bottom: 60px; /* Aumenta el margen inferior */
+  }
+
+  .property-info {
+    width: 60%;
+    text-align: center;
+  }
+  .property-info-item {
+  margin-bottom: 10px;
+  margin-bottom: 10px;
+}
+  .side-container {
+    width: 25%;
+  }
+  
+  .seller-info-container,
+  .message-container,
+  .report-container {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+
+  .message-container button {
+    margin-top: 10px;
+    background-color: #f67130; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    padding: 10px 15px; /* Espaciado interno del botón */
+    font-size: 16px; /* Tamaño de fuente del botón */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar el cursor al pasar sobre el botón */
+    transition: background-color 0.3s; /* Agregar transición al color de fondo */
+  }  
+  .report-container button {
+    margin-top: 10px;
+    background-color: #f67130; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    padding: 10px 15px; /* Espaciado interno del botón */
+    font-size: 16px; /* Tamaño de fuente del botón */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar el cursor al pasar sobre el botón */
+    transition: background-color 0.3s; /* Agregar transición al color de fondo */
+  }  
+
+  
+
+  .report-container button:hover {
+    background-color: #fff; /* Cambiar el color de fondo al pasar el mouse */
+    color: #f67130;   
+    border: 1px solid #f67130;
+  }
+  .message-container button:hover {
+    background-color: #fff; /* Cambiar el color de fondo al pasar el mouse */
+    color: #f67130;
+    border: 1px solid #f67130;
+  }
+  /* Agrega más estilos según sea necesario */
+  
+
+  

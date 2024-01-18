@@ -1,0 +1,23 @@
+/* FeedbackForm.css */
+.feedback-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 20px auto;
+  }
+  
+  .feedback-form-container h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+  }
+  
+  .feedback-form-container .btn-feedback {
+    margin-top: 20px;
+  }
+  
