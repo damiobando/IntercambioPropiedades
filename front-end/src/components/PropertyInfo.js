@@ -4,6 +4,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './PropertyInfo.css';
+import Offer from './Offer';
 import MessageToSeller from './MessageToSeller';
 import ReportPublication from './ReportPublication';
 import { getProperty } from '../api/property';
@@ -95,6 +96,7 @@ const PropertyInfo = () => {
         </div>
         <MessageToSeller sellerId={sellerData._id} />
         <ReportPublication ownerID={sellerData._id} />
+        <Offer propertyId={propertyData._id} />
       </div>
     </div>
   );
