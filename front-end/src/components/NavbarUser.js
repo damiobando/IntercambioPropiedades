@@ -80,7 +80,7 @@ function NavbarUser() {
               </Link>
             </li>    
             <Dropdown>
-            <MenuButton>My account</MenuButton>
+            <MenuButton>Mi Cuenta</MenuButton>
             <Menu slots={{ listbox: Listbox }}>
                 <Link to="/myaccount">
                 <MenuItem onClick={createHandleMenuClick('Profile')}>Profile</MenuItem>
@@ -122,6 +122,7 @@ function NavbarUser() {
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 0.875rem;
     box-sizing: border-box;
+    box-shadow: 0 6px 20px rgba(56, 125, 255, 0.17);
     padding: 6px;
     margin: 12px 0;
     min-width: 200px;
