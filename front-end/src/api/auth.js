@@ -12,4 +12,3 @@ export const loginRequest = ({email, password}) => axios.post(`${API_URL}/login`
 
 //necesitamos la ruta para el logout
 export const logoutRequest = () => axios.post(`${API_URL}/logout`);
-

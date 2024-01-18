@@ -3,6 +3,7 @@ import './Account.css';
 import { findUserByToken } from '../api/users';
 import { getSearchHistory, deleteHistory } from '../api/history';
 import { getFavorites,deleteFavorite } from '../api/favorites';
+import { changePassword } from '../api/users';
 
 function Account() {
   const [activeButton, setActiveButton] = useState('miInformacion');
@@ -74,7 +75,33 @@ function Account() {
       setFavorites([]);
     }
   };
-
+  const handlePasswordChange = async () => {
+    try {
+      const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
+      const user = await findUserByToken(token);
+  
+      // Asegúrate de ajustar esto según tu lógica de manejo de contraseñas en el servidor
+      const res = await changePassword({ currentPassword, newPassword, id: user.data._id });
+  
+      if (res.status === 200) {
+        // Contraseña cambiada con éxito
+        alert('Contraseña cambiada exitosamente');
+  
+        // Limpiar los campos de contraseña
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+          
+      } else {
+        alert('Error al cambiar la contraseña');
+        console.error('Error al cambiar la contraseña:', res.statusText);
+      }
+  
+    } catch (error) {
+      console.error('Error al cambiar la contraseña:', error);
+      alert('Error al cambiar la contraseña');
+    }
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -189,7 +216,10 @@ function Account() {
         )}
         {activeButton === 'cambiarContrasena' && (
           <div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e) => {
+              e.preventDefault(); // Evita la recarga de la página por defecto al enviar el formulario
+              handlePasswordChange(); // Llama a la función que maneja el cambio de contraseña
+            }}>
               <h2>Cambiar Contraseña</h2>
               <div>
                 <label htmlFor="currentPassword">Contraseña Actual:</label>
