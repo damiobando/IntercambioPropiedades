@@ -96,7 +96,7 @@ const PropertyInfo = () => {
         </div>
         <MessageToSeller sellerId={sellerData._id} />
         <ReportPublication ownerID={sellerData._id} />
-        <Offer propertyId={propertyData._id} />
+        <Offer propertyData={propertyData} />
       </div>
     </div>
   );

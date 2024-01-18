@@ -37,6 +37,7 @@ function Account() {
         const messagesResponse = await getMessages(user.data._id); // Llama al API para obtener los mensajes
         setMessages(messagesResponse.data);
         const userProperties = await getUserProperties(user.data._id); // Llama al API para obtener las propiedades del usuario
+        console.log('User Properties:', userProperties); 
         setProperties(userProperties.data);
       } catch (error) {
         console.error(error);
@@ -108,10 +109,6 @@ function Account() {
       const propertyID = item._id;
   
       await deleteProperty(propertyID);
-  
-      const updatedProperties = properties.filter((property) => property._id !== item._id);
-
-      setProperties(updatedProperties);
   
       setConfirmDelete(false);
 
@@ -307,10 +304,10 @@ function Account() {
           <div>
             <h2>Favoritos</h2>
             {favorites.length > 0 ? (
-              <ul>
-                {favorites.map((item) => (
-                  <div className='favoritos-container'> 
-                  <li key={item._id} style={{ marginBottom: '20px ' }}>
+            <ul>
+              {favorites.map((item) => (
+                <div className='favoritos-container' key={item._id}>
+                  <li style={{ marginBottom: '20px ' }}>
                     <p><strong>Titulo:</strong> {item.title}</p>
                     <p><strong>Descripción:</strong> {item.description}</p>
                     <p><strong>Precio:</strong> {item.price}</p>
@@ -320,18 +317,18 @@ function Account() {
                     <hr />
                     <button
                       type="button"
-                      onClick={() => handleDeleteItem(item, 'history')}
+                      onClick={() => handleDeleteItem(item, 'favorites')} // Change 'history' to 'favorites'
                       className="small-delete"
                     >
                       Borrar
                     </button>
                   </li>
-                  </div>
-                ))}
-              </ul>
-            ) : (
-              <p>No hay elementos en la lista de favoritos.</p>
-            )}
+                </div>
+              ))}
+            </ul>
+          ) : (
+            <p>No hay elementos en la lista de favoritos.</p>
+          )}
           </div>
         )}
         {activeButton === 'cambiarContrasena' && (
