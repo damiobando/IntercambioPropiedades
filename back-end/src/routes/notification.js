@@ -20,7 +20,6 @@ router.get("/notifications", (req, res) => {
 
 // Obtener una notificación específica por ID
 router.get("/notifications/:id", (req, res) => {
-    console.log("Paso aqui");
     const { id } = req.params;
     Notification.find({ user_id: id })
         .then((data) => res.json(data))

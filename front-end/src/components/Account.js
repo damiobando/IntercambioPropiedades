@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './Account.css';
-import { findUserByToken } from '../api/users';
 import { getSearchHistory, deleteHistory } from '../api/history';
 import { getFavorites,deleteFavorite } from '../api/favorites';
-import { changePassword } from '../api/users';
-import { getOffers } from '../api/offers';
-import { rejectOffer } from '../api/offers';
-import { updateUser } from '../api/users';
+import {findUserByToken, changePassword, updateUser } from '../api/users';
+import {getOffers, rejectOffer} from '../api/offers';
+import {getMessages} from '../api/message';
+import {getUserProperties, deleteProperty} from '../api/property';
 
 function Account() {
   const [activeButton, setActiveButton] = useState('miInformacion');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [property, setNewProperty] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [userInfo, setUserInfo] = useState({});
   const [searchHistory, setSearchHistory] = useState([]);
@@ -34,6 +34,11 @@ function Account() {
         setFavorites(favoritesResponse.data);
         const offersResponse = await getOffers(user.data._id); // Llama al API para obtener las ofertas
         setOffers(offersResponse.data.offers);
+        const messagesResponse = await getMessages(user.data._id); // Llama al API para obtener los mensajes
+        setMessages(messagesResponse.data);
+        const userProperties = await getUserProperties(user.data._id); // Llama al API para obtener las propiedades del usuario
+        console.log('User Properties:', userProperties); 
+        setProperties(userProperties.data);
       } catch (error) {
         console.error(error);
       }
@@ -61,7 +66,6 @@ function Account() {
 
   const handleAcceptClick = async () => {
     try {
-      console.log('Updated user info:', userInfo);
       const updatedUser = await updateUser(userInfo._id, userInfo);
       alert('Información actualizada exitosamente'); 
       setIsEditing(false);
@@ -75,7 +79,6 @@ function Account() {
 
   const handleDeleteItem = async (item, type) => {
     try {
-      console.log(`Deleted item with ID: ${item._id}`);
       if (type === 'history') {
         await deleteHistory(item._id);
         const updatedHistory = searchHistory.filter((historyItem) => historyItem._id !== item._id);
@@ -87,12 +90,7 @@ function Account() {
         setFavorites(updatedFavorites);
         alert('Favorito eliminado exitosamente');
       } else if (type === 'property') {
-        // Agregado: Lógica para eliminar propiedades
-        // Asegúrate de tener una función en tu API que elimine propiedades por ID
-        // y actualiza la lógica según sea necesario
-        // await deleteProperty(item._id);
-        // const updatedProperties = properties.filter((property) => property._id !== item._id);
-        // setProperties(updatedProperties);
+        setNewProperty(item);
         setConfirmDelete(true);
       }
     } catch (error) {
@@ -101,14 +99,23 @@ function Account() {
   };
 
   const handleConfirmDelete = async () => {
-    // Agregado: Lógica para confirmar la eliminación de propiedades
-    // Asegúrate de tener una función en tu API que elimine propiedades por ID
-    // y actualiza la lógica según sea necesario
-    // await deleteProperty(item._id);
-    // const updatedProperties = properties.filter((property) => property._id !== item._id);
-    // setProperties(updatedProperties);
-    setConfirmDelete(false);
-    alert('Propiedad eliminada exitosamente');
+    const item = property;
+    try {
+      if (!item._id) {
+        console.error('Invalid _id:', item._id);
+        return;
+      }
+  
+      const propertyID = item._id;
+  
+      await deleteProperty(propertyID);
+  
+      setConfirmDelete(false);
+
+      alert('Propiedad eliminada exitosamente');
+    } catch (error) {
+      console.error('Error deleting property:', error);
+    }
   };
 
   const handleDeleteAll = async (type) => {
@@ -297,10 +304,10 @@ function Account() {
           <div>
             <h2>Favoritos</h2>
             {favorites.length > 0 ? (
-              <ul>
-                {favorites.map((item) => (
-                  <div className='favoritos-container'> 
-                  <li key={item._id} style={{ marginBottom: '20px ' }}>
+            <ul>
+              {favorites.map((item) => (
+                <div className='favoritos-container' key={item._id}>
+                  <li style={{ marginBottom: '20px ' }}>
                     <p><strong>Titulo:</strong> {item.title}</p>
                     <p><strong>Descripción:</strong> {item.description}</p>
                     <p><strong>Precio:</strong> {item.price}</p>
@@ -310,18 +317,18 @@ function Account() {
                     <hr />
                     <button
                       type="button"
-                      onClick={() => handleDeleteItem(item, 'history')}
+                      onClick={() => handleDeleteItem(item, 'favorites')} // Change 'history' to 'favorites'
                       className="small-delete"
                     >
                       Borrar
                     </button>
                   </li>
-                  </div>
-                ))}
-              </ul>
-            ) : (
-              <p>No hay elementos en la lista de favoritos.</p>
-            )}
+                </div>
+              ))}
+            </ul>
+          ) : (
+            <p>No hay elementos en la lista de favoritos.</p>
+          )}
           </div>
         )}
         {activeButton === 'cambiarContrasena' && (
@@ -399,10 +406,11 @@ function Account() {
             <h2>Mis Mensajes</h2>
             {messages.length > 0 ? (
               <ul>
-                {messages.map((message) => (
-                  <li key={message._id} style={{ marginBottom: '20px' }}>
-                    <p><strong>Usuario:</strong> {message.user}</p>
-                    <p><strong>Detalle del Mensaje:</strong> {message.messageDetail}</p>
+                {messages.map((message,index) => (
+                  <li key={index} style={{ marginBottom: '20px' }}>
+                    <p><strong>Usuario:</strong> {message.sender_name}</p>
+                    <p><strong>Detalle del Mensaje:</strong> {message.content}</p>
+                    <p><strong>Contacto:</strong> {message.contact}</p>
                     <hr />
                   </li>
                 ))}

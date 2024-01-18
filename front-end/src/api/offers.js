@@ -4,3 +4,4 @@ const API_URL = "http://localhost:9000/api";
 
 export const getOffers = (id) => axios.get(`${API_URL}/offers/${id}`);
 export const rejectOffer = (id) => axios.delete(`${API_URL}/offers/${id}`);
+export const addOffer = (offer) => axios.post(`${API_URL}/offers`, offer);

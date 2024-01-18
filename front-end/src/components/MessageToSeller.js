@@ -18,7 +18,8 @@ const MessageToSeller = ({ sellerId }) => {
     const messageData = {
       receiver_id: sellerId,
       content: message,
-      sender_id: user.data._id,
+      sender_name: user.data.name,
+      contact: user.data.email,
       date: currentDate.toISOString().slice(0, 10),
     };
     console.log(messageData);

@@ -8,7 +8,7 @@ import Offer from './Offer';
 import MessageToSeller from './MessageToSeller';
 import ReportPublication from './ReportPublication';
 import { getProperty } from '../api/property';
-import { findUserById } from '../api/users';
+import { findUserById, findUserByToken } from '../api/users';
 import { addHistory } from '../api/history';
 
 const PropertyInfo = () => {
@@ -27,17 +27,17 @@ const PropertyInfo = () => {
   
         // Obtener la fecha actual
         const currentDate = new Date();
-        
+        const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
+        const user = await findUserByToken(token);
         // Crear un objeto de datos para el historial
         const historyData = {
-          user_id: tempSellerData.data._id,
+          user_id: user.data._id,
           property_id: realID,
           date: currentDate.toISOString().slice(0, 10), // Recortar para obtener solo la fecha
         };
   
         // Agregar al historial
         const resHistory = await addHistory(historyData);
-        console.log(resHistory.data);
       } catch (error) {
         console.error(error);
       }
@@ -96,7 +96,7 @@ const PropertyInfo = () => {
         </div>
         <MessageToSeller sellerId={sellerData._id} />
         <ReportPublication ownerID={sellerData._id} />
-        <Offer propertyId={propertyData._id} />
+        <Offer propertyData={propertyData} />
       </div>
     </div>
   );

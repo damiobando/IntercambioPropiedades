@@ -1,30 +1,39 @@
-// OfferProperty.js
 import React, { useState } from 'react';
-import './PropertyInfo.css'
+import './PropertyInfo.css';
+import { findUserByToken } from '../api/users';
+import { addOffer } from '../api/offers';
 
-const Offer = ({ propertyId }) => {
+const Offer = ({ propertyData }) => {
   const [offeredAmount, setOfferedAmount] = useState('');
   const [offerDetail, setOfferDetail] = useState('');
 
   const handleOfferSubmit = async (e) => {
     e.preventDefault();
+    const token = document.cookie.split('; ').find((row) => row.startsWith('token=')).split('=')[1];
+    const user = await findUserByToken(token);
+    console.log(user);
 
-    // Realiza la lógica necesaria para enviar la oferta al servidor
     try {
       const offerData = {
-        propertyId,
-        offeredAmount,
-        offerDetail,
-        // Otros campos necesarios para la oferta
+        oferter: user.data.name,
+        contact: user.data.email,
+        owner_id: propertyData.ownerID,
+        property_id: propertyData._id,
+        offeredAmount: offeredAmount,
+        offerDetail: offerDetail,
       };
 
-     // const response = await makeOffer(offerData);
-      //console.log(response.data); // Maneja la respuesta según tus necesidades
+      const res = await addOffer(offerData);
+      console.log(res);
 
-      // Puedes también realizar alguna acción después de enviar la oferta
+      // Clear the form data after successful submission
+      setOfferedAmount('');
+      setOfferDetail('');
+
+      // Show an alert to the user
+      alert('Oferta enviada exitosamente');
     } catch (error) {
-      //console.error(error);
-      // Maneja el error según tus necesidades
+      console.error(error);
     }
   };
 
