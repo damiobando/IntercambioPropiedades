@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState,useEffect  } from 'react';
 import NavbarUser from './components/NavbarUser';
 import Navbar from './components/Navbar';
 import './App.css';
@@ -17,11 +18,12 @@ import Listings from './components/pages/Listings';
 import Offer from './components/pages/Offer';
 import ListingInfo from './components/pages/ListingInfo'
 function App() {
+
+
   return (
     <>
        <Router>
-      {/* <Navbar /> */}
-      <NavbarUser />
+       <NavbarUser />
       <Routes>
         <Route exact path='/' element={<Home/>} />
         <Route path='/sign-up' element={<SignUp/>} />

@@ -5,6 +5,7 @@ const { createAccessToken } = require("../libs/jwt");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 
+
 // create user
 router.post("/register", async (req, res) => {
   try {
@@ -55,7 +56,6 @@ router.post("/login", async (req, res) => {
 });
 //ahora necesitamos el logout
 router.post("/logout", (req, res) => {
-  res.clearCookie("token");
   res.json({ message: "Logout successful" });
   console.log("Logout successful")
 });

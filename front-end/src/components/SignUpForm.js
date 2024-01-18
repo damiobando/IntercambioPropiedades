@@ -1,4 +1,3 @@
-// SignUpForm.js
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Input from '@mui/material/Input';
@@ -9,17 +8,19 @@ import TextField from '@mui/material/TextField';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
-import './SignUpForm.css';
-import Alert from './Alert'; // Importa el nuevo componente
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import { loginRequest } from '../api/auth';
-
+import './SignUpForm.css';
 function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [alert, setAlert] = useState(null);
+  const [alertSeverity, setAlertSeverity] = useState('success'); // Por defecto, success
+  const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -35,8 +36,9 @@ function SignUpForm() {
     setPassword(event.target.value);
   };
 
-  const showAlert = (message) => {
+  const showAlert = (message, severity = 'success') => {
     setAlert(message);
+    setAlertSeverity(severity);
 
     // Ocultar la alerta después de 3 segundos
     setTimeout(() => {
@@ -47,21 +49,26 @@ function SignUpForm() {
   const handleSignIn = async () => {
     try {
       const res = await loginRequest({ email, password });
-      
+
       if (res.status === 200) {
         // Login exitoso
         const token = res.data.token;
         document.cookie = `token=${token}`;
         console.log('Login successful');
-        showAlert('Login successful');
+        showAlert('Login successful', 'success');
+
+        // Realizar la navegación después de mostrar la alerta
+        setTimeout(() => {
+          navigate('/listings'); 
+        }, 3000);
       } else {
         // Error en el login
         console.error('Error en el login:', res.data.message);
-        showAlert(`Error: ${res.data.message}`);
+        showAlert(`Error: ${res.data.message}`, 'error');
       }
     } catch (error) {
       console.error('Error en el login:', error);
-      showAlert('Datos incorrectos');
+      showAlert('Datos incorrectos', 'error');
     }
   };
 
@@ -103,22 +110,27 @@ function SignUpForm() {
             </FormControl>
           </Box>
           <div className='btn_register'>
-          <Link to="/"> 
             <button className='btn--outline' onClick={handleSignIn}>
               SIGN IN
             </button>
-          </Link>
           </div>
-          {alert && <Alert message={alert} onClose={() => setAlert(null)} />}
+          <div style={{ marginTop: '20px' }}>
+          {alert && (
+            <Alert severity={alertSeverity}>
+              <AlertTitle>{alertSeverity === 'success' ? 'Success' : 'Error'}</AlertTitle>
+              {alert}
+            </Alert>
+          )}
+        </div>
         </div>
         <div className='register_container'>
           <h1> No tienes cuenta todavía?</h1>
           <p>Crea una ahorita mismo</p>
           <div className='btn_register'>
             <Link to="/register">
-            <button className='btn-outline' to='/register'>
-              Registrarse
-            </button>
+              <button className='btn-outline' to='/register'>
+                Registrarse
+              </button>
             </Link>
           </div>
         </div>
