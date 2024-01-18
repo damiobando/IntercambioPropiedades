@@ -46,8 +46,7 @@ router.post("/login", async (req, res) => {
 
     // Configurar la cookie y enviar la respuesta
     res.cookie("token", token, {httpOnly: false, secure: false});
-    
-    console.log(token)
+  
     console.log("Login successful");
     res.json({ id: UserFound._id, name: UserFound.name, email: UserFound.email, token: token });
   } catch (error) {
@@ -59,6 +58,41 @@ router.post("/logout", (req, res) => {
   res.json({ message: "Logout successful" });
   console.log("Logout successful")
 });
+//haremos una ruta para verificar la contraseña
+router.post("/change-password", async (req, res) => {
+  const { currentPassword } = req.body;
+  const newPassword = currentPassword.newPassword;
+  const id = currentPassword.id;
+  try {
+    // Verifica si el usuario existe
+    const userFound = await userSchema.findOne({ _id: id});
+    if (!userFound) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    // Compara la contraseña proporcionada con la almacenada en la base de datos
+    const passwordMatch = bycript.compareSync(currentPassword.currentPassword, userFound.password);
+
+    if (passwordMatch) {
+      console.log("Password matched");
+
+      // Hash de la nueva contraseña
+      const passwordHash = bycript.hashSync(newPassword, 10)
+
+      // Actualiza la contraseña del usuario en la base de datos
+      await userSchema.updateOne({ _id: id }, { password: passwordHash });
+
+      return res.status(200).json({ message: "Password matched and updated successfully" });
+    } else {
+      return res.status(401).json({ message: "Incorrect password" });
+    }
+  } catch (error) {
+    console.error('Error checking or updating password:', error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+//VAMOS A HACER UNA RUTA PARA CAMBIAR LA CONTRASEÑA
 
 // get all users
 router.get("/users", (req, res) => {
