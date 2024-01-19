@@ -88,7 +88,7 @@ const PropertyCard = ({ property, userId }) => {
       <div className="property-info">
         <h2>{property.title}</h2>
         <p>{property.description}</p>
-        <p>Precio: {property.price}</p>
+        <p> <strong>Precio: $  {property.price} </strong></p>
         <Link to={`/propertyInfo/${property._id}`}>
           <button className="details-button">Ver Detalles</button>
         </Link>
