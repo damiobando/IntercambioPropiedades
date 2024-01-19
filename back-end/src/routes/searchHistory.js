@@ -15,23 +15,29 @@ router.post("/history", (req, res) => {
 
 // Obtener un historial de búsqueda específico por ID
 router.get("/history/:user_id", async (req, res) => {
-    const user_id = req.params.user_id;
-  
-    try {
+  const user_id = req.params.user_id;
+
+  try {
       const searchHistory = await SearchHistory.find({ user_id });
       // Array para almacenar los detalles de las propiedades
       const propertyDetailsArray = [];
+
       // Recorre el historial y busca detalles de cada propiedad
       for (const historyItem of searchHistory) {
-        const propertyDetails = await Property.findById(historyItem.property_id);
-        propertyDetailsArray.push(propertyDetails);
+          const propertyDetails = await Property.findById(historyItem.property_id);
+
+          // Verifica si propertyDetails no es null antes de agregarlo al array
+          if (propertyDetails !== null) {
+              propertyDetailsArray.push(propertyDetails);
+          }
       }
-  
+
       res.json(propertyDetailsArray);
-    } catch (error) {
+  } catch (error) {
       res.status(400).json({ message: error.message });
-    }
-  });
+  }
+});
+
 
 // Actualizar un historial de búsqueda por ID
 router.put("/searchhistory/:id", (req, res) => {

@@ -18,7 +18,7 @@ function NavbarUser() {
   const closeMobileMenu = () => setClick(false);
 
   const shouldRenderNavbar = () => {
-    const excludedRoutes = ['/sign-up', '/'];
+    const excludedRoutes = ['/sign-up', '/', '/register'];
     return !excludedRoutes.includes(location.pathname);
   };
 

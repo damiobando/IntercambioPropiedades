@@ -31,16 +31,25 @@ router.get("/offers/:id", async (req, res) => {
             // Obtener información de la propiedad
             const propertyInfo = await Property.findById(offer.property_id);
 
-            return {
-                offerorName: offer.oferter,
-                offerorEmail: offer.contact,
-                propertyTitle: propertyInfo.title,
-                offeredAmount: offer.offeredAmount,
-                offerDetail: offer.offerDetail,
-                offerId: offer._id,
-            };
+            // Verifica si propertyInfo no es null antes de agregarlo al array
+            if (propertyInfo !== null) {
+                return {
+                    offerorName: offer.oferter,
+                    offerorEmail: offer.contact,
+                    propertyTitle: propertyInfo.title,
+                    offeredAmount: offer.offeredAmount,
+                    offerDetail: offer.offerDetail,
+                    offerId: offer._id,
+                };
+            } else {
+                return null; // O maneja este caso según tus necesidades
+            }
         }));
-        res.json({ offers: formattedOffers });
+
+        // Filtra los valores nulos antes de enviar la respuesta
+        const filteredOffers = formattedOffers.filter(offer => offer !== null);
+
+        res.json({ offers: filteredOffers });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Error al obtener las ofertas del usuario' });
