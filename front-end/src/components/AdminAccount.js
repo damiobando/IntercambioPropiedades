@@ -21,6 +21,7 @@ function AdminAccount() {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [messages, setMessages] = useState([]); // Agregado: estado para mensajes
   const [properties, setProperties] = useState([]); // Agregado: estado para propiedades
+  const [reports, setReports] = useState([]); // Nuevo estado para los reportes
 
   useEffect(() => {
     async function fetchData() {
@@ -34,6 +35,16 @@ function AdminAccount() {
         setFavorites(favoritesResponse.data);
         const offersResponse = await getOffers(user.data._id); // Llama al API para obtener las ofertas
         setOffers(offersResponse.data.offers);
+        const messagesResponse = await messages(user.data._id); // Llama al API para obtener los mensajes
+        setMessages(messagesResponse.data);
+        const userProperties = await properties(user.data._id); // Llama al API para obtener las propiedades del usuario
+
+        // console.log('User Properties:', userProperties); 
+        // setProperties(userProperties.data);
+        // Obtener los reportes
+        // const reportsResponse = await getReports(); // Ajusta según tu API
+        // setReports(reportsResponse.data);
+
       } catch (error) {
         console.error(error);
       }
@@ -175,6 +186,22 @@ function AdminAccount() {
     }
   };
 
+  const handleAcceptReport = async (reportId) => {
+    try {
+      // Lógica para aceptar el reporte (puedes llamar a una función en tu API)
+      // await acceptReport(reportId); // Ajusta según tu API
+
+      // Actualiza el estado para reflejar el reporte aceptado
+      const updatedReports = reports.filter((report) => report._id !== reportId);
+      setReports(updatedReports);
+
+      alert('Reporte aceptado exitosamente');
+    } catch (error) {
+      console.error(error);
+      alert('Error al aceptar el reporte');
+    }
+  };
+
 
 
   return (
@@ -199,7 +226,7 @@ function AdminAccount() {
         <button onClick={() => handleButtonClick('misMensajes')} className={activeButton === 'misMensajes' ? 'active' : ''}>
           Mis Mensajes
         </button>
-        <button onClick={() => handleButtonClick('misPropiedades')} className={activeButton === 'misPropiedades' ? 'active' : ''}>
+        <button onClick={() => handleButtonClick('todasLasPropiedades')} className={activeButton === 'todasLasPropiedades' ? 'active' : ''}>
           Todas las Propiedades
         </button>
         <button onClick={() => handleButtonClick('reportes')} className={activeButton === 'reportes' ? 'active' : ''}>
@@ -416,37 +443,27 @@ function AdminAccount() {
             )}
           </div>
         )}
-        {activeButton === 'misPropiedades' && (
-          <div>
-            <h2>Mis Propiedades</h2>
-            {properties.length > 0 ? (
-              <ul>
-                {properties.map((property) => (
-                  <div className='favoritos-container' key={property._id}>
-                    <li style={{ marginBottom: '20px' }}>
-                      <p><strong>Titulo:</strong> {property.title}</p>
-                      <p><strong>Descripción:</strong> {property.description}</p>
-                      <p><strong>Precio:</strong> {property.price}</p>
-                      <p><strong>Provincia:</strong> {property.province}</p>
-                      <p><strong>Cantón:</strong> {property.canton}</p>
-                      <p><strong>Distrito:</strong> {property.distrito}</p>
-                      <hr />
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteItem(property, 'property')}
-                        className="small-delete"
-                      >
-                        Eliminar Publicación
-                      </button>
-                    </li>
-                  </div>
-                ))}
-              </ul>
-            ) : (
-              <p>No hay propiedades disponibles.</p>
-            )}
-          </div>
-        )}
+        {activeButton === 'todasLasPropiedades' && (
+        <div>
+          <h2>Todas las Propiedades</h2>
+          {/* Agrega una lógica similar a la sección de 'misPropiedades' para mostrar todas las propiedades */}
+          {properties.length > 0 ? (
+            <ul>
+              {properties.map((property) => (
+                <div className='favoritos-container' key={property._id}>
+                  <li style={{ marginBottom: '20px' }}>
+                    {/* ... (muestra la información de la propiedad) */}
+                    <hr />
+                    {/* ... (botón para eliminar publicación) */}
+                  </li>
+                </div>
+              ))}
+            </ul>
+          ) : (
+            <p>No hay propiedades disponibles.</p>
+          )}
+        </div>
+      )}
 
         {confirmDelete && (
           <div className="delete-confirmation">
@@ -455,7 +472,31 @@ function AdminAccount() {
             <button onClick={() => setConfirmDelete(false)}>No</button>
           </div>
         )}
-          
+          {activeButton === 'reportes' && (
+        <div>
+          <h2>Reportes</h2>
+          {reports.length > 0 ? (
+            <ul>
+              {reports.map((report) => (
+                <li key={report._id} style={{ marginBottom: '20px' }}>
+                  <p><strong>Usuario que hizo el reporte:</strong> {report.userName}</p>
+                  <p><strong>Propiedad Reportada:</strong> {report.propertyTitle}</p>
+                  <p><strong>Descripción del Reporte:</strong> {report.description}</p>
+                  <button
+                    type="button"
+                    onClick={() => handleAcceptReport(report._id)}
+                  >
+                    Aceptar Reporte
+                  </button>
+                  <hr />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No hay reportes disponibles.</p>
+          )}
+        </div>
+      )}
           
         {/* Agrega más contenido según sea necesario */}
       </div>
