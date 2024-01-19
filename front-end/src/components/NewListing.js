@@ -46,16 +46,21 @@ function NewListing() {
 
   const handleAddProperty = async (event) => {
     event.preventDefault();
-
+  
+    // Validar que todos los campos obligatorios estén llenos
+    if (!title || !description || !price || !selectedOption || !province || !canton || !distrito) {
+      alert('Por favor, completa todos los campos obligatorios.');
+      return;
+    }
+  
     try {
       const formData = new FormData();
       imageFiles.forEach((file) => {
         formData.append('images', file);
       });
-
+  
       const response = await axios.post('http://localhost:9000/upload', formData);
-      const imageUrls = response.data;// Ajustamos para obtener las URLs
-
+      const imageUrls = response.data;
       const token = getTokenFromCookie();
       if (!token) {
         console.error('No se pudo encontrar el token en las cookies.');
@@ -70,14 +75,15 @@ function NewListing() {
         province: province,
         canton: canton,
         distrito: distrito,
-        images: imageUrls, 
+        images: imageUrls,
         direccion: direccion,
         ownerID: token,
       };
-
+  
       const res = await addProperty(propertyData);
       console.log(res);
-
+  
+      // Limpiar los campos después de agregar la propiedad
       setTitle('');
       setDescription('');
       setPrice('');
@@ -88,17 +94,18 @@ function NewListing() {
       setCanton('');
       setDistrito('');
       setDireccion('');
-
+  
       setShowSuccessModal(true);
-
+      alert('Propiedad agregada exitosamente!');
+  
       setTimeout(() => {
         setShowSuccessModal(false);
         setRedirectTo('/listings');
-      }, 3000);
+      }, 2000);
     } catch (error) {
       console.error('Error al agregar la propiedad:', error);
     }
-  };;
+  };
   if (redirectTo) {
     return <Navigate to={redirectTo} />;
   }
@@ -164,16 +171,9 @@ function NewListing() {
                 onChange={() => handleCheckboxChange('financiamiento')} 
               />
               <label>Financiamiento</label>
-              {/* Agrega más opciones según sea necesario */}
             </div>
           </div>
-          <div className='form-group'>
-            <label>Otro:</label>
-            <input type='text' />
-          </div>
-          
         </div>
-
         <div className='media-container'>
           <h1>Fotos de la propiedad</h1>
           <input type='file' multiple onChange={handleImageChange} />          
@@ -188,33 +188,36 @@ function NewListing() {
             ))}
           </div>
         </div>
-
-        <div className='location-container'>
+          <div className='location-container'>
         <h1>Ubicación de la propiedad</h1>
-
-        <div className='form-group'>
+          <div className='form-group'>
             <label>Provincia</label>
-            <input type='text' value={province} onChange={(e) => setProvince(e.target.value)} required />
-        </div>
+            <select value={province} onChange={(e) => setProvince(e.target.value)} required>
+              <option value=''>Selecciona...</option>
+              <option value='San José'>San José</option>
+              <option value='Alajuela'>Alajuela</option>
+              <option value='Heredia'>Heredia</option>
+              <option value='Cartago'>Cartago</option>
+              <option value='Guanacaste'>Guanacaste</option>
+              <option value='Puntarenas'>Puntarenas</option>
+              <option value='Limón'>Limón</option>
+            </select>
+          </div>
+    <div className='form-group'>
+      <label>Cantón</label>
+      <input type='text' value={canton} onChange={(e) => setCanton(e.target.value)} required />
+    </div>
 
-        <div className='form-group'>
-            <label>Cantón</label>
-            <input type='text' value={canton} onChange={(e) => setCanton(e.target.value)} required />
-        </div>
+    <div className='form-group'>
+      <label>Distrito</label>
+      <input type='text' value={distrito} onChange={(e) => setDistrito(e.target.value)} required />
+    </div>
 
-        <div className='form-group'>
-            <label>Distrito</label>
-            <input type='text' value={distrito} onChange={(e) => setDistrito(e.target.value)} required />
-        </div>
-        <div className='form-group'>
-        <label>Dirección extra opcional</label>
-        <textarea
-          rows='4'
-          value={direccion}
-          onChange={(e) => setDireccion(e.target.value)}
-        ></textarea>
-      </div>
-        </div>
+    <div className='form-group'>
+      <label>Dirección extra opcional</label>
+      <textarea rows='4' value={direccion} onChange={(e) => setDireccion(e.target.value)}></textarea>
+    </div>
+  </div>
         <div className='form-group'>
             <button type='submit'>
                 Agregar Propiedad

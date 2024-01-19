@@ -1,62 +1,86 @@
-// OfferForm.js
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import Input from '@mui/material/Input';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
-import { Button } from './Button';
-import './Offer.css'; // Importa los estilos
+import './PropertyInfo.css';
+import { findUserByToken } from '../api/users';
+import { addOffer } from '../api/offers';
+import { addNotification } from '../api/notification';
 
-function Offer({ onOfferSubmit }) {
-  const [offerData, setOfferData] = useState({
-    amount: '',
-    description: '',
-  });
-
-  const handleInputChange = (field) => (event) => {
-    setOfferData({ ...offerData, [field]: event.target.value });
-  };
-
-  const handleOfferSubmit = () => {
-    // Aquí puedes realizar alguna acción con los datos de la oferta
-    // Puedes enviarlos al servidor, mostrar una alerta, etc.
-    onOfferSubmit(offerData);
-    // También puedes limpiar el estado o cerrar el componente después de enviar la oferta.
-    setOfferData({
-      amount: '',
-      description: '',
-    });
+const Offer = ({ propertyData }) => {
+  const [offeredAmount, setOfferedAmount] = useState('');
+  const [offerDetail, setOfferDetail] = useState('');
+  const currentDate = new Date();
+  const handleOfferSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Validar que ambos campos no estén vacíos
+    if (!offeredAmount || !offerDetail) {
+      console.error('Por favor, completa todos los campos.');
+      return;
+    }
+  
+    const token = document.cookie.split('; ').find((row) => row.startsWith('token=')).split('=')[1];
+    const user = await findUserByToken(token);
+  
+    try {
+      const offerData = {
+        oferter: user.data.name,
+        contact: user.data.email,
+        owner_id: propertyData.ownerID,
+        property_id: propertyData._id,
+        offeredAmount: offeredAmount,
+        offerDetail: offerDetail,
+      };
+  
+      const res = await addOffer(offerData);
+      console.log(res);
+  
+      const notificationData = {
+        user_id: propertyData.ownerID,
+        content: "Ha recibido una nueva oferta de la propiedad: " + propertyData.title + "",
+        date: currentDate.toISOString().slice(0, 10),
+        read: false,
+      };
+  
+      const resNoti = await addNotification(notificationData);
+  
+      // Limpiar los campos del formulario después de una presentación exitosa
+      setOfferedAmount('');
+      setOfferDetail('');
+  
+      // Mostrar una alerta al usuario
+      alert('Oferta enviada exitosamente');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
-    <div className='offer-form-container'>
-      <h2>Hacer una Oferta</h2>
-      <Box sx={{ '& > :not(style)': { m: 1 } }}>
-        <FormControl sx={{ m: 1, width: '25ch' }} variant='standard'>
-          <InputLabel htmlFor='offer-amount'>Monto de la Oferta</InputLabel>
-          <Input
-            id='offer-amount'
-            value={offerData.amount}
-            onChange={handleInputChange('amount')}
+    <div className="message-container">
+      <h2>Realizar Oferta</h2>
+      <form onSubmit={handleOfferSubmit}>
+        <div>
+          <label htmlFor="offeredAmount">Monto Ofrecido:</label>
+          <input
+            type="number"
+            id="offeredAmount"
+            value={offeredAmount}
+            onChange={(e) => setOfferedAmount(e.target.value)}
+            required
           />
-        </FormControl>
-        <FormControl sx={{ m: 1, width: '25ch' }} variant='standard'>
-          <InputLabel htmlFor='offer-description'>Descripción de la Oferta</InputLabel>
-          <Input
-            id='offer-description'
-            value={offerData.description}
-            onChange={handleInputChange('description')}
+        </div>
+        <div>
+          <label htmlFor="offerDetail">Detalle de la Oferta:</label>
+          <textarea
+            id="offerDetail"
+            value={offerDetail}
+            onChange={(e) => setOfferDetail(e.target.value)}
+            required
           />
-        </FormControl>
-      </Box>
-      <div className='btn-offer'>
-        <Button buttonStyle='btn--outline' onClick={handleOfferSubmit}>
-          Hacer Oferta
-        </Button>
-      </div>
+        </div>
+        {/* Agrega más campos según sea necesario */}
+        <button type="submit">Enviar Oferta</button>
+      </form>
     </div>
   );
-}
+};
 
 export default Offer;

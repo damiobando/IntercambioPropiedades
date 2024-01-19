@@ -16,6 +16,7 @@ import Listings from './components/pages/Listings';
 import Offer from './components/pages/Offer';
 import ListingInfo from './components/pages/ListingInfo'
 import Notifications from './components/pages/Notifications';
+import Admin from './components/pages/Admin';
 function App() {
 
 
@@ -32,12 +33,12 @@ function App() {
         <Route path='/myaccount' element={<MyAccount/>} />
         <Route path= '/report' element={<UserReport/>}/>
         <Route path= '/offer' element={<NewOffer/>}/>
-        <Route path= '/feedback' element={<UserFeedback/>}/>
+        <Route path= '/contact-us' element={<UserFeedback/>}/>
         <Route path='/listings' element={<Listings/>} />
         <Route path='/newOffer' element={<Offer/>} />
         <Route path='/propertyInfo/:property_id' element={<ListingInfo/>} />
         <Route path='/notifications' element={<Notifications/>} />
-
+        <Route path='/admin' element={<Admin/>} />
       </Routes>
       <Footer />
       </Router>

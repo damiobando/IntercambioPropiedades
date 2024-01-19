@@ -11,11 +11,19 @@ router.post("/messages", (req, res) => {
         .catch((error) => res.status(400).json({ message: error.message }));
 });
 
-// Get all messages
-router.get("/messages", (req, res) => {
-    Message.find()
-        .then((data) => res.json(data))
-        .catch((error) => res.status(400).json({ message: error.message }));
+
+router.get("/messages/:id", async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        // Busca todos los mensajes con el user_id igual al ID del usuario
+        const messages = await Message.find({ receiver_id: userId });
+
+        // Devuelve los mensajes encontrados
+        res.json(messages);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 });
 
 // Get a specific message by ID

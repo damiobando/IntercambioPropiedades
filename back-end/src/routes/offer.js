@@ -25,24 +25,31 @@ router.get("/offers/:id", async (req, res) => {
         const id = req.params.id;
         // Obtener todas las ofertas del usuario
         const userOffers = await Offer.find({ owner_id: id });
-
         // Crear un nuevo array con la información deseada
         const formattedOffers = await Promise.all(userOffers.map(async (offer) => {
-            // Obtener información del usuario ofertador
-            const userOfferor = await User.findById(offer.user_id);
-
+            // Obtener información del usuario ofertado
             // Obtener información de la propiedad
             const propertyInfo = await Property.findById(offer.property_id);
 
-            return {
-                offerorName: userOfferor.name,
-                offerorEmail: userOfferor.email,
-                propertyTitle: propertyInfo.title,
-                offeredAmount: offer.offered_amount,
-                offerId: offer._id,
-            };
+            // Verifica si propertyInfo no es null antes de agregarlo al array
+            if (propertyInfo !== null) {
+                return {
+                    offerorName: offer.oferter,
+                    offerorEmail: offer.contact,
+                    propertyTitle: propertyInfo.title,
+                    offeredAmount: offer.offeredAmount,
+                    offerDetail: offer.offerDetail,
+                    offerId: offer._id,
+                };
+            } else {
+                return null; // O maneja este caso según tus necesidades
+            }
         }));
-        res.json({ offers: formattedOffers });
+
+        // Filtra los valores nulos antes de enviar la respuesta
+        const filteredOffers = formattedOffers.filter(offer => offer !== null);
+
+        res.json({ offers: filteredOffers });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Error al obtener las ofertas del usuario' });

@@ -6,6 +6,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { registerRequest } from '../api/auth';
+import { useNavigate } from 'react-router-dom';
 
 function RegisterForm() {
   const [firstName, setFirstName] = useState('');
@@ -14,7 +15,9 @@ function RegisterForm() {
   const [telefono, setTelefono] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [passwordError, setPasswordError] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [button, setButton] = useState(true);
+  const navigate = useNavigate();
 
   const showButton = () => {
     if (window.innerWidth <= 960) {
@@ -33,6 +36,11 @@ function RegisterForm() {
     return regex.test(contrasenna);
   };
 
+  const isEmailValid = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handlePasswordChange = (value) => {
     setPassword(value);
 
@@ -43,10 +51,25 @@ function RegisterForm() {
     }
   };
 
+  const handleEmailChange = (value) => {
+    setEmail(value);
+
+    if (!isEmailValid()) {
+      setEmailError('Ingrese un correo electrónico válido.');
+    } else {
+      setEmailError('');
+    }
+  };
+
   const handleButtonClick = async () => {
     try {
       if (!firstName || !telefono || !email || !contrasenna) {
         alert('Todos los campos son obligatorios.');
+        return;
+      }
+
+      if (!isEmailValid()) {
+        alert('Por favor, ingrese un correo electrónico válido.');
         return;
       }
 
@@ -72,6 +95,7 @@ function RegisterForm() {
         document.cookie = `token=${token}`;
         console.log('Successful registration');
         alert('Registro Exitoso');
+        navigate('/listings');
       } else {
         console.error('Error on registration', res.data.message);
         alert(`Error en el registro: ${res.data.message}`);
@@ -122,7 +146,9 @@ function RegisterForm() {
               id='email'
               label='Correo Electrónico'
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => handleEmailChange(e.target.value)}
+              error={Boolean(emailError)}
+              helperText={emailError}
             />
             <TextField
               required
@@ -145,9 +171,9 @@ function RegisterForm() {
             <FormControlLabel required control={<Checkbox />} label='Acepta los Términos y Condiciones' />
           </FormGroup>
           <button
-            className={`btn--outline ${isPasswordValid() ? '' : 'disabled'}`}
+            className={`btn--outline ${isPasswordValid() && isEmailValid() ? '' : 'disabled'}`}
             onClick={handleButtonClick}
-            disabled={!isPasswordValid()}
+            disabled={!isPasswordValid() || !isEmailValid()}
           >
             Crear cuenta
           </button>

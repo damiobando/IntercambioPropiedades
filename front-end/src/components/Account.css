@@ -123,3 +123,137 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
 }
+
+/* Estilos para la confirmación de eliminación */
+.delete-confirmation {
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.delete-confirmation p {
+  margin-bottom: 10px;
+}
+
+.delete-confirmation button {
+  width: 40%;
+  padding: 10px;
+  margin-right: 10px;
+  background-color: #f67130;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Estilos para la lista de mensajes */
+.info-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.info-container li {
+  width: auto;
+  padding: 20px;
+  background-color: #f2e2da;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+/* Ajusta según sea necesario */
+.info-container hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 0;
+  border-top: 1px solid #ccc;
+}
+
+/* Estilos para el botón "Rechazar Oferta" */
+.info-container button.small-delete {
+  width: 40%;
+  font-size: 12px;
+  background-color: #d9534f;
+}
+
+.info-container button.small-delete:hover {
+  background-color: #c9302c;
+}
+
+/* Estilos para el botón de confirmación de eliminación en la lista de propiedades */
+.info-container button.small-delete.confirm-delete {
+  background-color: #d9534f;
+}
+
+.info-container button.small-delete.confirm-delete:hover {
+  background-color: #c9302c;
+}
+
+
+/* Estilos adicionales para la sección de información personal */
+.info-container div.personal-info {
+  padding: 20px;
+  background-color: #f2e2da;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.info-container div.personal-info p {
+  margin-bottom: 10px;
+}
+
+/* Estilos adicionales para el formulario de actualización */
+.info-container form.update-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f2e2da;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.info-container form.update-form label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.info-container form.update-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.info-container form.update-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4285f4;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.info-container form.update-form button:hover {
+  background-color: #1c4fc8;
+}
+
+.info-container form.update-form button.cancel {
+  background-color: #d9534f;
+}
+
+.info-container form.update-form button.cancel:hover {
+  background-color: #c9302c;
+}

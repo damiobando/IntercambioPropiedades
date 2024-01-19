@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import './Account.css';
-import { findUserByToken } from '../api/users';
 import { getSearchHistory, deleteHistory } from '../api/history';
 import { getFavorites,deleteFavorite } from '../api/favorites';
-import { changePassword } from '../api/users';
-import { getOffers } from '../api/offers';
-import { rejectOffer } from '../api/offers';
-import { updateUser } from '../api/users';
+import {findUserByToken, changePassword, updateUser } from '../api/users';
+import {getOffers, rejectOffer} from '../api/offers';
+import {getMessages} from '../api/message';
+import {getUserProperties, deleteProperty} from '../api/property';
 
 function Account() {
   const [activeButton, setActiveButton] = useState('miInformacion');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [property, setNewProperty] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [userInfo, setUserInfo] = useState({});
   const [searchHistory, setSearchHistory] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [offers, setOffers] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [messages, setMessages] = useState([]); // Agregado: estado para mensajes
+  const [properties, setProperties] = useState([]); // Agregado: estado para propiedades
+  const [passwordError, setPasswordError] = useState(''); // Agregado: estado para manejar errores de contraseña
 
   useEffect(() => {
     async function fetchData() {
@@ -31,6 +35,11 @@ function Account() {
         setFavorites(favoritesResponse.data);
         const offersResponse = await getOffers(user.data._id); // Llama al API para obtener las ofertas
         setOffers(offersResponse.data.offers);
+        const messagesResponse = await getMessages(user.data._id); // Llama al API para obtener los mensajes
+        setMessages(messagesResponse.data);
+        const userProperties = await getUserProperties(user.data._id); // Llama al API para obtener las propiedades del usuario
+        console.log('User Properties:', userProperties); 
+        setProperties(userProperties.data);
       } catch (error) {
         console.error(error);
       }
@@ -58,7 +67,6 @@ function Account() {
 
   const handleAcceptClick = async () => {
     try {
-      console.log('Updated user info:', userInfo);
       const updatedUser = await updateUser(userInfo._id, userInfo);
       alert('Información actualizada exitosamente'); 
       setIsEditing(false);
@@ -70,16 +78,44 @@ function Account() {
 
   };
 
-  const handleDeleteItem = async (id, type) => {
+  const handleDeleteItem = async (item, type) => {
     try {
-      console.log('Deleted item with ID:', id._id);
-      await deleteFavorite(id._id);
-      const updatedFavorites = favorites.filter((fav) => fav._id !== id._id);
-      console.log('Updated Favorites:', updatedFavorites);
-      setFavorites(updatedFavorites);
-      alert('Favorito eliminado exitosamente');
+      if (type === 'history') {
+        await deleteHistory(item._id);
+        const updatedHistory = searchHistory.filter((historyItem) => historyItem._id !== item._id);
+        setSearchHistory(updatedHistory);
+        alert('Elemento eliminado exitosamente');
+      } else if (type === 'favorites') {
+        await deleteFavorite(item._id);
+        const updatedFavorites = favorites.filter((fav) => fav._id !== item._id);
+        setFavorites(updatedFavorites);
+        alert('Favorito eliminado exitosamente');
+      } else if (type === 'property') {
+        setNewProperty(item);
+        setConfirmDelete(true);
+      }
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    const item = property;
+    try {
+      if (!item._id) {
+        console.error('Invalid _id:', item._id);
+        return;
+      }
+  
+      const propertyID = item._id;
+  
+      await deleteProperty(propertyID);
+  
+      setConfirmDelete(false);
+
+      alert('Propiedad eliminada exitosamente');
+    } catch (error) {
+      console.error('Error deleting property:', error);
     }
   };
 
@@ -100,6 +136,14 @@ function Account() {
   };
   const handlePasswordChange = async () => {
     try {
+      // Validar que las contraseñas coincidan
+      if (newPassword !== confirmPassword) {
+        setPasswordError('Las contraseñas no coinciden');
+        return;
+      } else {
+        setPasswordError('');
+      }
+  
       const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
       const user = await findUserByToken(token);
   
@@ -114,7 +158,7 @@ function Account() {
         setCurrentPassword('');
         setNewPassword('');
         setConfirmPassword('');
-          
+  
       } else {
         alert('Error al cambiar la contraseña');
         console.error('Error al cambiar la contraseña:', res.statusText);
@@ -148,6 +192,7 @@ function Account() {
   };
 
 
+
   return (
     <div className="main-background">
       <div className="left-bar">
@@ -166,6 +211,12 @@ function Account() {
         <button onClick={() => handleButtonClick('misOfertas')} className={activeButton === 'misOfertas' ? 'active' : ''}>
           Mis Ofertas
         </button>
+        <button onClick={() => handleButtonClick('misMensajes')} className={activeButton === 'misMensajes' ? 'active' : ''}>
+          Mis Mensajes
+        </button>
+        <button onClick={() => handleButtonClick('misPropiedades')} className={activeButton === 'misPropiedades' ? 'active' : ''}>
+          Mis Propiedades
+        </button>
         {/* Agrega más botones según sea necesario */}
       </div>
 
@@ -176,47 +227,46 @@ function Account() {
             {/* Mostrar campos en modo de edición */}
             {isEditing ? (
               <form onSubmit={handleAcceptClick}>
-                <div>
-                  <label htmlFor="name">Nombre:</label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={userInfo.name}
-                    onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
-                    disabled={!isEditing}
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email">Correo Electrónico:</label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={userInfo.email}
-                    onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
-                    disabled={!isEditing}
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="phone">Teléfono:</label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    value={userInfo.phone}
-                    onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
-                    disabled={!isEditing}
-                    required
-                  />
-                </div>
-                {/* Agrega más campos según sea necesario */}
-                <div>
-                  <button type="button" onClick={handleCancelClick}>
-                    Cancelar
-                  </button>
-                  <button type="submit">Aceptar</button>
-                </div>
-              </form>
+  <div>
+    <label htmlFor="name">Nombre:</label>
+    <input
+      type="text"
+      id="name"
+      value={userInfo.name}
+      onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
+      disabled={!isEditing}
+      required
+    />
+  </div>
+  <div>
+    <label htmlFor="email">Correo Electrónico:</label>
+    <input
+      type="email"
+      id="email"
+      value={userInfo.email}
+      onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
+      disabled={!isEditing}
+      required
+    />
+  </div>
+  <div>
+    <label htmlFor="phone">Teléfono:</label>
+    <input
+      type="tel"
+      id="phone"
+      value={userInfo.phone}
+      onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
+      disabled={!isEditing}
+      required
+    />
+  </div>
+  <div>
+    <button type="button" onClick={handleCancelClick}>
+      Cancelar
+    </button>
+    <button type="submit">Aceptar</button>
+  </div>
+        </form>
             ) : (
               // Mostrar campos en modo de visualización
               <div>
@@ -262,10 +312,10 @@ function Account() {
           <div>
             <h2>Favoritos</h2>
             {favorites.length > 0 ? (
-              <ul>
-                {favorites.map((item) => (
-                  <div className='favoritos-container'> 
-                  <li key={item._id} style={{ marginBottom: '20px ' }}>
+            <ul>
+              {favorites.map((item) => (
+                <div className='favoritos-container' key={item._id}>
+                  <li style={{ marginBottom: '20px ' }}>
                     <p><strong>Titulo:</strong> {item.title}</p>
                     <p><strong>Descripción:</strong> {item.description}</p>
                     <p><strong>Precio:</strong> {item.price}</p>
@@ -275,25 +325,25 @@ function Account() {
                     <hr />
                     <button
                       type="button"
-                      onClick={() => handleDeleteItem(item, 'history')}
+                      onClick={() => handleDeleteItem(item, 'favorites')} // Change 'history' to 'favorites'
                       className="small-delete"
                     >
                       Borrar
                     </button>
                   </li>
-                  </div>
-                ))}
-              </ul>
-            ) : (
-              <p>No hay elementos en la lista de favoritos.</p>
-            )}
+                </div>
+              ))}
+            </ul>
+          ) : (
+            <p>No hay elementos en la lista de favoritos.</p>
+          )}
           </div>
         )}
         {activeButton === 'cambiarContrasena' && (
           <div>
             <form onSubmit={(e) => {
-              e.preventDefault(); // Evita la recarga de la página por defecto al enviar el formulario
-              handlePasswordChange(); // Llama a la función que maneja el cambio de contraseña
+            e.preventDefault(); // Evita la recarga de la página por defecto al enviar el formulario
+            handlePasswordChange(); // Llama a la función que maneja el cambio de contraseña
             }}>
               <h2>Cambiar Contraseña</h2>
               <div>
@@ -325,6 +375,7 @@ function Account() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                 />
+                {passwordError && <p className="error-message">{passwordError}</p>}
               </div>
               <button type="submit">Cambiar Contraseña</button>
             </form>
@@ -337,12 +388,11 @@ function Account() {
                 <ul>
                   {offers.map((offer, index) => (
                     <li key={index} style={{ marginBottom: '20px' }}>
-                      {/* Muestra la información de la oferta */}
                       <p><strong>Ofertante:</strong> {offer.offerorName}</p>
                       <p><strong>Correo Electrónico:</strong> {offer.offerorEmail}</p>
                       <p><strong>Título de la Propiedad:</strong> {offer.propertyTitle}</p>
                       <p><strong>Monto Ofrecido:</strong> {offer.offeredAmount}</p>
-                      {/* Agrega más detalles de la oferta según sea necesario */}
+                      <p><strong>Descripción:</strong> {offer.offerDetail}</p>
                       <hr />
                       <button
                         type="button"
@@ -359,7 +409,64 @@ function Account() {
               )}
             </div>
           )}
-        {/* Agrega más contenido según sea necesario */}
+          {activeButton === 'misMensajes' && (
+          <div>
+            <h2>Mis Mensajes</h2>
+            {messages.length > 0 ? (
+              <ul>
+                {messages.map((message,index) => (
+                  <li key={index} style={{ marginBottom: '20px' }}>
+                    <p><strong>Usuario:</strong> {message.sender_name}</p>
+                    <p><strong>Detalle del Mensaje:</strong> {message.content}</p>
+                    <p><strong>Contacto:</strong> {message.contact}</p>
+                    <hr />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No hay mensajes disponibles.</p>
+            )}
+          </div>
+        )}
+        {activeButton === 'misPropiedades' && (
+          <div>
+            <h2>Mis Propiedades</h2>
+            {properties.length > 0 ? (
+              <ul>
+                {properties.map((property) => (
+                  <div className='favoritos-container' key={property._id}>
+                    <li style={{ marginBottom: '20px' }}>
+                      <p><strong>Titulo:</strong> {property.title}</p>
+                      <p><strong>Descripción:</strong> {property.description}</p>
+                      <p><strong>Precio:</strong> {property.price}</p>
+                      <p><strong>Provincia:</strong> {property.province}</p>
+                      <p><strong>Cantón:</strong> {property.canton}</p>
+                      <p><strong>Distrito:</strong> {property.distrito}</p>
+                      <hr />
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteItem(property, 'property')}
+                        className="small-delete"
+                      >
+                        Eliminar Publicación
+                      </button>
+                    </li>
+                  </div>
+                ))}
+              </ul>
+            ) : (
+              <p>No hay propiedades disponibles.</p>
+            )}
+          </div>
+        )}
+        {confirmDelete && (
+          <div className="delete-confirmation">
+            <p>¿Estás seguro de que deseas eliminar esta publicación?</p>
+            <button onClick={handleConfirmDelete}>Sí</button>
+            <button onClick={() => setConfirmDelete(false)}>No</button>
+          </div>
+        )}
+          
       </div>
     </div>
   );

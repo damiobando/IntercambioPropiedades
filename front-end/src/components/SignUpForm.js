@@ -54,12 +54,15 @@ function SignUpForm() {
         // Login exitoso
         const token = res.data.token;
         document.cookie = `token=${token}`;
-        console.log('Login successful');
         showAlert('Login successful', 'success');
+
+        // Verificar si el usuario es administrador
+        const isAdmin = res.data.isAdmin;
+        console.log('isAdmin:', isAdmin);
 
         // Realizar la navegación después de mostrar la alerta
         setTimeout(() => {
-          navigate('/listings'); 
+          navigate(isAdmin ? '/admin' : '/listings');
         }, 3000);
       } else {
         // Error en el login

@@ -29,6 +29,14 @@ router.get("/properties/:id", (req, res) => {
         .catch((error) => res.status(400).json({ message: error.message }));
 });
 
+// obtener una propiedad por ID del usuario
+router.get("/user-properties/:id", (req, res) => {
+    const { id } = req.params;
+    Property.find({ ownerID: id })
+        .then((data) => res.json(data))
+        .catch((error) => res.status(400).json({ message: error.message }));
+});
+
 // Actualizar una propiedad por ID
 router.put("/properties/:id", (req, res) => {
     const { id } = req.params;
