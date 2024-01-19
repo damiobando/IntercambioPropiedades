@@ -25,7 +25,7 @@ const ReportPublication = ({ propertyData }) => {
       const reportData = {
         reporter: user.data.name,
         reported_id: propertyData._id,
-        propertyName: propertyData.name,
+        propertyName: propertyData.title,
         description: reportReason,
         date: currentDate.toISOString().slice(0, 10),
       };
