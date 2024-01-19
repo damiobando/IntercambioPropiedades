@@ -6,8 +6,8 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { Button } from './Button';
-import { Link } from 'react-router-dom';
 import { registerRequest } from '../api/auth';
+import { useNavigate } from "react-router-dom";
 
 function RegisterForm() {
   const [firstName, setFirstName] = useState('');
@@ -17,6 +17,7 @@ function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordError, setPasswordError] = useState('');
   const [button, setButton] = useState(true);
+  const navigate = useNavigate();
 
   const showButton = () => {
     if (window.innerWidth <= 960) {
@@ -74,6 +75,7 @@ function RegisterForm() {
         document.cookie = `token=${token}`;
         console.log('Successful registration');
         alert('Registro Exitoso');
+        navigate('/listings');
       } else {
         console.error('Error on registration', res.data.message);
         alert(`Error en el registro: ${res.data.message}`);

@@ -164,16 +164,9 @@ function NewListing() {
                 onChange={() => handleCheckboxChange('financiamiento')} 
               />
               <label>Financiamiento</label>
-              {/* Agrega más opciones según sea necesario */}
             </div>
           </div>
-          <div className='form-group'>
-            <label>Otro:</label>
-            <input type='text' />
-          </div>
-          
         </div>
-
         <div className='media-container'>
           <h1>Fotos de la propiedad</h1>
           <input type='file' multiple onChange={handleImageChange} />          
@@ -188,33 +181,36 @@ function NewListing() {
             ))}
           </div>
         </div>
-
-        <div className='location-container'>
+          <div className='location-container'>
         <h1>Ubicación de la propiedad</h1>
-
-        <div className='form-group'>
+          <div className='form-group'>
             <label>Provincia</label>
-            <input type='text' value={province} onChange={(e) => setProvince(e.target.value)} required />
-        </div>
+            <select value={province} onChange={(e) => setProvince(e.target.value)} required>
+              <option value=''>Selecciona...</option>
+              <option value='San José'>San José</option>
+              <option value='Alajuela'>Alajuela</option>
+              <option value='Heredia'>Heredia</option>
+              <option value='Cartago'>Cartago</option>
+              <option value='Guanacaste'>Guanacaste</option>
+              <option value='Puntarenas'>Puntarenas</option>
+              <option value='Limón'>Limón</option>
+            </select>
+          </div>
+    <div className='form-group'>
+      <label>Cantón</label>
+      <input type='text' value={canton} onChange={(e) => setCanton(e.target.value)} required />
+    </div>
 
-        <div className='form-group'>
-            <label>Cantón</label>
-            <input type='text' value={canton} onChange={(e) => setCanton(e.target.value)} required />
-        </div>
+    <div className='form-group'>
+      <label>Distrito</label>
+      <input type='text' value={distrito} onChange={(e) => setDistrito(e.target.value)} required />
+    </div>
 
-        <div className='form-group'>
-            <label>Distrito</label>
-            <input type='text' value={distrito} onChange={(e) => setDistrito(e.target.value)} required />
-        </div>
-        <div className='form-group'>
-        <label>Dirección extra opcional</label>
-        <textarea
-          rows='4'
-          value={direccion}
-          onChange={(e) => setDireccion(e.target.value)}
-        ></textarea>
-      </div>
-        </div>
+    <div className='form-group'>
+      <label>Dirección extra opcional</label>
+      <textarea rows='4' value={direccion} onChange={(e) => setDireccion(e.target.value)}></textarea>
+    </div>
+  </div>
         <div className='form-group'>
             <button type='submit'>
                 Agregar Propiedad
