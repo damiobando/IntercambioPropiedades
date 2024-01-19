@@ -22,6 +22,7 @@ function AdminAccount() {
   const [messages, setMessages] = useState([]); // Agregado: estado para mensajes
   const [properties, setProperties] = useState([]); // Agregado: estado para propiedades
   const [reports, setReports] = useState([]); // Nuevo estado para los reportes
+  const [feedbacks, setFeedbacks] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -38,7 +39,10 @@ function AdminAccount() {
         const messagesResponse = await messages(user.data._id); // Llama al API para obtener los mensajes
         setMessages(messagesResponse.data);
         const userProperties = await properties(user.data._id); // Llama al API para obtener las propiedades del usuario
-
+        
+        
+        // const feedbacksResponse = await getFeedbacks(user.data._id);
+        // setFeedbacks(feedbacksResponse.data);
         // console.log('User Properties:', userProperties); 
         // setProperties(userProperties.data);
         // Obtener los reportes
@@ -232,6 +236,9 @@ function AdminAccount() {
         <button onClick={() => handleButtonClick('reportes')} className={activeButton === 'reportes' ? 'active' : ''}>
           Reportes
         </button>
+        <button onClick={() => handleButtonClick('verFeedbacks')} className={activeButton === 'verFeedbacks' ? 'active' : ''}>
+        Ver Feedbacks
+      </button>
         {/* Agrega más botones según sea necesario */}
       </div>
 
@@ -494,6 +501,25 @@ function AdminAccount() {
             </ul>
           ) : (
             <p>No hay reportes disponibles.</p>
+          )}
+        </div>
+      )}
+      {activeButton === 'verFeedbacks' && (
+        <div>
+          <h2>Ver Feedbacks</h2>
+          {feedbacks.length > 0 ? (
+            <ul>
+              {feedbacks.map((feedback) => (
+                <li key={feedback._id} style={{ marginBottom: '20px' }}>
+                  <p><strong>Usuario:</strong> {feedback.userName}</p>
+                  <p><strong>Calificación:</strong> {feedback.rating}</p>
+                  <p><strong>Mensaje:</strong> {feedback.comment}</p>
+                  <hr />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No hay feedbacks disponibles.</p>
           )}
         </div>
       )}
