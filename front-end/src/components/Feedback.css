@@ -1,23 +1,82 @@
-/* FeedbackForm.css */
+/* ContactUs.css */
+
+.contact-us-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.contact-info-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+
+.contact-info {
+  flex: 1;
+  margin: 10px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: linear-gradient(to right  , rgba(246, 244, 244, 0.598), rgba(234, 98, 30, 0.126));  
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  min-width: 300px;
+  min-height: 200px;
+}
+
+.contact-info-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
 .feedback-form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    margin: 20px auto;
-  }
-  
-  .feedback-form-container h2 {
-    font-size: 1.5em;
-    margin-bottom: 20px;
-  }
-  
-  .feedback-form-container .btn-feedback {
-    margin-top: 20px;
-  }
-  
+  max-width: 600px;
+  width: 100%;
+}
+
+.star-rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.star-rating p {
+  margin-right: 10px;
+}
+
+.star {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.star.filled {
+  color: gold;
+}
+
+.star.empty {
+  color: #ccc;
+}
+
+.comment-input {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.btn-feedback {
+  text-align: center;
+}
+
+/* Add additional styles as needed */
