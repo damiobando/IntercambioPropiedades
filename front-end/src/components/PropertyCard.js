@@ -29,7 +29,6 @@ const PropertyCard = ({ property, userId }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
-  const propertyId = property._id;
 
   const getTokenFromCookie = () => {
     const cookies = document.cookie.split('; ').reduce((acc, cookie) => {

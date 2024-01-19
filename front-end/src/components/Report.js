@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
 import { Button } from './Button';
 import './Report.css'; // Importa los estilos
 
@@ -20,10 +19,7 @@ function Report({ onReportSubmit }) {
   };
 
   const handleReportSubmit = () => {
-    // Aquí puedes realizar alguna acción con los datos del reporte
-    // Puedes enviarlos al servidor, mostrar una alerta, etc.
     onReportSubmit(reportData);
-    // También puedes limpiar el estado o cerrar el componente después de enviar el reporte.
     setReportData({
       reported_name: '',
       type: '',

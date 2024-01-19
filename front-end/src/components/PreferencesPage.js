@@ -69,10 +69,10 @@ const PreferencesPage = () => {
       setPopupMessage('Preferencias guardadas exitosamente');
       setShowPopup(true);
 
-      // Redirigir a la página principal después de un breve retraso (por ejemplo, 2 segundos)
+      // Redirigir a la página principal después de un breve retraso (2 segundos)
       setTimeout(() => {
         navigate('/listings');
-      }, 2000); // Ajusta el tiempo según tus necesidades
+      }, 2000);
     } catch (error) {
       console.error('Error al manejar la acción de guardar preferencias:', error);
       setPopupMessage('Hubo un error al procesar la solicitud');

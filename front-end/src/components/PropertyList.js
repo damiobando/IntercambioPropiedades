@@ -1,6 +1,5 @@
 // PropertyList.js
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import PropertyCard from './PropertyCard';
 import './PropertyList.css';
 import { getProperties } from '../api/property';
@@ -27,10 +26,6 @@ const PropertyList = () => {
 
   return (
     <div className='property-list-container'>
-      <div className='search-bar'>
-        <input type="text" placeholder="Buscar propiedades" />
-      </div>
-
       <div className="property-list">
         {properties.length > 0 ? (
           properties.map((property) => (

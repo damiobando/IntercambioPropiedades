@@ -34,7 +34,7 @@ const MessageToSeller = ({ sellerId }) => {
 
       console.log(messageData);
 
-      const res = await sendMessage(messageData);
+      await sendMessage(messageData);
 
       const notificationData = {
         user_id: sellerId,
@@ -43,7 +43,7 @@ const MessageToSeller = ({ sellerId }) => {
         read: false,
       };
 
-      const resNoti = await addNotification(notificationData);
+      await addNotification(notificationData);
 
       setMessage('');
       alert('Mensaje enviado con éxito.');

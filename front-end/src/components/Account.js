@@ -47,7 +47,7 @@ function Account() {
 
     fetchData();
   }, []);
-  const [isEditMode, setIsEditMode] = useState(false); // Ejemplo de lista de favoritos
+ // Ejemplo de lista de favoritos
 
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
@@ -67,7 +67,7 @@ function Account() {
 
   const handleAcceptClick = async () => {
     try {
-      const updatedUser = await updateUser(userInfo._id, userInfo);
+      await updateUser(userInfo._id, userInfo);
       alert('Información actualizada exitosamente'); 
       setIsEditing(false);
     } catch (error) {
@@ -169,19 +169,11 @@ function Account() {
       alert('Error al cambiar la contraseña');
     }
   };
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    // Limpia los campos después de cambiar la contraseña
-    setCurrentPassword('');
-    setNewPassword('');
-    setConfirmPassword('');
-  };
 
   const handleRejectOffer = async (offer) => {
     try {
       console.log('Rejected offer with ID:', offer.offerId);
-      await rejectOffer(offer.offerId); // Reemplaza 'rejectOffer' con la función que elimina la oferta en tu API
+      await rejectOffer(offer.offerId);
       const updatedOffers = offers.filter((o) => o.offerId !== offer.offerId);
       console.log('Updated Offers:', updatedOffers);
       setOffers(updatedOffers);
@@ -217,7 +209,6 @@ function Account() {
         <button onClick={() => handleButtonClick('misPropiedades')} className={activeButton === 'misPropiedades' ? 'active' : ''}>
           Mis Propiedades
         </button>
-        {/* Agrega más botones según sea necesario */}
       </div>
 
       <div className="info-container">
@@ -273,7 +264,6 @@ function Account() {
                 <p>Nombre: {userInfo.name}</p>
                 <p>Correo Electrónico: {userInfo.email}</p>
                 <p>Teléfono: {userInfo.phone}</p>
-                {/* Agrega más campos según sea necesario */}
                 <button type="button" onClick={handleUpdateClick}>
                   Actualizar
                 </button>

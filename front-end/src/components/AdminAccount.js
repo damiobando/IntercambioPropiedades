@@ -58,7 +58,7 @@ function AdminAccount() {
   const handleAcceptClick = async () => {
     try {
       console.log('Updated user info:', userInfo);
-      const updatedUser = await updateUser(userInfo._id, userInfo);
+      await updateUser(userInfo._id, userInfo);
       alert('Información actualizada exitosamente');
       setIsEditing(false);
     } catch (error) {

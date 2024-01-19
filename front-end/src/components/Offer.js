@@ -40,7 +40,7 @@ const Offer = ({ propertyData }) => {
         read: false,
       };
   
-      const resNoti = await addNotification(notificationData);
+      await addNotification(notificationData);
   
       // Limpiar los campos del formulario después de una presentación exitosa
       setOfferedAmount('');
@@ -76,7 +76,6 @@ const Offer = ({ propertyData }) => {
             required
           />
         </div>
-        {/* Agrega más campos según sea necesario */}
         <button type="submit">Enviar Oferta</button>
       </form>
     </div>

@@ -48,7 +48,6 @@ function GenerateOffer() {
           <label>Precio Ofrecido:</label>
           <input type='text' placeholder='Ingrese el precio ofrecido' />
         </div>
-        {/* Agrega más campos según sea necesario para la oferta del comprador */}
         <button>Generar Oferta</button>
       </div>
     </div>

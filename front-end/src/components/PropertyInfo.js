@@ -37,7 +37,7 @@ const PropertyInfo = () => {
         };
   
         // Agregar al historial
-        const resHistory = await addHistory(historyData);
+        addHistory(historyData);
       } catch (error) {
         console.error(error);
       }
@@ -56,9 +56,9 @@ const PropertyInfo = () => {
   };
 
   const imageStyle = {
-    maxWidth: '100%',  // Establece un ancho máximo del 100%
-    maxHeight: '400px',  // Ajusta la altura máxima según tus necesidades
-    margin: '0 auto',  // Centra la imagen horizontalmente
+    maxWidth: '100%', 
+    maxHeight: '400px',  
+    margin: '0 auto', 
   };
 
   return (
@@ -80,7 +80,6 @@ const PropertyInfo = () => {
           <p className="property-info-item">
             <strong>Precio:</strong> {propertyData.price}
           </p>
-          {/* Agrega más campos según sea necesario */}
         </div>
       </div>
       <div className="side-container">
@@ -92,7 +91,6 @@ const PropertyInfo = () => {
           <p className="seller-info-item">
             <strong>Contacto:</strong> {sellerData.email}
           </p>
-          {/* Agrega más información del vendedor según tu modelo de datos */}
         </div>
         <MessageToSeller sellerId={sellerData._id} />
         <ReportPublication propertyData={propertyData} />
