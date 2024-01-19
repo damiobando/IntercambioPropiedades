@@ -2,15 +2,24 @@ import React, { useState } from 'react';
 import './PropertyInfo.css';
 import { findUserByToken } from '../api/users';
 import { addOffer } from '../api/offers';
+import { addNotification } from '../api/notification';
 
 const Offer = ({ propertyData }) => {
   const [offeredAmount, setOfferedAmount] = useState('');
   const [offerDetail, setOfferDetail] = useState('');
-
+  const currentDate = new Date();
   const handleOfferSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validar que ambos campos no estén vacíos
+    if (!offeredAmount || !offerDetail) {
+      console.error('Por favor, completa todos los campos.');
+      return;
+    }
+  
     const token = document.cookie.split('; ').find((row) => row.startsWith('token=')).split('=')[1];
     const user = await findUserByToken(token);
+  
     try {
       const offerData = {
         oferter: user.data.name,
@@ -20,15 +29,24 @@ const Offer = ({ propertyData }) => {
         offeredAmount: offeredAmount,
         offerDetail: offerDetail,
       };
-
+  
       const res = await addOffer(offerData);
       console.log(res);
-
-      // Clear the form data after successful submission
+  
+      const notificationData = {
+        user_id: propertyData.ownerID,
+        content: "Ha recibido una nueva oferta de la propiedad: " + propertyData.title + "",
+        date: currentDate.toISOString().slice(0, 10),
+        read: false,
+      };
+  
+      const resNoti = await addNotification(notificationData);
+  
+      // Limpiar los campos del formulario después de una presentación exitosa
       setOfferedAmount('');
       setOfferDetail('');
-
-      // Show an alert to the user
+  
+      // Mostrar una alerta al usuario
       alert('Oferta enviada exitosamente');
     } catch (error) {
       console.error(error);

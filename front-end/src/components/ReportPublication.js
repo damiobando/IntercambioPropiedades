@@ -1,37 +1,43 @@
-// ReportPublication.js
-
 import React, { useState } from 'react';
 import './PropertyInfo.css'
 import { findUserByToken } from '../api/users';
-import {addReport} from '../api/report';
+import { addReport } from '../api/report';
 
-
-const ReportPublication = ({propertyData}) => {
+const ReportPublication = ({ propertyData }) => {
   const [reportReason, setReportReason] = useState('');
 
   const handleReportReasonChange = (event) => {
     setReportReason(event.target.value);
   };
+
   const currentDate = new Date();
+  
   const handleReportPublication = async () => {
-    try{
+    try {
+      // Validar que el campo reportReason no esté vacío
+      if (!reportReason) {
+        alert('Por favor, ingresa el motivo del reporte.');
+        return;
+      }
+
       const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
       const user = await findUserByToken(token);
       const reportData = {
         reporter: user.data.name,
         reported_id: propertyData._id,
-        propertyName:propertyData.name,
+        propertyName: propertyData.name,
         description: reportReason,
         date: currentDate.toISOString().slice(0, 10),
       };
-      console.log(reportData);//
+
       const res = await addReport(reportData);
-      console.log(res);    
+      console.log(res);
+
       setReportReason('');
-     }
-     catch(res){
-        console.error("Error al enviar mensaje", res);
-     }
+      alert('Reporte enviado con éxito.');
+    } catch (error) {
+      console.error("Error al enviar el reporte:", error);
+    }
   };
 
   return (

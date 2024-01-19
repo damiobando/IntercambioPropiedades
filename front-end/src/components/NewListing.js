@@ -46,16 +46,21 @@ function NewListing() {
 
   const handleAddProperty = async (event) => {
     event.preventDefault();
-
+  
+    // Validar que todos los campos obligatorios estén llenos
+    if (!title || !description || !price || !selectedOption || !province || !canton || !distrito) {
+      alert('Por favor, completa todos los campos obligatorios.');
+      return;
+    }
+  
     try {
       const formData = new FormData();
       imageFiles.forEach((file) => {
         formData.append('images', file);
       });
-
+  
       const response = await axios.post('http://localhost:9000/upload', formData);
-      const imageUrls = response.data;// Ajustamos para obtener las URLs
-
+      const imageUrls = response.data;
       const token = getTokenFromCookie();
       if (!token) {
         console.error('No se pudo encontrar el token en las cookies.');
@@ -70,14 +75,15 @@ function NewListing() {
         province: province,
         canton: canton,
         distrito: distrito,
-        images: imageUrls, 
+        images: imageUrls,
         direccion: direccion,
         ownerID: token,
       };
-
+  
       const res = await addProperty(propertyData);
       console.log(res);
-
+  
+      // Limpiar los campos después de agregar la propiedad
       setTitle('');
       setDescription('');
       setPrice('');
@@ -88,17 +94,18 @@ function NewListing() {
       setCanton('');
       setDistrito('');
       setDireccion('');
-
+  
       setShowSuccessModal(true);
-
+      alert('Propiedad agregada exitosamente!');
+  
       setTimeout(() => {
         setShowSuccessModal(false);
         setRedirectTo('/listings');
-      }, 3000);
+      }, 2000);
     } catch (error) {
       console.error('Error al agregar la propiedad:', error);
     }
-  };;
+  };
   if (redirectTo) {
     return <Navigate to={redirectTo} />;
   }

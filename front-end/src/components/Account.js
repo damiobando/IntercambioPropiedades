@@ -21,6 +21,7 @@ function Account() {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [messages, setMessages] = useState([]); // Agregado: estado para mensajes
   const [properties, setProperties] = useState([]); // Agregado: estado para propiedades
+  const [passwordError, setPasswordError] = useState(''); // Agregado: estado para manejar errores de contraseña
 
   useEffect(() => {
     async function fetchData() {
@@ -135,6 +136,14 @@ function Account() {
   };
   const handlePasswordChange = async () => {
     try {
+      // Validar que las contraseñas coincidan
+      if (newPassword !== confirmPassword) {
+        setPasswordError('Las contraseñas no coinciden');
+        return;
+      } else {
+        setPasswordError('');
+      }
+  
       const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
       const user = await findUserByToken(token);
   
@@ -149,7 +158,7 @@ function Account() {
         setCurrentPassword('');
         setNewPassword('');
         setConfirmPassword('');
-          
+  
       } else {
         alert('Error al cambiar la contraseña');
         console.error('Error al cambiar la contraseña:', res.statusText);
@@ -218,47 +227,46 @@ function Account() {
             {/* Mostrar campos en modo de edición */}
             {isEditing ? (
               <form onSubmit={handleAcceptClick}>
-                <div>
-                  <label htmlFor="name">Nombre:</label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={userInfo.name}
-                    onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
-                    disabled={!isEditing}
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email">Correo Electrónico:</label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={userInfo.email}
-                    onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
-                    disabled={!isEditing}
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="phone">Teléfono:</label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    value={userInfo.phone}
-                    onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
-                    disabled={!isEditing}
-                    required
-                  />
-                </div>
-                {/* Agrega más campos según sea necesario */}
-                <div>
-                  <button type="button" onClick={handleCancelClick}>
-                    Cancelar
-                  </button>
-                  <button type="submit">Aceptar</button>
-                </div>
-              </form>
+  <div>
+    <label htmlFor="name">Nombre:</label>
+    <input
+      type="text"
+      id="name"
+      value={userInfo.name}
+      onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
+      disabled={!isEditing}
+      required
+    />
+  </div>
+  <div>
+    <label htmlFor="email">Correo Electrónico:</label>
+    <input
+      type="email"
+      id="email"
+      value={userInfo.email}
+      onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
+      disabled={!isEditing}
+      required
+    />
+  </div>
+  <div>
+    <label htmlFor="phone">Teléfono:</label>
+    <input
+      type="tel"
+      id="phone"
+      value={userInfo.phone}
+      onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
+      disabled={!isEditing}
+      required
+    />
+  </div>
+  <div>
+    <button type="button" onClick={handleCancelClick}>
+      Cancelar
+    </button>
+    <button type="submit">Aceptar</button>
+  </div>
+        </form>
             ) : (
               // Mostrar campos en modo de visualización
               <div>
@@ -334,8 +342,8 @@ function Account() {
         {activeButton === 'cambiarContrasena' && (
           <div>
             <form onSubmit={(e) => {
-              e.preventDefault(); // Evita la recarga de la página por defecto al enviar el formulario
-              handlePasswordChange(); // Llama a la función que maneja el cambio de contraseña
+            e.preventDefault(); // Evita la recarga de la página por defecto al enviar el formulario
+            handlePasswordChange(); // Llama a la función que maneja el cambio de contraseña
             }}>
               <h2>Cambiar Contraseña</h2>
               <div>
@@ -367,6 +375,7 @@ function Account() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                 />
+                {passwordError && <p className="error-message">{passwordError}</p>}
               </div>
               <button type="submit">Cambiar Contraseña</button>
             </form>
@@ -379,12 +388,11 @@ function Account() {
                 <ul>
                   {offers.map((offer, index) => (
                     <li key={index} style={{ marginBottom: '20px' }}>
-                      {/* Muestra la información de la oferta */}
                       <p><strong>Ofertante:</strong> {offer.offerorName}</p>
                       <p><strong>Correo Electrónico:</strong> {offer.offerorEmail}</p>
                       <p><strong>Título de la Propiedad:</strong> {offer.propertyTitle}</p>
                       <p><strong>Monto Ofrecido:</strong> {offer.offeredAmount}</p>
-                      {/* Agrega más detalles de la oferta según sea necesario */}
+                      <p><strong>Descripción:</strong> {offer.offerDetail}</p>
                       <hr />
                       <button
                         type="button"
