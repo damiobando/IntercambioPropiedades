@@ -2,8 +2,9 @@ const mongoose = require("mongoose");
 
 // Schema for Report class
 const reportSchema = new mongoose.Schema({
-    reporter_id:String,
+    reporter:String,
     reported_id:String,
+    propertyName:String,
     description: String,
     date: String,
 });

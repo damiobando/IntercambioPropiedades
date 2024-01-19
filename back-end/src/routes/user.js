@@ -48,7 +48,7 @@ router.post("/login", async (req, res) => {
     res.cookie("token", token, {httpOnly: false, secure: false});
   
     console.log("Login successful");
-    res.json({ id: UserFound._id, name: UserFound.name, email: UserFound.email, token: token });
+    res.json({ id: UserFound._id, name: UserFound.name, email: UserFound.email, token: token, isAdmin: UserFound.isAdmin });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

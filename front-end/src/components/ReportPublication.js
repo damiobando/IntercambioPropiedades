@@ -6,7 +6,7 @@ import { findUserByToken } from '../api/users';
 import {addReport} from '../api/report';
 
 
-const ReportPublication = ({ownerID}) => {
+const ReportPublication = ({propertyData}) => {
   const [reportReason, setReportReason] = useState('');
 
   const handleReportReasonChange = (event) => {
@@ -18,8 +18,9 @@ const ReportPublication = ({ownerID}) => {
       const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
       const user = await findUserByToken(token);
       const reportData = {
-        reporter_id: user.data._id,
-        reported_id: ownerID,
+        reporter: user.data.name,
+        reported_id: propertyData._id,
+        propertyName:propertyData.name,
         description: reportReason,
         date: currentDate.toISOString().slice(0, 10),
       };

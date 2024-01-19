@@ -451,7 +451,6 @@ function Account() {
             )}
           </div>
         )}
-
         {confirmDelete && (
           <div className="delete-confirmation">
             <p>¿Estás seguro de que deseas eliminar esta publicación?</p>
@@ -460,8 +459,6 @@ function Account() {
           </div>
         )}
           
-          
-        {/* Agrega más contenido según sea necesario */}
       </div>
     </div>
   );

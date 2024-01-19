@@ -95,7 +95,7 @@ const PropertyInfo = () => {
           {/* Agrega más información del vendedor según tu modelo de datos */}
         </div>
         <MessageToSeller sellerId={sellerData._id} />
-        <ReportPublication ownerID={sellerData._id} />
+        <ReportPublication propertyData={propertyData} />
         <Offer propertyData={propertyData} />
       </div>
     </div>

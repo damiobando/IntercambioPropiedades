@@ -11,8 +11,6 @@ const Offer = ({ propertyData }) => {
     e.preventDefault();
     const token = document.cookie.split('; ').find((row) => row.startsWith('token=')).split('=')[1];
     const user = await findUserByToken(token);
-    console.log(user);
-
     try {
       const offerData = {
         oferter: user.data.name,

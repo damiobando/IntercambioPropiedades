@@ -1,20 +1,19 @@
-// ContactUs.js
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { Button } from './Button';
-import './Feedback.css'; // Importa los estilos
+import './Feedback.css';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { findUserByToken } from '../api/users';
+import { createFeedback } from '../api/feedback';
 
-function Feedback({ onFeedbackSubmit }) {
-  const [feedbackData, setFeedbackData] = useState({
-    comment: '',
-    rating: 0,
-  });
+function Feedback() {
+  const navigate = useNavigate()
+  const [feedbackData, setFeedbackData] = useState({});
 
   const handleInputChange = (field) => (event) => {
     setFeedbackData({ ...feedbackData, [field]: event.target.value });
@@ -24,12 +23,22 @@ function Feedback({ onFeedbackSubmit }) {
     setFeedbackData({ ...feedbackData, rating });
   };
 
-  const handleFeedbackSubmit = () => {
-    onFeedbackSubmit(feedbackData);
-    setFeedbackData({
-      comment: '',
-      rating: 0,
-    });
+  const handleFeedbackSubmit = async (event) => {
+    event.preventDefault();
+
+    const token = document.cookie.split('; ').find((row) => row.startsWith('token=')).split('=')[1];
+    const user = await findUserByToken(token);
+    const sendInfo = {
+      user_id: user.data._id,
+      userName: user.data.name,
+      comment: feedbackData.comment,
+      rating: feedbackData.rating,
+    };
+
+    const res = await createFeedback(sendInfo);
+    console.log(res);
+    alert('Feedback enviado exitosamente');
+    navigate('/contact-us');
   };
 
   const renderStars = () => {
